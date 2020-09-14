@@ -4,7 +4,7 @@ The project consists in a client/server architecture voice over IP application, 
 
 ## Build
 ```
-mkdir build && cd build && conan install .. && cmake .. -G “Unix Makefiles” && cmake –build .
+mkdir build && cd build && conan install .. && cmake .. -G "Unix Makefiles" && cmake –build .
 ```
 ## OS
 

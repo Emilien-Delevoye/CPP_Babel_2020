@@ -1,0 +1,7 @@
+[requires]
+qt/5.14.2@bincrafters/stable
+portaudio/v190600.20161030@bincrafters/stable
+opus/1.3.1@bincrafters/stable
+
+[generators]
+cmake

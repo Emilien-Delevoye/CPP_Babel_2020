@@ -1,0 +1,20 @@
+Commands from
+- https://bintray.com/version/buildSettings?versionPath=%2Fbincrafters%2Fpublic-conan%2Fqt%3Abincrafters%2F5.14.2%3Astable
+- https://docs.conan.io/en/latest/reference/commands/misc/user.html
+- Paul Surrans
+
+=====================================
+=====================================
+
+conan remote add conan https://api.bintray.com/conan/conan/conan-center
+conan remote add epitech https://api.bintray.com/conan/epitech/public-conan 
+conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+
+
+Dans le dossier dl depuis l'intra :
+Après avoir sélectionné les bonnes versions
+mkdir build && cd build && conan install --build=missing .. && cmake .. -G "Unix Makefiles" && cmake -build .
+
+
+=====================================
+=====================================
