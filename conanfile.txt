@@ -5,3 +5,8 @@ opus/1.3.1@bincrafters/stable
 
 [generators]
 cmake
+
+[imports]
+bin, *.dll -> ./bin # Copies all dll files from packages bin folder to my "bin" folder
+plugins/platforms, *.dll -> ./bin/plugins/platforms
+lib, .dylib -> ./bin # Copies all dylib files from packages lib folder to my "bin" folder
