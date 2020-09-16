@@ -3,6 +3,7 @@
 	@brief Record input into an array; Save array to a file; Playback recorded data.
 	@author Phil Burk  http://www.softsynth.com
 */
+
 /*
  * $Id$
  *
@@ -276,7 +277,7 @@ int main(void)
 
     average = average / (double)numSamples;
 
-    printf("sample max amplitude = "PRINTF_S_FORMAT"\n", max );
+    printf("sample max amplitude = %.8f\n", max );
     printf("sample average = %lf\n", average );
 
     /* Write recorded data to a file. */
