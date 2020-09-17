@@ -10,5 +10,6 @@ conan_basic_setup()
 find_package(Qt5Widgets CONFIG REQUIRED)
 
 include_directories(${CMAKE_INCLUDE_PATH})
-add_executable(babel src/main.cpp)
+include_directories(include)
+add_executable(babel src/main.cpp include/PortAudio.hpp src/PortAudio.cpp)
 target_link_libraries(babel ${CONAN_LIBS} Qt5::Widgets)
