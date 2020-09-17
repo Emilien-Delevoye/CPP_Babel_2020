@@ -11,7 +11,10 @@
 int main(int argc, char **argv)
 {
     PortAudio audio;
-    std::cout << audio.getDeviceNumber() << std::endl;
-    PA_DeviceList a = audio.getDeviceInfo();
+    try {
+        audio.startStream();
+    } catch (std::exception &e) {
+        std::cerr << "Pas de chance " << e.what() << std::endl;
+    }
     return 0;
 }
