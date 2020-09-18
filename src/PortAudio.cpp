@@ -6,6 +6,7 @@
 */
 
 #include "PortAudio.hpp"
+#include "opus.h"
 #include <iostream>
 
 PortAudio::PortAudio()
@@ -62,49 +63,47 @@ PaDeviceIndex PortAudio::getDefaultInputDevice()
 
 void PortAudio::startStream()
 {
+    std::vector<unsigned short> captured(this->FRAME_SIZE * this->numChannels);
+    std::vector<unsigned short> decoded(this->FRAME_SIZE * this->numChannels);
+    std::vector<unsigned char> encoded(this->FRAME_SIZE * this->numChannels * 2);
     PaStream *stream = nullptr;
-    PaStreamParameters inputParameters = {.device = Pa_GetDefaultInputDevice()};
-    PaStreamParameters outputParameters = {.device = Pa_GetDefaultOutputDevice()};
-    const PaDeviceInfo *inputInfo = Pa_GetDeviceInfo(inputParameters.device);
-    const PaDeviceInfo *outputInfo = Pa_GetDeviceInfo(outputParameters.device);
-    int numChannels = inputInfo->maxInputChannels < outputInfo->maxOutputChannels ? inputInfo->maxInputChannels : outputInfo->maxOutputChannels;
+    int opusError = OPUS_OK;
+    opus_int32 enc_bytes;
+    opus_int32 dec_bytes;
     PaError err;
 
-    if (inputParameters.device == paNoDevice || outputParameters.device == paNoDevice)
-        throw std::exception("Ah bon");
-    printf( "Name: %s\n", inputInfo->name);
-    printf( "   LL: %g s\n", inputInfo->defaultLowInputLatency);
-    printf( "   HL: %g s\n", inputInfo->defaultHighInputLatency);
+    OpusEncoder *enc = opus_encoder_create(this->SAMPLE_RATE, numChannels, OPUS_APPLICATION_AUDIO, &opusError);
+    if (opusError != OPUS_OK) {
+        std::cerr << opusError << std::endl;
+        throw std::exception("Opus encode creation");
+    }
 
-    printf( "Name: %s\n", outputInfo->name );
-    printf( "   LL: %g s\n", outputInfo->defaultLowOutputLatency );
-    printf( "   HL: %g s\n", outputInfo->defaultHighOutputLatency );
+    OpusDecoder *dec = opus_decoder_create(this->SAMPLE_RATE, numChannels, &opusError);
+    if (opusError != OPUS_OK) {
+        std::cerr << opusError << std::endl;
+        throw std::exception("Opus decode creation");
+    }
 
-    std::printf("Num channels = %d.\n", numChannels);
-    inputParameters.channelCount = numChannels;
-    inputParameters.sampleFormat = PA_SAMPLE_TYPE;
-    inputParameters.suggestedLatency = inputInfo->defaultHighInputLatency;
-    inputParameters.hostApiSpecificStreamInfo = nullptr;
-
-    outputParameters.channelCount = numChannels;
-    outputParameters.sampleFormat = PA_SAMPLE_TYPE;
-    outputParameters.suggestedLatency = outputInfo->defaultHighOutputLatency;
-    outputParameters.hostApiSpecificStreamInfo = nullptr;
-    err = Pa_OpenStream(&stream, &inputParameters, &outputParameters, this->SAMPLE_RATE, this->FRAMES_PER_BUFFER, paClipOff,
-        nullptr, nullptr);
+    err = Pa_OpenDefaultStream(&stream, numChannels, numChannels, paInt16, this->SAMPLE_RATE,
+        this->FRAME_SIZE, nullptr, nullptr);
     if (err != paNoError) {
         std::cout << err << std::endl;
         std::cout << "Error unavailable -> " << paDeviceUnavailable << std::endl;
         throw std::exception(Pa_GetErrorText(err));
     }
-    char *sampleBlock = new char [(this->FRAMES_PER_BUFFER * numChannels * this->SAMPLE_SIZE)];
+    std::cout << this->BUFFER_SIZE << std::endl;
     if (Pa_StartStream(stream) != paNoError)
         throw std::exception("Start Stream");
     for (int i = 0; i < (this->NUM_SECONDS * this->SAMPLE_RATE) / this->FRAMES_PER_BUFFER; ++i) {
-        err = Pa_WriteStream(stream, sampleBlock, this->FRAMES_PER_BUFFER);
+        err = Pa_ReadStream(stream, captured.data(), this->FRAME_SIZE);
         if (err != paNoError)
             throw std::exception(Pa_GetErrorText(err));
-        err = Pa_ReadStream(stream, sampleBlock, this->FRAMES_PER_BUFFER);
+        if ((enc_bytes = opus_encode(enc, reinterpret_cast<opus_int16 const *>(captured.data()),
+            this->FRAME_SIZE, encoded.data(), encoded.size())) < 0)
+            throw std::exception("opus_encode");
+        if (opus_decode(dec, encoded.data(), enc_bytes, reinterpret_cast<opus_int16 *>(decoded.data()), this->FRAME_SIZE, 0) < 0)
+            throw std::exception("opus_decode");
+        err = Pa_WriteStream(stream, decoded.data(), this->FRAME_SIZE);
         if (err != paNoError)
             throw std::exception(Pa_GetErrorText(err));
     }
@@ -112,7 +111,6 @@ void PortAudio::startStream()
     err = Pa_StopStream(stream);
     if (err)
         throw std::exception(Pa_GetErrorText(err));
-    delete[] sampleBlock;
 }
 
 PortAudio::~PortAudio()
