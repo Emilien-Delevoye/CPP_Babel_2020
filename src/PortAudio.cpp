@@ -17,51 +17,7 @@ PortAudio::PortAudio()
         throw std::exception();
 }
 
-int PortAudio::getDeviceNumber()
-{
-    int nbDevices = Pa_GetDeviceCount();
-
-    if (nbDevices < 0) {
-        std::fprintf(stderr, "ERROR (getDeviceNumber): 0x%x\n", nbDevices);
-        throw std::exception();
-    }
-    this->nbDevice = nbDevices;
-    return nbDevices;
-}
-
-PA_DeviceList PortAudio::getDeviceInfo()
-{
-    PA_DeviceList vecDeviceInfo;
-
-    this->getDeviceNumber();
-    vecDeviceInfo.reserve(this->nbDevice);
-    for (int i = 0; i < this->nbDevice; ++i) {
-        const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
-        PA_DeviceInfo deviceInfo = {.name = std::string(info->name), .maxInputChannels = info->maxInputChannels,
-            .maxOutputChannels = info->maxOutputChannels, .API_index = info->hostApi};
-        vecDeviceInfo.push_back(deviceInfo);
-    }
-    this->deviceList = vecDeviceInfo;
-    for (auto &a : vecDeviceInfo) {
-        std::cout << a.name << std::endl;
-        std::cout << a.maxInputChannels << std::endl;
-        std::cout << a.maxOutputChannels << std::endl;
-        std::cout << "=======================" << std::endl;
-    }
-    return vecDeviceInfo;
-}
-
-PaDeviceIndex PortAudio::getDefaultOutputDevice()
-{
-    return (Pa_GetDefaultOutputDevice());
-}
-
-PaDeviceIndex PortAudio::getDefaultInputDevice()
-{
-    return (Pa_GetDefaultInputDevice());
-}
-
-void PortAudio::startStream()
+void PortAudio::startStream() const
 {
     std::vector<unsigned short> captured(this->FRAME_SIZE * this->numChannels);
     std::vector<unsigned short> decoded(this->FRAME_SIZE * this->numChannels);

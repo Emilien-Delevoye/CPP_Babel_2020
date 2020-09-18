@@ -12,25 +12,12 @@
 #include <string>
 #include "portaudio.h"
 
-typedef struct PA_DeviceInfo_s {
-    std::string name;
-    int maxInputChannels;
-    int maxOutputChannels;
-    int API_index;
-} PA_DeviceInfo;
-typedef std::vector<PA_DeviceInfo> PA_DeviceList;
-
 class PortAudio {
     public:
         PortAudio();
-        int getDeviceNumber();
-        PA_DeviceList getDeviceInfo();
-        PaDeviceIndex getDefaultOutputDevice();
-        PaDeviceIndex getDefaultInputDevice();
-        void startStream();
+        void startStream() const;
         ~PortAudio();
     private:
-        PA_DeviceList deviceList;
         int nbDevice = -1;
         const int PA_SAMPLE_TYPE = paFloat32;
         const int SAMPLE_SIZE = 4;
