@@ -34,22 +34,23 @@
 # Logs	
 *vgcore*	
 
-babel.dir/	
-bin/	
-CMakeFiles/	
-x64/	
+babel.dir
+bin
+CMakeFiles
+x64
+build
 Babel.sln	
-*.vcxproj	
-*.filters	
-*.cmake	
-CMakeCache.txt	
-*.lock	
-conan_imports_manifest.txt	
-conanbuildinfo.txt	
-conaninfo.txt	
-graph_info.json	
-.vs	
+*.vcxproj
+*.filters
+*.cmake
+CMakeCache.txt
+*.lock
+conan_imports_manifest.txt
+conanbuildinfo.txt
+conaninfo.txt
+graph_info.json
+.vs
 cmake-build-debug
 
 # IDE
-.idea/
+.idea

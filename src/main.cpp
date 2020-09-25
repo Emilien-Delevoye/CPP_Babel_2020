@@ -10,11 +10,6 @@
 
 int main(int argc, char **argv)
 {
-    PortAudio audio;
-    try {
-        audio.startStream();
-    } catch (std::exception &e) {
-        std::cerr << "Pas de chance " << e.what() << std::endl;
-    }
+    std::cout << "Hello World" << std::endl;
     return 0;
 }
