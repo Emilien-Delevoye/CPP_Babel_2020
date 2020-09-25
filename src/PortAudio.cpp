@@ -5,16 +5,15 @@
 ** Created by Emilien
 */
 
-#include "opus.h"
 #include <iostream>
 #include "PortAudio.hpp"
 
-Audio::Audio() : captured(this->FRAME_SIZE * this->CHANNEL_NB), decoded(this->FRAME_SIZE * this->CHANNEL_NB)
+PortAudio::PortAudio() : captured(this->FRAME_SIZE * this->CHANNEL_NB), decoded(this->FRAME_SIZE * this->CHANNEL_NB)
 {
     this->init();
 }
 
-void Audio::init()
+void PortAudio::init()
 {
     std::cout << "Hello !" << std::endl;
     PaError err = Pa_Initialize();
@@ -23,7 +22,7 @@ void Audio::init()
 }
 
 /*
-void Audio::tmp()
+void PortAudio::tmp()
 {
     std::vector<unsigned char> encoded(this->FRAME_SIZE * this->CHANNEL_NB * 2);
     int opusError = OPUS_OK;
@@ -57,7 +56,7 @@ void Audio::tmp()
 }
 */
 
-void Audio::startStream()
+void PortAudio::startStream()
 {
     PaError err = Pa_OpenDefaultStream(&this->stream, this->CHANNEL_NB, this->CHANNEL_NB, paInt16, this->SAMPLE_RATE,
         this->FRAME_SIZE, nullptr, nullptr);
@@ -70,33 +69,33 @@ void Audio::startStream()
         throw std::exception("Start Stream");
 }
 
-void Audio::readStream()
+void PortAudio::readStream()
 {
     PaError err = Pa_ReadStream(stream, this->captured.data(), this->FRAME_SIZE);
     if (err != paNoError)
         throw std::exception(Pa_GetErrorText(err));
 }
 
-void Audio::writeStream()
+void PortAudio::writeStream()
 {
     PaError err = Pa_WriteStream(stream, decoded.data(), this->FRAME_SIZE);
     if (err != paNoError)
         throw std::exception(Pa_GetErrorText(err));
 }
 
-void Audio::stopStream()
+void PortAudio::stopStream()
 {
     PaError err = Pa_StopStream(stream);
     if (err)
         throw std::exception(Pa_GetErrorText(err));
 }
 
-void Audio::stop()
+void PortAudio::stop()
 {
     Pa_Terminate();
 }
 
-Audio::~Audio()
+PortAudio::~PortAudio()
 {
     this->stop();
 }

@@ -13,14 +13,14 @@
 #include "portaudio.h"
 #include "IAudio.hpp"
 
-class Audio: public IAudio {
+class PortAudio: public IAudio {
     public:
-        Audio();
+        PortAudio();
         void startStream() final;
         void readStream() final;
         void writeStream() final;
         void stopStream() final;
-        ~Audio();
+        ~PortAudio();
     private:
         void init() final;
         void stop() final;
