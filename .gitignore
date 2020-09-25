@@ -1,53 +1,55 @@
-# Prerequisites
-*.d
+ Prerequisites	
+*.d	
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Compiled Object files	
+*.slo	
+*.lo	
+*.o	
+*.obj	
 
-# Precompiled Headers
-*.gch
-*.pch
+# Precompiled Headers	
+*.gch	
+*.pch	
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Compiled Dynamic libraries	
+*.so	
+*.dylib	
+*.dll	
 
-# Fortran module files
-*.mod
-*.smod
+# Fortran module files	
+*.mod	
+*.smod	
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Compiled Static libraries	
+*.lai	
+*.la	
+*.a	
+*.lib	
 
-# Executables
-*.exe
-*.out
-*.app
+# Executables	
+*.exe	
+*.out	
+*.app	
 
-# Logs
-*vgcore*
+# Logs	
+*vgcore*	
 
-.idea
-babel.dir/
-bin/
-CMakeFiles/
-x64/
-Babel.sln
-*.vcxproj
-*.filters
-*.cmake
-CMakeCache.txt
-*.lock
-conan_imports_manifest.txt
-conanbuildinfo.txt
-conaninfo.txt
-graph_info.json
-.vs
+babel.dir/	
+bin/	
+CMakeFiles/	
+x64/	
+Babel.sln	
+*.vcxproj	
+*.filters	
+*.cmake	
+CMakeCache.txt	
+*.lock	
+conan_imports_manifest.txt	
+conanbuildinfo.txt	
+conaninfo.txt	
+graph_info.json	
+.vs	
 cmake-build-debug
+
+# IDE
+.idea/
