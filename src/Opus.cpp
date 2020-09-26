@@ -57,3 +57,18 @@ void Opus::decodeData()
         throw std::exception("opus_decode");
 }
 
+std::vector<unsigned char> Opus::getEncoded()
+{
+    return this->encoded;
+}
+
+void Opus::setCaptured(std::vector<unsigned short> inCaptured)
+{
+    this->captured = std::move(inCaptured);
+}
+
+std::vector<unsigned short> Opus::getDecoded()
+{
+    return this->decoded;
+}
+

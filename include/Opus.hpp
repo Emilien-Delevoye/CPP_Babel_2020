@@ -21,6 +21,9 @@ class Opus : public IEncode
         void createDecoder() final;
         void encodeData() final;
         void decodeData() final;
+        std::vector<unsigned char> getEncoded();
+        void setCaptured(std::vector<unsigned short>);
+        std::vector<unsigned short> getDecoded();
     private:
         std::vector<unsigned char> encoded;
         std::vector<unsigned short> captured;
