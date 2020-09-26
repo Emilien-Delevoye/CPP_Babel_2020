@@ -20,6 +20,8 @@ class PortAudio: public IAudio {
         void readStream() final;
         void writeStream() final;
         void stopStream() final;
+        std::vector<unsigned short> getCaptured();
+        void setDecoded(std::vector<unsigned short>);
         ~PortAudio();
     private:
         void init() final;

@@ -6,6 +6,7 @@
 */
 
 #include <iostream>
+#include <utility>
 #include "PortAudio.hpp"
 
 PortAudio::PortAudio() : captured(this->FRAME_SIZE * this->CHANNEL_NB),
@@ -54,6 +55,16 @@ void PortAudio::stopStream()
     PaError err = Pa_StopStream(stream);
     if (err)
         throw std::exception(Pa_GetErrorText(err));
+}
+
+std::vector<unsigned short> PortAudio::getCaptured()
+{
+    return this->captured;
+}
+
+void PortAudio::setDecoded(std::vector<unsigned short> newCaptured)
+{
+    this->captured = std::move(newCaptured);
 }
 
 void PortAudio::stop()
