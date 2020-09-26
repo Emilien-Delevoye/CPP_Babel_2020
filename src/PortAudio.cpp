@@ -62,9 +62,9 @@ std::vector<unsigned short> PortAudio::getCaptured()
     return this->captured;
 }
 
-void PortAudio::setDecoded(std::vector<unsigned short> newCaptured)
+void PortAudio::setDecoded(std::vector<unsigned short> newDecoded)
 {
-    this->captured = std::move(newCaptured);
+    this->decoded = std::move(newDecoded);
 }
 
 void PortAudio::stop()
