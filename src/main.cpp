@@ -9,7 +9,7 @@
 #include "Opus.hpp"
 #include <iostream>
 
-int main(int argc, char **argv)
+void audioDemo()
 {
     Opus opus;
     PortAudio portAudio;
@@ -29,5 +29,10 @@ int main(int argc, char **argv)
     std::cout << "End stream" << std::endl;
     portAudio.~PortAudio();
     opus.~Opus();
+}
+
+int main(int argc, char **argv)
+{
+    audioDemo();
     return 0;
 }

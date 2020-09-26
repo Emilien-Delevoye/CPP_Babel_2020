@@ -49,6 +49,7 @@ void Opus::createDecoder()
 void Opus::encodeData()
 {
     this->encBytes = opus_encode(enc, reinterpret_cast<opus_int16 const *>(this->captured.data()), this->FRAME_SIZE, encoded.data(), encoded.size());
+    //TMP -> Le parmaètre encBytes est très important pour l'utilisation de la lib
     if (this->encBytes < 0)
         throw std::exception("opus_encode");
 }
@@ -57,7 +58,6 @@ void Opus::decodeData()
 {
     if (opus_decode(dec, this->encoded.data(), this->encBytes, reinterpret_cast<opus_int16 *>(this->decoded.data()), this->FRAME_SIZE, 0) < 0)
         throw std::exception("opus_decode");
-    std::cout << "Encoded size : " << this->encoded.size() << " | Brut data" << this->captured.size() << std::endl;
 }
 
 std::vector<unsigned char> Opus::getEncoded()
