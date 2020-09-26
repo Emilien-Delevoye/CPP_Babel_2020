@@ -31,6 +31,8 @@ void Opus::createEncoder()
         std::cerr << opusError << std::endl;
         throw std::exception("Opus encode creation");
     }
+    opusError = opus_encoder_ctl(this->enc, OPUS_SET_BITRATE(64000));
+    //TMP -> Surveiller ce paramètre, il est intéressant sur le taux de compression
 }
 
 void Opus::createDecoder()
@@ -55,6 +57,7 @@ void Opus::decodeData()
 {
     if (opus_decode(dec, this->encoded.data(), this->encBytes, reinterpret_cast<opus_int16 *>(this->decoded.data()), this->FRAME_SIZE, 0) < 0)
         throw std::exception("opus_decode");
+    std::cout << "Encoded size : " << this->encoded.size() << " | Brut data" << this->captured.size() << std::endl;
 }
 
 std::vector<unsigned char> Opus::getEncoded()
