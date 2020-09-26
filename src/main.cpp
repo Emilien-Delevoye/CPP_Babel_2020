@@ -24,7 +24,6 @@ int main(int argc, char **argv)
         opus.decodeData();
         portAudio.setDecoded(opus.getDecoded());
         portAudio.writeStream();
-        std::cout << "loop" << std::endl;
     }
     portAudio.stopStream();
     std::cout << "End stream" << std::endl;
