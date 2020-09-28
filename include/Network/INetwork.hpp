@@ -16,7 +16,10 @@ public:
         this->_ipAddress = ipAddr;
         this->_port = port;
     }
-private:
+    virtual void connectToServer() = 0;
+    virtual void sendToServer(std::string in) = 0;
+    virtual void close() = 0;
+protected:
     std::string _ipAddress;
     int _port;
 };
@@ -27,7 +30,8 @@ public:
         this->_ipAddress = ipAddr;
         this->_port = port;
     }
-private:
+    virtual void openServer() = 0;
+protected:
     std::string _ipAddress;
     int _port;
 };

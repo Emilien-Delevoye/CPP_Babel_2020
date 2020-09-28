@@ -7,6 +7,7 @@
 
 #include "Audio/PortAudio.hpp"
 #include "Audio/Opus.hpp"
+#include "Network/NetworkUDP.hpp"
 #include <iostream>
 
 void audioDemo()
@@ -33,6 +34,9 @@ void audioDemo()
 
 int main(int argc, char **argv)
 {
-    audioDemo();
+    if (argc == 1)
+        NetworkUDP udp("127.0.0.1", 4242, true);
+    else
+        NetworkUDP udp("127.0.0.1", 4242, false);
     return 0;
 }
