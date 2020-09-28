@@ -1,6 +1,9 @@
-//
-// Created by paul on 9/28/20.
-//
+/*
+** EPITECH PROJECT, 2020
+** Babel
+** File description:
+** Created by Paul
+*/
 
 #include "QT.hpp"
 

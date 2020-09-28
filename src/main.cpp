@@ -5,30 +5,20 @@
 ** Created by Emilien
 */
 
-#include "PortAudio.hpp"
-#include "Opus.hpp"
-#include <iostream>
+
+#include "QT.hpp"
+#include "QTMainWindow.hpp"
+#include "CustomButton.hpp"
 
 int main(int argc, char **argv)
 {
-    Opus opus;
-    PortAudio portAudio;
+    QApplication a(argc, argv);
 
-    opus.createEncoder();
-    opus.createDecoder();
-    portAudio.startStream();
-    for (int i = 0; i < ((3000 * 48000) / 512); ++i) {
-        portAudio.readStream();
-        opus.setCaptured(portAudio.getCaptured());
-        opus.encodeData();
-        opus.decodeData();
-        portAudio.setDecoded(opus.getDecoded());
-        portAudio.writeStream();
-        std::cout << "loop" << std::endl;
-    }
-    portAudio.stopStream();
-    std::cout << "End stream" << std::endl;
-    portAudio.~PortAudio();
-    opus.~Opus();
-    return 0;
+    QTMainWindow w(nullptr, "Babel");
+
+    CustomButton toto(&w, "toto");
+
+    w.show();
+
+    return a.exec();
 }
