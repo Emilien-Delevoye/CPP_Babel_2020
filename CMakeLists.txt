@@ -14,6 +14,6 @@ conan_basic_setup()
 
 include_directories(${CMAKE_INCLUDE_PATH})
 include_directories(include)
-add_executable(babel src/main.cpp include/PortAudio.hpp src/PortAudio.cpp include/IAudio.hpp include/Opus.hpp src/Opus.cpp include/IEncode.hpp include/BabelException.hpp)
+add_executable(babel src/main.cpp include/PortAudio.hpp src/PortAudio.cpp include/IAudio.hpp include/Opus.hpp src/Opus.cpp include/IEncode.hpp include/BabelException.hpp src/QT.cpp include/QT.hpp)
 target_link_libraries(babel ${CONAN_LIBS} opus)
 target_link_libraries(babel ${CONAN_LIBS} portaudio)
