@@ -8,7 +8,7 @@
 #include <iostream>
 #include <utility>
 #include <exception>
-#include "PortAudio.hpp"
+#include "Audio/PortAudio.hpp"
 
 PortAudio::PortAudio() : captured(this->FRAME_SIZE * this->CHANNEL_NB),
                          decoded(this->FRAME_SIZE * this->CHANNEL_NB)

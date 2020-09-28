@@ -14,5 +14,5 @@ find_package(Qt5Widgets CONFIG REQUIRED)
 
 include_directories(${CMAKE_INCLUDE_PATH})
 include_directories(include)
-add_executable(babel src/main.cpp include/PortAudio.hpp src/PortAudio.cpp include/IAudio.hpp include/Opus.hpp src/Opus.cpp include/IEncode.hpp include/myUDP.hpp src/myUDP.cpp include/BabelException.hpp)
+add_executable(babel src/main.cpp include/Audio/PortAudio.hpp src/PortAudio.cpp include/Audio/IAudio.hpp include/Audio/Opus.hpp src/Opus.cpp include/Audio/IEncode.hpp src/myUDP.cpp include/BabelException.hpp include/Call.hpp src/Call.cpp include/Network/ClientUDP.hpp include/Network/ServerUDP.hpp)
 target_link_libraries(babel ${CONAN_LIBS} Qt5::Widgets)

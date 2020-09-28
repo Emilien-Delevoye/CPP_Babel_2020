@@ -5,8 +5,8 @@
 ** Created by Emilien
 */
 
-#include "PortAudio.hpp"
-#include "Opus.hpp"
+#include "Audio/PortAudio.hpp"
+#include "Audio/Opus.hpp"
 #include <iostream>
 
 void audioDemo()

@@ -5,10 +5,13 @@
 ** Created by Emilien
 */
 
-#include "myUDP.hpp"
+#include "Network/myUDP.hpp"
 #include <boost/asio.hpp>
 #include <iostream>
 
+
+
+/*
 void myClientUDP::init(const std::string& IpAddressIn, int portIn)
 {
     boost::asio::io_service io_service;
@@ -59,3 +62,4 @@ void myServerUDP::handleReceive(const boost::system::error_code& error, size_t b
 void myServerUDP::createSocket()
 {
 }
+*/

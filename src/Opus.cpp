@@ -5,7 +5,7 @@
 ** Created by Emilien
 */
 
-#include <Opus.hpp>
+#include <Audio/Opus.hpp>
 #include <iostream>
 
 Opus::Opus() : encoded(this->FRAME_SIZE * this->CHANNEL_NB * 2),
