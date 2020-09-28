@@ -12,6 +12,7 @@
 #include <string>
 #include "portaudio.h"
 #include "IAudio.hpp"
+#include "BabelException.hpp"
 
 class PortAudio: public IAudio {
     public:

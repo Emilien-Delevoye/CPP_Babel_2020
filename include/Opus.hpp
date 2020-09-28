@@ -8,9 +8,10 @@
 #ifndef BABEL_OPUS_HPP
 #define BABEL_OPUS_HPP
 
-#include "IEncode.hpp"
-#include <opus.h>
 #include <vector>
+#include "opus.h"
+#include "IEncode.hpp"
+#include "BabelException.hpp"
 
 class Opus : public IEncode
 {
