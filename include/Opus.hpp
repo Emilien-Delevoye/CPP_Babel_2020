@@ -31,7 +31,7 @@ class Opus : public IEncode
         std::vector<unsigned short> decoded;
         OpusEncoder *enc;
         OpusDecoder *dec;
-        opus_int32 encBytes;
+        size_t encBytes;
 };
 
 #endif //BABEL_OPUS_HPP
