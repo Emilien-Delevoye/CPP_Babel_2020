@@ -1,6 +1,9 @@
-//
-// Created by paul on 9/28/20.
-//
+/*
+** EPITECH PROJECT, 2020
+** Babel
+** File description:
+** Created by Paul
+*/
 
 #ifndef BABEL_ENUM_HPP
 #define BABEL_ENUM_HPP

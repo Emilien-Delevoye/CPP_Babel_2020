@@ -24,9 +24,10 @@
 class CustomMainWindow : public QMainWindow {
     Q_OBJECT
     public:
+        void centered();
         explicit CustomMainWindow(QWidget *parent = nullptr, const QString &title = "Window");
         ~CustomMainWindow();
-    public slots:
+    private slots:
         void direBonjour(bool b);
     private:
         CustomButton *_connectButton;
