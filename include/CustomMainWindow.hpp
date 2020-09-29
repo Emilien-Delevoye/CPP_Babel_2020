@@ -29,11 +29,12 @@ class CustomMainWindow : public QMainWindow {
     public slots:
         void direBonjour(bool b);
     private:
-        QPushButton *_connectButton;
+        CustomButton *_connectButton;
         QMap<QtLineEditID, CustomLineEdit *> _lineEdits;
         QVBoxLayout *_vLayout;
         QFormLayout *_formLayout;
         QWidget *_mainWidget;
+        QWidget *_formWidget;
 
 };
 

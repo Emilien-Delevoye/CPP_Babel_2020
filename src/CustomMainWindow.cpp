@@ -15,7 +15,9 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     _mainWidget->setMaximumHeight(200);
     _vLayout = new QVBoxLayout(_mainWidget);
 
-    _formLayout = new QFormLayout(_mainWidget);
+    _formWidget = new QWidget(_mainWidget);
+
+    _formLayout = new QFormLayout(_formWidget);
 
     QDesktopWidget *desktop = QApplication::desktop();
 
@@ -33,11 +35,12 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     _formLayout->addRow(formValue[HOME_LOGIN_TEXT], _lineEdits[HOME_LOGIN_LINE_EDIT]);
     _formLayout->addRow(formValue[HOME_PASSWORD_TEXT], _lineEdits[HOME_PASSWORD_LINE_EDIT]);
 
-    _vLayout->addLayout(_formLayout);
-
     _connectButton = new CustomButton(_mainWidget, "Connect");
     _connectButton->setToolTip("Establish the connection with the server");
 
+    _formWidget->setLayout(_formLayout);
+
+    _vLayout->addWidget(_formWidget);
     _vLayout->addWidget(_connectButton);
 
     _mainWidget->setLayout(_vLayout);
@@ -45,9 +48,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     setCentralWidget(_mainWidget);
     resize(500, 100);
 
-    QPushButton *valentin = new QPushButton("fils de putain", _mainWidget);
-
-    connect(valentin, SIGNAL(clicked(bool)), this, SLOT(direBonjour(bool)));
+    connect(_connectButton, SIGNAL(clicked(bool)), this, SLOT(direBonjour(bool)));
     move( x, y );
 }
 
@@ -58,5 +59,7 @@ CustomMainWindow::~CustomMainWindow()
 
 void CustomMainWindow::direBonjour(bool b)
 {
-    qDebug() << "Hello" << endl;
+    qDebug() << "Hello";
+    _connectButton->hide();
+    _formWidget->hide();
 };
