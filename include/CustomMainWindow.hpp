@@ -8,10 +8,13 @@
 #ifndef B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H
 #define B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H
 
-#include <QApplication>
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <QFormLayout>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QWidget>
+
 #include "CustomButton.hpp"
 #include "CustomText.hpp"
 #include "CustomLineEdit.hpp"

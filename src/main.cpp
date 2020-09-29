@@ -7,9 +7,6 @@
 
 
 #include "QT.hpp"
-#include "CustomMainWindow.hpp"
-#include "CustomButton.hpp"
-#include <QObject>
 
 int main(int argc, char **argv)
 {
@@ -17,5 +14,6 @@ int main(int argc, char **argv)
     QT *babel = new QT();
 
     babel->getMainWindow()->show();
+
     return a.exec();
 }

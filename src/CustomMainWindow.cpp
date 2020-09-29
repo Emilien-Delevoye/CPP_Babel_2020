@@ -11,10 +11,19 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
 {
     setWindowTitle(title);
     _mainWidget = new QWidget(this);
-    _mainWidget->setMinimumWidth(500);
+    _mainWidget->setFixedWidth(500);
+    _mainWidget->setMaximumHeight(200);
     _vLayout = new QVBoxLayout(_mainWidget);
 
     _formLayout = new QFormLayout(_mainWidget);
+
+    QDesktopWidget *desktop = QApplication::desktop();
+
+    int screenWidth = desktop->width();
+    int screenHeight = desktop->height();
+
+    int x = (screenWidth - 500) / 2;
+    int y = (screenHeight - 200) / 2;
 
     _lineEdits[HOME_IP_LINE_EDIT] = new CustomLineEdit(_mainWidget);
     _lineEdits[HOME_LOGIN_LINE_EDIT] = new CustomLineEdit(_mainWidget);
@@ -27,12 +36,15 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     _vLayout->addLayout(_formLayout);
 
     _connectButton = new CustomButton(_mainWidget, "Connect");
+    _connectButton->setToolTip("Establish the connection with the server");
 
     _vLayout->addWidget(_connectButton);
 
     _mainWidget->setLayout(_vLayout);
 
     setCentralWidget(_mainWidget);
+    resize(500, 100);
+    move( x, y );
 }
 
 CustomMainWindow::~CustomMainWindow()
