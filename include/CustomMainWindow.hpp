@@ -19,6 +19,8 @@
 #include "CustomButton.hpp"
 #include "CustomText.hpp"
 #include "CustomLineEdit.hpp"
+#include "ConnectionPage.hpp"
+#include "UserPage.hpp"
 #include "enum.hpp"
 
 class CustomMainWindow : public QMainWindow {
@@ -30,13 +32,8 @@ class CustomMainWindow : public QMainWindow {
     private slots:
         void direBonjour(bool b);
     private:
-        CustomButton *_connectButton;
-        QMap<QtLineEditID, CustomLineEdit *> _lineEdits;
-        QVBoxLayout *_vLayout;
-        QFormLayout *_formLayout;
-        QWidget *_mainWidget;
-        QWidget *_formWidget;
-
+        ConnectionPage *_connectionPage;
+        UserPage *_userPage;
 };
 
 #endif //B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H

@@ -5,15 +5,12 @@
 ** Created by Emilien
 */
 
-
-#include "QT.hpp"
+#include "CustomMainWindow.hpp"
 
 int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
-    QT *babel = new QT();
-
-    babel->getMainWindow()->show();
-
+    auto *babel = new CustomMainWindow(nullptr, "Babel");
+    babel->show();
     return a.exec();
 }
