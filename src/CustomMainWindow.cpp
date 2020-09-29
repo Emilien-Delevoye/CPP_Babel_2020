@@ -44,10 +44,19 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
 
     setCentralWidget(_mainWidget);
     resize(500, 100);
+
+    QPushButton *valentin = new QPushButton("fils de putain", _mainWidget);
+
+    connect(valentin, SIGNAL(clicked(bool)), this, SLOT(direBonjour(bool)));
     move( x, y );
 }
 
 CustomMainWindow::~CustomMainWindow()
 {
 
+}
+
+void CustomMainWindow::direBonjour(bool b)
+{
+    qDebug() << "Hello" << endl;
 };

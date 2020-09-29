@@ -14,6 +14,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QWidget>
+#include <QDebug>
 
 #include "CustomButton.hpp"
 #include "CustomText.hpp"
@@ -21,9 +22,12 @@
 #include "enum.hpp"
 
 class CustomMainWindow : public QMainWindow {
+    Q_OBJECT
     public:
-        CustomMainWindow(QWidget *parent = nullptr, const QString &title = "Window");
+        explicit CustomMainWindow(QWidget *parent = nullptr, const QString &title = "Window");
         ~CustomMainWindow();
+    public slots:
+        void direBonjour(bool b);
     private:
         QPushButton *_connectButton;
         QMap<QtLineEditID, CustomLineEdit *> _lineEdits;
