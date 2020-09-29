@@ -7,9 +7,10 @@
 
 #include "CustomButton.hpp"
 
-CustomButton::CustomButton(QWidget *parent, const QString &title) : QPushButton(parent)
+CustomButton::CustomButton(QWidget *parent, const QString &text) : QPushButton(parent)
 {
-    setText(title);
+    setText(text);
+    setCursor(Qt::PointingHandCursor);
 }
 
 CustomButton::~CustomButton()

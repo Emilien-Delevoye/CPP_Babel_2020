@@ -9,11 +9,16 @@
 #define BABEL_QT_HPP
 
 #include <QApplication>
+#include "CustomMainWindow.hpp"
+#include "CustomButton.hpp"
 
 class QT {
     public:
         QT();
+        QMainWindow *getMainWindow() const;
     private:
+        QMainWindow *_mainWindow;
+
 };
 
 #endif //BABEL_QT_HPP

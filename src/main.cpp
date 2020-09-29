@@ -7,18 +7,15 @@
 
 
 #include "QT.hpp"
-#include "QTMainWindow.hpp"
+#include "CustomMainWindow.hpp"
 #include "CustomButton.hpp"
+#include <QObject>
 
 int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
+    QT *babel = new QT();
 
-    QTMainWindow w(nullptr, "Babel");
-
-    CustomButton toto(&w, "toto");
-
-    w.show();
-
+    babel->getMainWindow()->show();
     return a.exec();
 }

@@ -7,6 +7,12 @@
 
 #include "QT.hpp"
 
-QT::QT() {
+QT::QT() : _mainWindow(new CustomMainWindow(nullptr, "Babel"))
+{
 
+}
+
+QMainWindow *QT::getMainWindow() const
+{
+    return _mainWindow;
 }

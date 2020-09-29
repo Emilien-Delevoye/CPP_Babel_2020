@@ -17,7 +17,7 @@ find_package(Qt5 COMPONENTS Core REQUIRED)
 
 include_directories(${CMAKE_INCLUDE_PATH})
 include_directories(include)
-add_executable(babel src/main.cpp include/PortAudio.hpp src/PortAudio.cpp include/IAudio.hpp include/Opus.hpp src/Opus.cpp include/IEncode.hpp include/BabelException.hpp src/QT.cpp include/QT.hpp src/QTMainWindow.cpp include/QTMainWindow.hpp src/CustomButton.cpp include/CustomButton.hpp)
+add_executable(babel src/main.cpp include/PortAudio.hpp src/PortAudio.cpp include/IAudio.hpp include/Opus.hpp src/Opus.cpp include/IEncode.hpp include/BabelException.hpp src/QT.cpp include/QT.hpp src/CustomMainWindow.cpp include/CustomMainWindow.hpp src/CustomButton.cpp include/CustomButton.hpp include/enum.hpp src/CustomText.cpp include/CustomText.hpp src/CustomLineEdit.cpp include/CustomLineEdit.hpp)
 target_link_libraries(babel ${CONAN_LIBS} opus)
 target_link_libraries(babel ${CONAN_LIBS} portaudio)
 target_link_libraries(babel ${CONAN_LIBS} Qt5::Widgets)

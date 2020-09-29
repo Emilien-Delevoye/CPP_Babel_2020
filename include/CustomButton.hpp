@@ -10,9 +10,9 @@
 
 #include <QPushButton>
 
-class CustomButton : QPushButton {
+class CustomButton : public QPushButton {
     public:
-        CustomButton(QWidget *parent = nullptr, const QString &title = "toto");
+        CustomButton(QWidget *parent = nullptr, const QString &text = "text");
         ~CustomButton();
     private:
 };
