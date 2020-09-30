@@ -21,6 +21,8 @@ QT5_WRAP_CPP(MOC_Files
         include/CustomButton.hpp
         include/User.hpp
         include/UserPage.hpp
+        include/ConnectionPage.hpp
+        include/CustomLineEdit.hpp
         )
 
 include_directories(${CMAKE_INCLUDE_PATH})

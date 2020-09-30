@@ -11,16 +11,20 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QFormLayout>
+#include <QStyleOption>
+#include <QPainter>
 #include "CustomLineEdit.hpp"
 #include "CustomButton.hpp"
 #include "enum.hpp"
 
 
 class ConnectionPage : public QWidget {
+    Q_OBJECT
     public:
         ConnectionPage(QWidget *parent = nullptr);
         ~ConnectionPage();
         CustomButton *getConnectButton() const;
+        void paintEvent(QPaintEvent *event) override;
     private:
         CustomButton *_connectButton;
         QMap<QtLineEditID, CustomLineEdit *> _lineEdits;
