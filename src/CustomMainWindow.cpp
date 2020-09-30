@@ -9,13 +9,12 @@
 
 CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMainWindow(parent)
 {
-
     setWindowTitle(title);
 
     _userPage = new UserPage(this);
 
     _connectionPage = new ConnectionPage(this);
-    connect(_connectionPage->getConnectButton(), SIGNAL(clicked(bool)), this, SLOT(direBonjour(bool)));
+    connect(_connectionPage->getConnectButton(), SIGNAL(clicked()), this, SLOT(navToUserPage()));
 
     setCentralWidget(_connectionPage);
     _connectionPage->show();
@@ -27,7 +26,7 @@ CustomMainWindow::~CustomMainWindow()
 
 }
 
-void CustomMainWindow::direBonjour(bool b)
+void CustomMainWindow::navToUserPage()
 {
     qDebug() << "Hello";
     _connectionPage->hide(); //if success//

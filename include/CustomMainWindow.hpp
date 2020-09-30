@@ -30,7 +30,7 @@ class CustomMainWindow : public QMainWindow {
         explicit CustomMainWindow(QWidget *parent = nullptr, const QString &title = "Window");
         ~CustomMainWindow();
     private slots:
-        void direBonjour(bool b);
+        void navToUserPage();
     private:
         ConnectionPage *_connectionPage;
         UserPage *_userPage;

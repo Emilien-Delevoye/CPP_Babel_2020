@@ -1,6 +1,9 @@
-//
-// Created by paul on 9/29/20.
-//
+/*
+** EPITECH PROJECT, 2020
+** Babel
+** File description:
+** Created by Paul
+*/
 
 #include "UserPage.hpp"
 
