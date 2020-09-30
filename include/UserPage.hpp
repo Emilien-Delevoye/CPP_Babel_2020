@@ -14,12 +14,14 @@
 #include <vector>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QSizePolicy>
 #include "CustomLineEdit.hpp"
 #include "CustomButton.hpp"
 #include "enum.hpp"
 #include "User.hpp"
 
 class UserPage : public QWidget {
+    Q_OBJECT
     public:
         UserPage(QWidget *parent = nullptr);
         ~UserPage();

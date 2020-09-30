@@ -10,11 +10,11 @@
 
 ConnectionPage::ConnectionPage(QWidget *parent) : QWidget(parent)
 {
-    setFixedWidth(500);
-    setMaximumHeight(120);
-
     _vLayout = new QVBoxLayout(this);
     _formLayout = new QFormLayout(this);
+    _formWidget = new QWidget(this);
+    _connectButton = new CustomButton(this, "Connect");
+
     _lineEdits[HOME_IP_LINE_EDIT] = new CustomLineEdit(this);
     _lineEdits[HOME_LOGIN_LINE_EDIT] = new CustomLineEdit(this);
     _lineEdits[HOME_PASSWORD_LINE_EDIT] = new CustomLineEdit(this);
@@ -22,11 +22,15 @@ ConnectionPage::ConnectionPage(QWidget *parent) : QWidget(parent)
     _formLayout->addRow(formValue[HOME_IP_TEXT], _lineEdits[HOME_IP_LINE_EDIT]);
     _formLayout->addRow(formValue[HOME_LOGIN_TEXT], _lineEdits[HOME_LOGIN_LINE_EDIT]);
     _formLayout->addRow(formValue[HOME_PASSWORD_TEXT], _lineEdits[HOME_PASSWORD_LINE_EDIT]);
-    _connectButton = new CustomButton(this, "Connect");
     _connectButton->setToolTip("Establish the connection with the server");
-    _vLayout->addLayout(_formLayout);
-    _vLayout->addWidget(_connectButton);
+
+    _formWidget->setLayout(_formLayout);
+
+    _vLayout->addWidget(_formWidget, 0,Qt::AlignCenter);
+    _vLayout->addWidget(_connectButton, 0,Qt::AlignCenter);
     setLayout(_vLayout);
+    _formWidget->setProperty("name", "formWidget");
+    _connectButton->setProperty("name", "connectButton");
     hide();
 }
 

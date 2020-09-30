@@ -11,6 +11,7 @@
 #include <QPushButton>
 
 class CustomButton : public QPushButton {
+    Q_OBJECT
     public:
         CustomButton(QWidget *parent = nullptr, const QString &text = "text");
         ~CustomButton();

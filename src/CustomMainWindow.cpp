@@ -10,6 +10,8 @@
 CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMainWindow(parent)
 {
     setWindowTitle(title);
+    setMaximumWidth(1440);
+    setMaximumHeight(900);
 
     _userPage = new UserPage(this);
 

@@ -1,0 +1,12 @@
+QPushButton[name="logout"] {
+    color: blue;
+}
+
+QPushButton[name="connectButton"] {
+
+}
+
+QPushButton[name="formWidget"] {
+    color: purple;
+}
+

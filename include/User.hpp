@@ -9,9 +9,10 @@
 #define BABEL_USER_HPP
 
 #include <string>
-#include <CustomButton.hpp>
+#include "CustomButton.hpp"
 
 class User : public CustomButton {
+    Q_OBJECT
     public:
         User(QWidget *parent, const std::string &login = "login", const std::string &ip = "ip");
         ~User();

@@ -15,6 +15,7 @@
 #include <QDesktopWidget>
 #include <QWidget>
 #include <QDebug>
+#include <QFile>
 
 #include "CustomButton.hpp"
 #include "CustomText.hpp"

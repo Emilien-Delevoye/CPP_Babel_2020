@@ -26,6 +26,7 @@ class ConnectionPage : public QWidget {
         QMap<QtLineEditID, CustomLineEdit *> _lineEdits;
         QVBoxLayout *_vLayout;
         QFormLayout *_formLayout;
+        QWidget *_formWidget;
 };
 
 #endif //BABEL_CONNECTIONPAGE_HPP
