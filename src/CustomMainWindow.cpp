@@ -28,7 +28,6 @@ CustomMainWindow::~CustomMainWindow()
 
 void CustomMainWindow::navToUserPage()
 {
-    qDebug() << "Hello";
     _connectionPage->hide(); //if success//
     setCentralWidget(_userPage);
     _userPage->show();
@@ -43,4 +42,9 @@ void CustomMainWindow::centered()
     int y = (screenHeight - 200) / 2;
 
     move(x, y);
+}
+
+void CustomMainWindow::test()
+{
+    qDebug() << "Dynamic_cast functional";
 };

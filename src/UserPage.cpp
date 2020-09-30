@@ -5,6 +5,7 @@
 ** Created by Paul
 */
 
+#include "CustomMainWindow.hpp"
 #include "UserPage.hpp"
 
 UserPage::UserPage(QWidget *parent) : QWidget(parent)
@@ -16,23 +17,24 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
     _usersList->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
     _usersList->setWidgetResizable( true );
 
-    _usersWidget = new QWidget(this);
+    _usersWidget = new CustomWidget(this);
+    _usersWidget->setProperty("name", "test");
     _usersList->setWidget(_usersWidget);
     _userVLayout = new QVBoxLayout(this);
 
-
-    for (int i = 0; i < 30; i++) {
+    dynamic_cast<CustomMainWindow *>(parent)->test();
+    for (int i = 0; i < 40; i++) {
         user = new User(this, "Jean" + std::to_string(i), "127.0.0.1");
         user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        std::string tooltip = std::string("Display informations about ") + std::string("Jean") + std::to_string(i);
+        user->setToolTip(tooltip.c_str());
         _users.push_back(user);
         user->setMinimumHeight(50);
         _userVLayout->addWidget(user );
-        _userVLayout->addSpacing(5);
     }
     _usersWidget->setLayout(_userVLayout);
     _hLayout = new QHBoxLayout(this);
     _hLayout->addWidget(_usersList);
-    //_hLayout->addWidget(new CustomButton()); OK
 
     _callVLayout = new QVBoxLayout(this);
 

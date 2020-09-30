@@ -16,7 +16,6 @@
 #include <QWidget>
 #include <QDebug>
 #include <QFile>
-
 #include "CustomButton.hpp"
 #include "CustomText.hpp"
 #include "CustomLineEdit.hpp"
@@ -29,6 +28,7 @@ class CustomMainWindow : public QMainWindow {
     public:
         void centered();
         explicit CustomMainWindow(QWidget *parent = nullptr, const QString &title = "Window");
+        void test();
         ~CustomMainWindow();
     private slots:
         void navToUserPage();

@@ -20,6 +20,7 @@
 #include <QScrollArea>
 #include "CustomLineEdit.hpp"
 #include "CustomButton.hpp"
+#include "CustomWidget.hpp"
 #include "enum.hpp"
 #include "User.hpp"
 
@@ -32,7 +33,7 @@ class UserPage : public QWidget {
     private:
         std::vector<User *> _users;
         QHBoxLayout *_hLayout;
-        QWidget *_usersWidget;
+        CustomWidget *_usersWidget;
         QWidget *_callWidget;
         QScrollArea *_usersList;
         QVBoxLayout *_userVLayout;
