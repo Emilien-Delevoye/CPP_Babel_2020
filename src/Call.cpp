@@ -10,15 +10,39 @@
 Call::Call(const std::string &IpAddressIn, int port, bool first) : Audio(), NetworkUDP(IpAddressIn, port, first)
 {
     while (this->_callActive) {
-        this->readStream();
-        this->setCaptured(this->getCaptured());
-        this->encodeData();
-        this->getEncoded();
-        this->sendToServer(this->getEncoded(), this->getEncBytes());
-        this->setToDecode(this->getFromUDP(), this->getEncBytesFromUDP());
-        this->decodeData();
-        this->setDecoded(this->getDecoded());
-        this->writeStream();
+        try {
+            try {
+                this->readStream();
+            } catch (PortaudioError &e) {
+                std::cerr << e.getComponent() << e.what() << std::endl;
+                continue;
+            }
+            this->setCaptured(this->getCaptured());
+            try {
+                this->encodeData();
+            } catch (OpusError &e) {
+                std::cerr << e.getComponent() << e.what() << std::endl;
+                continue;
+            }
+            this->getEncoded();
+            this->sendToServer(this->getEncoded(), this->getEncBytes());
+            this->setToDecode(this->getFromUDP(), this->getEncBytesFromUDP());
+            try {
+                this->decodeData();
+            } catch (OpusError &e) {
+                std::cerr << e.getComponent() << e.what() << std::endl;
+                continue;
+            }
+            this->setDecoded(this->getDecoded());
+            try {
+                this->writeStream();
+            } catch (PortaudioError &e) {
+                std::cerr << e.getComponent() << e.what() << std::endl;
+                continue;
+            }
+        } catch (std::exception &e) {
+            std::cerr << e.what() << std::endl;
+        }
     }
 }
 

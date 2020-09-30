@@ -31,31 +31,31 @@ void PortAudio::startStream()
     if (err != paNoError) {
         std::cout << err << std::endl;
         std::cout << "Error unavailable -> " << paDeviceUnavailable << std::endl;
-        throw std::exception(PortaudioError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err))));
+        throw PortaudioError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
     }
     if (Pa_StartStream(stream) != paNoError)
-        throw  std::exception(PortaudioError("Portaudio: ", " An error occurred while starting stream."));
+        throw PortaudioError("Portaudio: ", " An error occurred while starting stream.");
 }
 
 void PortAudio::readStream()
 {
     PaError err = Pa_ReadStream(stream, this->captured.data(), this->FRAME_SIZE);
     if (err != paNoError)
-        throw std::exception(PortaudioError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err))));
+        throw PortaudioError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
 }
 
 void PortAudio::writeStream()
 {
     PaError err = Pa_WriteStream(stream, decoded.data(), this->FRAME_SIZE);
     if (err != paNoError)
-        throw std::exception(PortaudioError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err))));
+        throw PortaudioError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
 }
 
 void PortAudio::stopStream()
 {
     PaError err = Pa_StopStream(stream);
     if (err)
-        throw std::exception(PortaudioError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err))));
+        throw PortaudioError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
 }
 
 std::vector<unsigned short> PortAudio::getCaptured()

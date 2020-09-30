@@ -24,12 +24,10 @@ void ServerUDP::openServer()
 void ServerUDP::handleReceive(const boost::system::error_code &error, size_t bytes_transferred)
 {
     this->encBytesFromUDP = bytes_transferred;
-    std::cout << bytes_transferred << " | " << this->recv_buffer.size() << std::endl;
     if (error) {
         std::cout << "Receive failed: " << error.message() << "\n";
         return;
     }
-    //std::cout << "Received: '" << this->recv_buffer.data() << "' (" << error.message() << ")\n";
     socket.async_receive_from(boost::asio::buffer(this->recv_buffer), this->remote_endpoint,
         boost::bind(&ServerUDP::handleReceive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
