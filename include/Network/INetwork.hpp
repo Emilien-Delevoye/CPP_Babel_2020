@@ -8,6 +8,10 @@
 #ifndef BABEL_INETWORK_HPP
 #define BABEL_INETWORK_HPP
 
+#ifdef _WIN32
+    #define _WIN32_WINNT  0x0601
+#endif
+
 #include <string>
 #include <vector>
 #include <boost/asio/buffer.hpp>

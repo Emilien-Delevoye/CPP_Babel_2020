@@ -8,6 +8,10 @@
 #ifndef BABEL_OPUS_HPP
 #define BABEL_OPUS_HPP
 
+#ifdef _WIN32
+    #define _WIN32_WINNT  0x0601
+#endif
+
 #include <vector>
 #include "opus.h"
 #include "IEncode.hpp"

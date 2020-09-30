@@ -8,7 +8,9 @@
 #ifndef BABEL_PORTAUDIO_HPP
 #define BABEL_PORTAUDIO_HPP
 
-#define _WIN32_WINNT  0x0601
+#ifdef _WIN32
+    #define _WIN32_WINNT  0x0601
+#endif
 
 #include <vector>
 #include <string>

@@ -8,6 +8,10 @@
 #ifndef BABEL_SERVERUDP_HPP
 #define BABEL_SERVERUDP_HPP
 
+#ifdef _WIN32
+    #define _WIN32_WINNT  0x0601
+#endif
+
 #include "INetwork.hpp"
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
