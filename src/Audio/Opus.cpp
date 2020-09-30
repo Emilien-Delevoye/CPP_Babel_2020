@@ -15,11 +15,6 @@ Opus::Opus() : encoded(this->FRAME_SIZE * this->CHANNEL_NB * 2),
     this->enc = nullptr;
     this->dec = nullptr;
     this->encBytes = 0;
-    this->init();
-}
-
-void Opus::init()
-{
 }
 
 void Opus::createEncoder()

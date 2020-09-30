@@ -11,7 +11,6 @@
 class IEncode
 {
     public:
-        virtual void init() = 0;
         virtual void createEncoder() = 0;
         virtual void createDecoder() = 0;
         virtual void encodeData() = 0;

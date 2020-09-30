@@ -17,13 +17,12 @@ class Opus : public IEncode
 {
     public:
         Opus();
-        void init() final;
         void createEncoder() final;
         void createDecoder() final;
         void encodeData() final;
         void decodeData() final;
-        std::vector<unsigned char> getEncoded();
         void setCaptured(std::vector<unsigned short>);
+        std::vector<unsigned char> getEncoded();
         std::vector<unsigned short> getDecoded();
     private:
         std::vector<unsigned char> encoded;
