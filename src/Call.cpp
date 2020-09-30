@@ -9,7 +9,7 @@
 
 Call::Call(const std::string &IpAddressIn, int port, bool first) : Audio(), NetworkUDP(IpAddressIn, port, first)
 {
-    for (;;) {
+    while (this->_callActive) {
         this->readStream();
         this->setCaptured(this->getCaptured());
         this->encodeData();
@@ -30,4 +30,9 @@ void Call::setMicState(bool state)
 void Call::setSoundState(bool state)
 {
     this->_soundState = state;
+}
+
+void Call::stopCall()
+{
+    this->_callActive = false;
 }

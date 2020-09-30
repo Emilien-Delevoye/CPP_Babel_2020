@@ -19,9 +19,11 @@ public:
     explicit Call(const std::string &IpAddress, int port, bool first);
     void setMicState(bool state);
     void setSoundState(bool state);
+    void stopCall();
 private:
     bool _micState;
     bool _soundState;
+    bool _callActive = true;
 };
 
 #endif //BABEL_CALL_HPP
