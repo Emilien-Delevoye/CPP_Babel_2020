@@ -54,3 +54,4 @@ cmake-build-debug
 
 # IDE
 .idea
+/Babel.sln

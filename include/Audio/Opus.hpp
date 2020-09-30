@@ -27,7 +27,6 @@ class Opus : public IEncode
         void decodeData() final;
         void setCaptured(std::vector<unsigned short>);
         void setToDecode(std::vector<unsigned char>, size_t);
-        void setEncBytes(size_t);
         std::vector<unsigned char> getEncoded();
         std::vector<unsigned short> getDecoded();
         [[nodiscard]] size_t getEncBytes() const;
