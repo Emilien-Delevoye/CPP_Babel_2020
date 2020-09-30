@@ -7,6 +7,7 @@
 
 #include <Audio/Opus.hpp>
 #include <iostream>
+#include <utility>
 
 Opus::Opus() : encoded(this->FRAME_SIZE * this->CHANNEL_NB * 2),
                captured(this->FRAME_SIZE * this->CHANNEL_NB),
@@ -51,13 +52,24 @@ void Opus::encodeData()
 
 void Opus::decodeData()
 {
-    if (opus_decode(dec, this->encoded.data(), this->encBytes, reinterpret_cast<opus_int16 *>(this->decoded.data()), this->FRAME_SIZE, 0) < 0)
+    if (opus_decode(dec, this->toDecode.data(), this->toDecBytes, reinterpret_cast<opus_int16 *>(this->decoded.data()), this->FRAME_SIZE, 0) < 0)
         throw OpusError("Opus: ", "Error : Opus decode error.");
 }
 
 std::vector<unsigned char> Opus::getEncoded()
 {
     return this->encoded;
+}
+
+void Opus::setEncBytes(size_t inEncBytes)
+{
+    this->toDecBytes = inEncBytes;
+}
+
+void Opus::setToDecode(std::vector<unsigned char> inToDecode, size_t encBytesFromUDP)
+{
+    this->toDecode = std::move(inToDecode);
+    this->toDecBytes = encBytesFromUDP;
 }
 
 void Opus::setCaptured(std::vector<unsigned short> inCaptured)
@@ -68,5 +80,10 @@ void Opus::setCaptured(std::vector<unsigned short> inCaptured)
 std::vector<unsigned short> Opus::getDecoded()
 {
     return this->decoded;
+}
+
+size_t Opus::getEncBytes() const
+{
+    return this->encBytes;
 }
 

@@ -11,7 +11,10 @@
 #include "Opus.hpp"
 #include "PortAudio.hpp"
 
-class Audio : Opus, PortAudio {
+#define _WIN32_WINNT  0x0601
+
+class Audio : public Opus, public PortAudio {
+protected:
     explicit Audio();
 };
 

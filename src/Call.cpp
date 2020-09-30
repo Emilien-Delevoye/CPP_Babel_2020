@@ -7,9 +7,19 @@
 
 #include "Call.hpp"
 
-Call::Call(const std::string &IpAddressIn, int port, bool first)
+Call::Call(const std::string &IpAddressIn, int port, bool first) : Audio(), NetworkUDP(IpAddressIn, port, first)
 {
-
+    for (;;) {
+        this->readStream();
+        this->setCaptured(this->getCaptured());
+        this->encodeData();
+        this->getEncoded();
+        this->sendToServer(this->getEncoded(), this->getEncBytes());
+        this->setToDecode(this->getFromUDP(), this->getEncBytesFromUDP());
+        this->decodeData();
+        this->setDecoded(this->getDecoded());
+        this->writeStream();
+    }
 }
 
 void Call::setMicState(bool state)

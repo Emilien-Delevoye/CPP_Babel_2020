@@ -5,9 +5,7 @@
 ** Created by Emilien
 */
 
-#include "Audio/PortAudio.hpp"
-#include "Audio/Opus.hpp"
-#include "Network/NetworkUDP.hpp"
+#include "Call.hpp"
 #include <iostream>
 
 void audioDemo()
@@ -43,9 +41,6 @@ int main(int argc, char **argv)
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
     }*/
-    if (argc == 1)
-        NetworkUDP udp("127.0.0.1", 4242, true);
-    else
-        NetworkUDP udp("127.0.0.1", 4242, false);
+    Call call("127.0.0.1", 4242, true);
     return 0;
 }

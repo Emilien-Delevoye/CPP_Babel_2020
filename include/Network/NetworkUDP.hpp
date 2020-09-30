@@ -11,8 +11,8 @@
 #include "ServerUDP.hpp"
 #include "ClientUDP.hpp"
 
-class NetworkUDP : ServerUDP, ClientUDP {
-public:
+class NetworkUDP : public ServerUDP, public ClientUDP {
+protected:
     explicit NetworkUDP(const std::string &ipAddr, int port, bool first);
 };
 
