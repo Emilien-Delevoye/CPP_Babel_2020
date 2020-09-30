@@ -15,6 +15,9 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QSizePolicy>
+#include <QStyleOption>
+#include <QPainter>
+#include <QScrollArea>
 #include "CustomLineEdit.hpp"
 #include "CustomButton.hpp"
 #include "enum.hpp"
@@ -25,11 +28,13 @@ class UserPage : public QWidget {
     public:
         UserPage(QWidget *parent = nullptr);
         ~UserPage();
+        void paintEvent(QPaintEvent *event) override;
     private:
         std::vector<User *> _users;
         QHBoxLayout *_hLayout;
         QWidget *_usersWidget;
         QWidget *_callWidget;
+        QScrollArea *_usersList;
         QVBoxLayout *_userVLayout;
         QVBoxLayout *_callVLayout;
         CustomButton *_callButton;

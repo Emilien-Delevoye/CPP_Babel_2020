@@ -13,26 +13,24 @@ CustomText {
     font-weight: bold;
 }
 
-QPushButton[name="login"]
+CustomButton[name="login"]
 {
     background-color: #8be9fd;
     font-weight: bolder;
     padding: 8px 12px;
     color: #282a36;
-    border-radius: 20px;
     border-radius: 10px;
+    font-size: 14px;
 }
 
-QPushButton[name="logout"] {
-    color: blue;
+CustomButton[name="login"]:hover
+{
+    background-color: #6db7cb;
 }
 
-QPushButton[name="connectButton"] {
-
-}
-
-QPushButton[name="formWidget"] {
-    color: purple;
+CustomButton[name="login"]:pressed
+{
+    color: #ff79c6;
 }
 
 QLabel {
@@ -41,3 +39,7 @@ QLabel {
     font-size: 16px;
 }
 
+
+UserPage {
+    background-color: #282a36;
+}
