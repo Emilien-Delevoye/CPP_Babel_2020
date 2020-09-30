@@ -12,6 +12,7 @@ ConnectionPage::ConnectionPage(QWidget *parent) : QWidget(parent)
 {
     setFixedWidth(500);
     setMaximumHeight(120);
+
     _vLayout = new QVBoxLayout(this);
     _formLayout = new QFormLayout(this);
     _lineEdits[HOME_IP_LINE_EDIT] = new CustomLineEdit(this);
@@ -31,7 +32,6 @@ ConnectionPage::ConnectionPage(QWidget *parent) : QWidget(parent)
 
 ConnectionPage::~ConnectionPage()
 {
-
 }
 
 CustomButton *ConnectionPage::getConnectButton() const

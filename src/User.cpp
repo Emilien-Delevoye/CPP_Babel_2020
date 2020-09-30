@@ -12,7 +12,7 @@ User::~User()
 
 }
 
-User::User(const std::string &login, const std::string &ip) : _login(login), _ip(ip)
+User::User(QWidget *parent, const std::string &login, const std::string &ip) : CustomButton(parent, QString(login.c_str())), _login(login), _ip(ip)
 {
 
 }

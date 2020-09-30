@@ -11,17 +11,27 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QFormLayout>
+#include <vector>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include "CustomLineEdit.hpp"
 #include "CustomButton.hpp"
 #include "enum.hpp"
-
+#include "User.hpp"
 
 class UserPage : public QWidget {
     public:
         UserPage(QWidget *parent = nullptr);
         ~UserPage();
     private:
-        QPushButton *_button;
+        std::vector<User *> _users;
+        QHBoxLayout *_hLayout;
+        QWidget *_usersWidget;
+        QWidget *_callWidget;
+        QVBoxLayout *_userVLayout;
+        QVBoxLayout *_callVLayout;
+        CustomButton *_callButton;
+        CustomButton *_logOutButton;
 };
 
 #endif //BABEL_USERPAGE_HPP
