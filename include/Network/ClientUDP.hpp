@@ -21,9 +21,7 @@ using boost::asio::ip::address;
 class ClientUDP : IClientUDP {
 public:
     explicit ClientUDP(const std::string &IpAddr, int port);
-    void connectToServer() override;
-    void sendToServer(std::string in) override;
-    void close() override;
+    void sendToServer(std::vector<unsigned char> in, size_t frameSize) override;
 private:
     udp::socket *socket = nullptr;
     udp::endpoint *remote_endpoint = nullptr;

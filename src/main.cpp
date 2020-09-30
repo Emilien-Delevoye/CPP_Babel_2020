@@ -34,6 +34,15 @@ void audioDemo()
 
 int main(int argc, char **argv)
 {
+    /*try {
+        audioDemo();
+    } catch (OpusError &e) {
+        std::cerr << e.what() << std::endl;
+    } catch (PortaudioError &e) {
+        std::cerr << e.what() << std::endl;
+    } catch (std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }*/
     if (argc == 1)
         NetworkUDP udp("127.0.0.1", 4242, true);
     else

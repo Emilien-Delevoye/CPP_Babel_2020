@@ -9,6 +9,8 @@
 #define BABEL_INETWORK_HPP
 
 #include <string>
+#include <vector>
+#include <boost/asio/buffer.hpp>
 
 class IClientUDP {
 public:
@@ -16,9 +18,7 @@ public:
         this->_ipAddress = ipAddr;
         this->_port = port;
     }
-    virtual void connectToServer() = 0;
-    virtual void sendToServer(std::string in) = 0;
-    virtual void close() = 0;
+    virtual void sendToServer(std::vector<unsigned char> in, size_t frameSize) = 0;
 protected:
     std::string _ipAddress;
     int _port;
@@ -31,6 +31,7 @@ public:
         this->_port = port;
     }
     virtual void openServer() = 0;
+    virtual std::vector<unsigned char> getFromUDP() = 0;
 protected:
     std::string _ipAddress;
     int _port;

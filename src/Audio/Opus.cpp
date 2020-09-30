@@ -31,7 +31,7 @@ void Opus::createEncoder()
         std::cerr << opusErrorCode << std::endl;
         throw OpusError("Opus: ", "Error : Opus encode creation error.");
     }
-    opusErrorCode = opus_encoder_ctl(this->enc, OPUS_SET_BITRATE(64000));
+    opusErrorCode = opus_encoder_ctl(this->enc, OPUS_SET_BITRATE(256000));
     //TMP -> Surveiller ce paramètre, il est intéressant sur le taux de compression
 }
 
