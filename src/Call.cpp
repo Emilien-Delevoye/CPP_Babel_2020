@@ -11,6 +11,7 @@ Call::Call(const std::string &IpAddressIn, int port, bool first) : Audio(), Netw
 {
     while (this->_callActive) {
         try {
+            // Send Data
             try {
                 this->readStream();
             } catch (PortaudioError &e) {
@@ -24,8 +25,9 @@ Call::Call(const std::string &IpAddressIn, int port, bool first) : Audio(), Netw
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;
             }
-            this->getEncoded();
             this->sendToServer(this->getEncoded(), this->getEncBytes());
+
+            // Receive data
             this->setToDecode(this->getFromUDP(), this->getEncBytesFromUDP());
             try {
                 this->decodeData();
