@@ -7,7 +7,7 @@
 
 #include "Network/NetworkUDP.hpp"
 
-NetworkUDP::NetworkUDP(const std::string &ipAddr, int port, bool first) : ClientUDP(ipAddr, port), ServerUDP(ipAddr, port)
+NetworkUDP::NetworkUDP(const std::string &ipAddr, int port, bool first) : SenderUDP(ipAddr, port), ReceiverUDP(ipAddr, port)
 {
     if (first)
         std::cout << "Normalement c'est le first" << std::endl;

@@ -16,9 +16,9 @@
 #include <vector>
 #include <boost/asio/buffer.hpp>
 
-class IClientUDP {
+class ISenderUDP {
 public:
-    explicit IClientUDP(const std::string &ipAddr, int port) {
+    explicit ISenderUDP(const std::string &ipAddr, int port) {
         this->_ipAddress = ipAddr;
         this->_port = port;
     }
@@ -28,9 +28,9 @@ protected:
     int _port;
 };
 
-class IServerUDP {
+class IReceiverUDP {
 public:
-    explicit IServerUDP(const std::string &ipAddr, int port) {
+    explicit IReceiverUDP(const std::string &ipAddr, int port) {
         this->_ipAddress = ipAddr;
         this->_port = port;
     }

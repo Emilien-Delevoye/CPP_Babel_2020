@@ -12,10 +12,10 @@
     #define _WIN32_WINNT  0x0601
 #endif
 
-#include "ServerUDP.hpp"
-#include "ClientUDP.hpp"
+#include "ReceiverUDP.hpp"
+#include "SenderUDP.hpp"
 
-class NetworkUDP : public ServerUDP, public ClientUDP {
+class NetworkUDP : public ReceiverUDP, public SenderUDP {
 protected:
     explicit NetworkUDP(const std::string &ipAddr, int port, bool first);
 };

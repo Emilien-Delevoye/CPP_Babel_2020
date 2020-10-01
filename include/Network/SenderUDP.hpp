@@ -5,8 +5,8 @@
 ** Created by Emilien
 */
 
-#ifndef BABEL_CLIENTUDP_HPP
-#define BABEL_CLIENTUDP_HPP
+#ifndef BABEL_SENDERUDP_HPP
+#define BABEL_SENDERUDP_HPP
 
 #ifdef _WIN32
     #define _WIN32_WINNT  0x0601
@@ -22,13 +22,13 @@
 using boost::asio::ip::udp;
 using boost::asio::ip::address;
 
-class ClientUDP : IClientUDP {
+class SenderUDP : ISenderUDP {
 public:
-    explicit ClientUDP(const std::string &IpAddr, int port);
+    explicit SenderUDP(const std::string &IpAddr, int port);
     void sendToServer(std::vector<unsigned char> in, size_t frameSize) override;
 private:
     udp::socket *socket = nullptr;
     udp::endpoint *remote_endpoint = nullptr;
 };
 
-#endif //BABEL_CLIENTUDP_HPP
+#endif //BABEL_SENDERUDP_HPP

@@ -5,11 +5,11 @@
 ** Created by Emilien
 */
 
-#include "Network/ClientUDP.hpp"
+#include "Network/SenderUDP.hpp"
 
-ClientUDP::ClientUDP(const std::string &IpAddr, int port) : IClientUDP(IpAddr, port) {}
+SenderUDP::SenderUDP(const std::string &IpAddr, int port) : ISenderUDP(IpAddr, port) {}
 
-void ClientUDP::sendToServer(std::vector<unsigned char> in, size_t frameSize)
+void SenderUDP::sendToServer(std::vector<unsigned char> in, size_t frameSize)
 {
     boost::asio::io_service io_service;
     udp::socket sck(io_service);

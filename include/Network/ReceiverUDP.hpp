@@ -5,8 +5,8 @@
 ** Created by Emilien
 */
 
-#ifndef BABEL_SERVERUDP_HPP
-#define BABEL_SERVERUDP_HPP
+#ifndef BABEL_RECEIVERUDP_HPP
+#define BABEL_RECEIVERUDP_HPP
 
 #ifdef _WIN32
     #define _WIN32_WINNT  0x0601
@@ -22,9 +22,9 @@
 using boost::asio::ip::udp;
 using boost::asio::ip::address;
 
-class ServerUDP : IServerUDP {
+class ReceiverUDP : IReceiverUDP {
 public:
-    explicit ServerUDP(const std::string &IpAddr, int port);
+    explicit ReceiverUDP(const std::string &IpAddr, int port);
     void openServer() override;
     std::vector<unsigned char> getFromUDP() override;
     size_t getEncBytesFromUDP();
@@ -38,4 +38,4 @@ private:
     size_t encBytesFromUDP;
 };
 
-#endif //BABEL_SERVERUDP_HPP
+#endif //BABEL_RECEIVERUDP_HPP

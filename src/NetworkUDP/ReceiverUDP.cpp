@@ -5,23 +5,23 @@
 ** Created by Emilien
 */
 
-#include "Network/ServerUDP.hpp"
+#include "Network/ReceiverUDP.hpp"
 #include <thread>
 
-ServerUDP::ServerUDP(const std::string &IpAddr, int port) : IServerUDP(IpAddr, port) {}
+ReceiverUDP::ReceiverUDP(const std::string &IpAddr, int port) : IReceiverUDP(IpAddr, port) {}
 
-void ServerUDP::openServer()
+void ReceiverUDP::openServer()
 {
     this->socket.open(udp::v4());
     this->recv_buffer.resize(200);
     this->socket.bind(udp::endpoint(address::from_string("127.0.0.1"), this->_port));
     socket.async_receive_from(boost::asio::buffer(this->recv_buffer), this->remote_endpoint,
-        boost::bind(&ServerUDP::handleReceive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+        boost::bind(&ReceiverUDP::handleReceive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
     this->q = new std::thread([&] { this->io_service.run(); } );
     std::cout << "Server launched" << std::endl;
 }
 
-void ServerUDP::handleReceive(const boost::system::error_code &error, size_t bytes_transferred)
+void ReceiverUDP::handleReceive(const boost::system::error_code &error, size_t bytes_transferred)
 {
     this->encBytesFromUDP = bytes_transferred;
     if (error) {
@@ -29,15 +29,15 @@ void ServerUDP::handleReceive(const boost::system::error_code &error, size_t byt
         return;
     }
     socket.async_receive_from(boost::asio::buffer(this->recv_buffer), this->remote_endpoint,
-        boost::bind(&ServerUDP::handleReceive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+        boost::bind(&ReceiverUDP::handleReceive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
-std::vector<unsigned char> ServerUDP::getFromUDP()
+std::vector<unsigned char> ReceiverUDP::getFromUDP()
 {
     return this->recv_buffer;
 }
 
-size_t ServerUDP::getEncBytesFromUDP()
+size_t ReceiverUDP::getEncBytesFromUDP()
 {
     return this->encBytesFromUDP;
 }
