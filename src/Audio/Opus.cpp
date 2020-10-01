@@ -5,8 +5,9 @@
 ** Created by Emilien
 */
 
-#include <Opus.hpp>
+#include <Audio/Opus.hpp>
 #include <iostream>
+#include <utility>
 
 Opus::Opus() : encoded(this->FRAME_SIZE * this->CHANNEL_NB * 2),
                captured(this->FRAME_SIZE * this->CHANNEL_NB),
@@ -15,11 +16,6 @@ Opus::Opus() : encoded(this->FRAME_SIZE * this->CHANNEL_NB * 2),
     this->enc = nullptr;
     this->dec = nullptr;
     this->encBytes = 0;
-    this->init();
-}
-
-void Opus::init()
-{
 }
 
 void Opus::createEncoder()
@@ -29,9 +25,9 @@ void Opus::createEncoder()
     this->enc = opus_encoder_create(this->SAMPLE_RATE, this->CHANNEL_NB, OPUS_APPLICATION_AUDIO, &opusErrorCode);
     if (opusErrorCode != OPUS_OK) {
         std::cerr << opusErrorCode << std::endl;
-        throw std::exception(OpusError("Opus: ", "Error : Opus encode creation error."));
+        throw OpusError("Opus: ", "Error : Opus encode creation error.");
     }
-    opusError = opus_encoder_ctl(this->enc, OPUS_SET_BITRATE(64000));
+    opusErrorCode = opus_encoder_ctl(this->enc, OPUS_SET_BITRATE(256000));
     //TMP -> Surveiller ce paramètre, il est intéressant sur le taux de compression
 }
 
@@ -42,27 +38,33 @@ void Opus::createDecoder()
     this->dec = opus_decoder_create(this->SAMPLE_RATE, this->CHANNEL_NB, &opusError);
     if (opusError != OPUS_OK) {
         std::cerr << opusError << std::endl;
-        throw std::exception(OpusError("Opus: ", "Error : Opus encode error."));
+        throw OpusError("Opus: ", "Error : Opus encode error.");
     }
 }
 
 void Opus::encodeData()
 {
-    this->encBytes = opus_encode(enc, reinterpret_cast<opus_int16 const *>(this->captured.data()), this->FRAME_SIZE, encoded.data(), encoded.size());
+    this->encBytes = opus_encode(enc, reinterpret_cast<opus_int16 const *>(this->captured.data()), this->FRAME_SIZE, encoded.data(), static_cast<opus_int32>(encoded.size()));
     //TMP -> Le parmaètre encBytes est très important pour l'utilisation de la lib
     if (this->encBytes < 0)
-        throw std::exception(OpusError("Opus: ", "Error : Opus encode error."));
+        throw OpusError("Opus: ", "Error : Opus encode error.");
 }
 
 void Opus::decodeData()
 {
-    if (opus_decode(dec, this->encoded.data(), this->encBytes, reinterpret_cast<opus_int16 *>(this->decoded.data()), this->FRAME_SIZE, 0) < 0)
-        throw std::exception(OpusError("Opus: ", "Error : Opus decode error."));
+    if (opus_decode(dec, this->toDecode.data(), static_cast<opus_int32>(this->toDecBytes), reinterpret_cast<opus_int16 *>(this->decoded.data()), this->FRAME_SIZE, 0) < 0)
+        throw OpusError("Opus: ", "Error : Opus decode error.");
 }
 
 std::vector<unsigned char> Opus::getEncoded()
 {
     return this->encoded;
+}
+
+void Opus::setToDecode(std::vector<unsigned char> inToDecode, size_t encBytesFromUDP)
+{
+    this->toDecode = std::move(inToDecode);
+    this->toDecBytes = encBytesFromUDP;
 }
 
 void Opus::setCaptured(std::vector<unsigned short> inCaptured)
@@ -73,5 +75,10 @@ void Opus::setCaptured(std::vector<unsigned short> inCaptured)
 std::vector<unsigned short> Opus::getDecoded()
 {
     return this->decoded;
+}
+
+size_t Opus::getEncBytes() const
+{
+    return this->encBytes;
 }
 

@@ -8,6 +8,10 @@
 #ifndef BABEL_PORTAUDIO_HPP
 #define BABEL_PORTAUDIO_HPP
 
+#ifdef _WIN32
+    #define _WIN32_WINNT  0x0601
+#endif
+
 #include <vector>
 #include <string>
 #include "portaudio.h"
@@ -18,8 +22,8 @@ class PortAudio: public IAudio {
     public:
         PortAudio();
         void startStream() final;
-        void readStream() final;
-        void writeStream() final;
+        void readStream() override;
+        void writeStream() override;
         void stopStream() final;
         std::vector<unsigned short> getCaptured();
         void setDecoded(std::vector<unsigned short>);

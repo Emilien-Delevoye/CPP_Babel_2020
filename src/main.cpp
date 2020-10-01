@@ -5,34 +5,10 @@
 ** Created by Emilien
 */
 
-#include "PortAudio.hpp"
-#include "Opus.hpp"
-#include <iostream>
-
-void audioDemo()
-{
-    Opus opus;
-    PortAudio portAudio;
-
-    opus.createEncoder();
-    opus.createDecoder();
-    portAudio.startStream();
-    for (int i = 0; i < ((3000 * 48000) / 512); ++i) {
-        portAudio.readStream();
-        opus.setCaptured(portAudio.getCaptured());
-        opus.encodeData();
-        opus.decodeData();
-        portAudio.setDecoded(opus.getDecoded());
-        portAudio.writeStream();
-    }
-    portAudio.stopStream();
-    std::cout << "End stream" << std::endl;
-    portAudio.~PortAudio();
-    opus.~Opus();
-}
+#include "Call.hpp"
 
 int main(int argc, char **argv)
 {
-    audioDemo();
+    Call call("127.0.0.1", 4242, true);
     return 0;
 }

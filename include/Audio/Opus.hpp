@@ -8,6 +8,10 @@
 #ifndef BABEL_OPUS_HPP
 #define BABEL_OPUS_HPP
 
+#ifdef _WIN32
+    #define _WIN32_WINNT  0x0601
+#endif
+
 #include <vector>
 #include "opus.h"
 #include "IEncode.hpp"
@@ -17,21 +21,24 @@ class Opus : public IEncode
 {
     public:
         Opus();
-        void init() final;
         void createEncoder() final;
         void createDecoder() final;
         void encodeData() final;
         void decodeData() final;
-        std::vector<unsigned char> getEncoded();
         void setCaptured(std::vector<unsigned short>);
+        void setToDecode(std::vector<unsigned char>, size_t);
+        std::vector<unsigned char> getEncoded();
         std::vector<unsigned short> getDecoded();
+        [[nodiscard]] size_t getEncBytes() const;
     private:
         std::vector<unsigned char> encoded;
         std::vector<unsigned short> captured;
         std::vector<unsigned short> decoded;
+        std::vector<unsigned char> toDecode;
         OpusEncoder *enc;
         OpusDecoder *dec;
-        opus_int32 encBytes;
+        size_t encBytes;
+        size_t toDecBytes;
 };
 
 #endif //BABEL_OPUS_HPP
