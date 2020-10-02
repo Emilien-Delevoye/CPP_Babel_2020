@@ -12,25 +12,25 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     setWindowTitle(title);
 
     _userPage = new UserPage(this);
-
     _connectionPage = new ConnectionPage(this);
-    connect(_connectionPage->getConnectButton(), SIGNAL(clicked()), this, SLOT(navToUserPage()));
+    _pages = new QStackedWidget(this);
 
-    setCentralWidget(_connectionPage);
-    _connectionPage->show();
-    centered();
+    connect(_connectionPage->getConnectButton(), &QPushButton::clicked, [=]() {
+        navToUserPage();
+    });
+    connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
+        navToConnectionPage();
+    });
+    _pages->addWidget(_userPage);
+    _pages->addWidget(_connectionPage);
+
+    setCentralWidget(_pages);
+    _pages->setCurrentWidget(_connectionPage);
 }
 
 CustomMainWindow::~CustomMainWindow()
 {
 
-}
-
-void CustomMainWindow::navToUserPage()
-{
-    _connectionPage->hide(); //if success//
-    setCentralWidget(_userPage);
-    _userPage->show();
 }
 
 void CustomMainWindow::centered()
@@ -44,7 +44,12 @@ void CustomMainWindow::centered()
     move(x, y);
 }
 
-void CustomMainWindow::test()
+void CustomMainWindow::navToUserPage()
 {
-    qDebug() << "Dynamic_cast functional";
-};
+    _pages->setCurrentWidget(_userPage);
+}
+
+void CustomMainWindow::navToConnectionPage()
+{
+    _pages->setCurrentWidget(_connectionPage);
+}

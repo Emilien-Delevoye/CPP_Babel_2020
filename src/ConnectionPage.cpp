@@ -7,6 +7,8 @@
 
 
 #include "ConnectionPage.hpp"
+#include "UserPage.hpp"
+#include "CustomMainWindow.hpp"
 
 ConnectionPage::ConnectionPage(QWidget *parent) : QWidget(parent)
 {
@@ -38,16 +40,10 @@ ConnectionPage::ConnectionPage(QWidget *parent) : QWidget(parent)
     _vLayout->setSpacing(32);
     _vLayout->addWidget(_connectButton, 0,Qt::AlignCenter);
     setLayout(_vLayout);
-    hide();
 }
 
 ConnectionPage::~ConnectionPage()
 {
-}
-
-CustomButton *ConnectionPage::getConnectButton() const
-{
-    return _connectButton;
 }
 
 void ConnectionPage::paintEvent(QPaintEvent *event)
@@ -58,4 +54,9 @@ void ConnectionPage::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 
     QWidget::paintEvent(event);
+}
+
+CustomButton *ConnectionPage::getConnectButton() const
+{
+    return _connectButton;
 }

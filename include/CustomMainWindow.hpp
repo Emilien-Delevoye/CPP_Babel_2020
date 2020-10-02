@@ -16,6 +16,7 @@
 #include <QWidget>
 #include <QDebug>
 #include <QFile>
+#include <QStackedWidget>
 #include "CustomButton.hpp"
 #include "CustomText.hpp"
 #include "CustomLineEdit.hpp"
@@ -26,15 +27,16 @@
 class CustomMainWindow : public QMainWindow {
     Q_OBJECT
     public:
-        void centered();
         explicit CustomMainWindow(QWidget *parent = nullptr, const QString &title = "Window");
-        void test();
         ~CustomMainWindow();
-    private slots:
-        void navToUserPage();
+        void centered();
     private:
         ConnectionPage *_connectionPage;
         UserPage *_userPage;
+        QStackedWidget *_pages;
+        void navToUserPage();
+        void navToConnectionPage();
+
 };
 
 #endif //B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H

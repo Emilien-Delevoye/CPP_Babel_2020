@@ -21,6 +21,7 @@
 #include "CustomLineEdit.hpp"
 #include "CustomButton.hpp"
 #include "CustomWidget.hpp"
+#include "CustomText.hpp"
 #include "enum.hpp"
 #include "User.hpp"
 
@@ -29,19 +30,26 @@ class UserPage : public QWidget {
     public:
         UserPage(QWidget *parent = nullptr);
         ~UserPage();
+        CustomButton *getLogOutButton() const;
         void paintEvent(QPaintEvent *event) override;
+    private slots:
+        void navToConnectionPage();
     private:
         std::vector<User *> _users;
         QHBoxLayout *_hLayout;
         CustomWidget *_usersWidget;
         QWidget *_callWidget;
+        QWidget *_callWidgetTop;
+        QWidget *_callWidgetBottom;
         QScrollArea *_usersList;
         QVBoxLayout *_userVLayout;
         QVBoxLayout *_callVLayout;
+        QVBoxLayout *_callVLayoutTop;
+        QHBoxLayout *_callHLayoutBottom;
         CustomButton *_callButton;
         CustomButton *_logOutButton;
-        QString *_userLogin;
-        QString *_userIP;
+        CustomText *_userLogin;
+        CustomText *_userIP;
 
 };
 

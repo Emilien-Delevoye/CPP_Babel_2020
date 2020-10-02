@@ -23,8 +23,8 @@ class ConnectionPage : public QWidget {
     public:
         ConnectionPage(QWidget *parent = nullptr);
         ~ConnectionPage();
-        CustomButton *getConnectButton() const;
         void paintEvent(QPaintEvent *event) override;
+        CustomButton *getConnectButton() const;
     private:
         CustomButton *_connectButton;
         QMap<QtLineEditID, CustomLineEdit *> _lineEdits;
