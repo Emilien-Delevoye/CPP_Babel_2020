@@ -73,6 +73,26 @@ CustomButton[name="logout"]:pressed
     color: #3272a4;
 }
 
+CustomButton[name="hangup"]
+{
+    background-color: #ff5555;
+    font-weight: bolder;
+    padding: 8px 12px;
+    color: #f8f8f2;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+CustomButton[name="hangup"]:hover
+{
+    background-color: #c43d3d;
+}
+
+CustomButton[name="hangup"]:pressed
+{
+    color: #3272a4;
+}
+
 QLabel {
     color: #f8f8f2;
     font-weight: bolder;
@@ -119,7 +139,7 @@ User:pressed {
     color: #6db7cb;
 }
 
-CustomWidget[name="test"]
+CustomWidget[name="callWidgetBottom"]
 {
     max-height: 52px;
 }

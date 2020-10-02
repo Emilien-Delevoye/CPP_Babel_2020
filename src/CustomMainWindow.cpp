@@ -14,6 +14,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     _userPage = new UserPage(this);
     _connectionPage = new ConnectionPage(this);
     _pages = new QStackedWidget(this);
+    _callInProgress = false;
 
     connect(_connectionPage->getConnectButton(), &QPushButton::clicked, [=]() {
         navToUserPage();
@@ -21,7 +22,18 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
         navToConnectionPage();
     });
-
+    connect(_userPage->getCallButton(), &QPushButton::clicked, [=]() {
+        _callInProgress = true;
+        _userPage->showTimer();
+        _userPage->getCallButton()->hide();
+        _userPage->getHangUpButton()->show();
+    });
+    connect(_userPage->getHangUpButton(), &QPushButton::clicked, [=]() {
+        _callInProgress = false;
+        _userPage->hideTimer();
+        _userPage->getHangUpButton()->hide();
+        _userPage->getCallButton()->show();
+    });
     _pages->addWidget(_userPage);
     _pages->addWidget(_connectionPage);
 
@@ -56,9 +68,11 @@ void CustomMainWindow::navToUserPage()
         user->setMinimumHeight(50);
         _users.push_back(user);
         connect(user, &QPushButton::clicked, [=]() {
-            _ipToCall = user->getIP();
-            _loginToCall = user->getLogin();
-            _userPage->setUserInfo(_loginToCall, _ipToCall);
+            if (!_callInProgress) {
+                _ipToCall = user->getIP();
+                _loginToCall = user->getLogin();
+                _userPage->setUserInfo(_loginToCall, _ipToCall);
+            }
         });
     }
     _userPage->init(_users);

@@ -18,6 +18,8 @@
 #include <QStyleOption>
 #include <QPainter>
 #include <QScrollArea>
+#include <QTimer>
+#include <QTime>
 #include "CustomLineEdit.hpp"
 #include "CustomButton.hpp"
 #include "CustomWidget.hpp"
@@ -33,7 +35,11 @@ class UserPage : public QWidget {
         CustomButton *getLogOutButton() const;
         void paintEvent(QPaintEvent *event) override;
         void init(const std::vector<User *>& _users);
+        CustomButton *getHangUpButton() const;
+        CustomButton *getCallButton() const;
         void setUserInfo(const std::string &login, const std::string &ip);
+        void showTimer();
+        void hideTimer();
     private:
         QHBoxLayout *_hLayout;
         CustomWidget *_usersWidget;
@@ -49,6 +55,11 @@ class UserPage : public QWidget {
         CustomButton *_logOutButton;
         CustomText *_userLogin;
         CustomText *_userIP;
+        CustomButton *_hangUpButton;
+        QTimer *_timer;
+        CustomText *_timerText;
+        int _elapsedSeconds;
+
 
 };
 
