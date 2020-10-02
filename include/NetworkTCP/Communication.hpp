@@ -21,22 +21,40 @@
 class Communication {
 public:
     enum type {
+        PRESENTATION,
         CALL,
         HANG_UP,
-        PICK_UP
+        PICK_UP,
+        UPDATE_CLIENTS
     };
     Communication(Communication::type t, std::string & ip, std::string & port) : t_(t), ip_(ip), port_(port) {}
 
     type t_;
+
+    // Call / Presentation
+    int id_;
+    std::string name_;
     std::string ip_;
     std::string port_;
+
+    // Update clients
+    std::vector<int> ids_;
+    std::vector<std::string> names_;
+    std::vector<std::string> ips_;
+    std::vector<std::string> ports_;
 private:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
+        ar & id_;
         ar & t_;
         ar & ip_;
         ar & port_;
+
+        ar & ids_;
+        ar & names_;
+        ar & ips_;
+        ar & ports_;
     }
 };
 
