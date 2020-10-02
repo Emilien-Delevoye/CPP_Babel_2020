@@ -119,3 +119,7 @@ User:pressed {
     color: #6db7cb;
 }
 
+CustomWidget[name="test"]
+{
+    max-height: 52px;
+}

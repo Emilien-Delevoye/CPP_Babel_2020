@@ -21,9 +21,39 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
     _userVLayout = new QVBoxLayout(this);
     _hLayout = new QHBoxLayout(this);
     _callVLayout = new QVBoxLayout(this);
-    _callWidget = new QWidget(this);
+    _callWidget = new CustomWidget(this);
     _callButton = new CustomButton(this, "Call");
     _logOutButton = new CustomButton(this, "Log out");
+
+    _usersList->setWidgetResizable( true);
+    _usersList->setFixedWidth(360);
+    _usersList->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
+    _callButton->setProperty("name", "call");
+    _logOutButton->setProperty("name", "logout");
+    _logOutButton->setToolTip("Disconnect yourself from the server");
+    _userLogin->setText("login");
+    _userLogin->setProperty("name", "userLogin");
+    _userIP->setText("127.0.0.1");
+    _userIP->setProperty("name", "userIP");
+    _usersWidget->setProperty("name", "userWidget");
+    _usersList->setWidget(_usersWidget);
+    _callWidgetBottom->setProperty("name", "test");
+
+    _usersWidget->setLayout(_userVLayout);
+    _hLayout->addWidget(_usersList);
+    _callVLayoutTop->addWidget(_userLogin);
+    _callVLayoutTop->addWidget(_userIP);
+    _callVLayoutTop->addWidget(_callButton);
+    _callVLayoutTop->setAlignment(Qt::AlignCenter);
+    _callWidgetTop->setLayout(_callVLayoutTop);
+    _callHLayoutBottom->addWidget(_logOutButton);
+    _callWidgetBottom->setLayout(_callHLayoutBottom);
+    _callVLayout->addWidget(_callWidgetTop);
+    _callVLayout->addWidget(_callWidgetBottom);
+    _callWidget->setLayout(_callVLayout);
+    _hLayout->addWidget(_callWidget);
+
+    setLayout(_hLayout);
 }
 
 UserPage::~UserPage()
@@ -46,46 +76,17 @@ CustomButton *UserPage::getLogOutButton() const
     return _logOutButton;
 }
 
-void UserPage::init( std::vector<User *> _users)
+void UserPage::init(const std::vector<User *>& _users)
 {
-    _usersList->setWidgetResizable( true);
-
-    _callButton->setProperty("name", "call");
-    _logOutButton->setProperty("name", "logout");
-    _logOutButton->setToolTip("Disconnect yourself from the server");
-    _userLogin->setText("login");
-    _userLogin->setProperty("name", "userLogin");
-    _userIP->setText("127.0.0.1");
-    _userIP->setProperty("name", "userIP");
-    _usersList->setFixedWidth(360);
-    _usersList->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
-    _usersWidget->setProperty("name", "userWidget");
-    _usersList->setWidget(_usersWidget);
-
-    for (auto _user : _users) {
-        _userVLayout->addWidget(_user);
+    for (auto user : _users) {
+        _userVLayout->addWidget(user);
     }
-
-    _usersWidget->setLayout(_userVLayout);
-    _hLayout->addWidget(_usersList);
-
-    _callVLayoutTop->addWidget(_userLogin);
-    _callVLayoutTop->addWidget(_userIP);
-    _callVLayoutTop->addWidget(_callButton);
-    _callWidgetTop->setLayout(_callVLayoutTop);
-    _callHLayoutBottom->addWidget(_logOutButton);
-    _callWidgetBottom->setLayout(_callHLayoutBottom);
-    _callVLayout->addWidget(_callWidgetTop);
-    _callVLayout->addWidget(_callWidgetBottom);
-    _callWidget->setLayout(_callVLayout);
-    _hLayout->addWidget(_callWidget);
-
-    setLayout(_hLayout);
 }
 
 void UserPage::setUserInfo(const std::string &login, const std::string &ip)
 {
     _userLogin->setText(QString::fromStdString(login));
     _userIP->setText(QString::fromStdString(ip));
+    _callButton->setText(QString::fromStdString("Call ") + QString::fromStdString(login));
 }
 

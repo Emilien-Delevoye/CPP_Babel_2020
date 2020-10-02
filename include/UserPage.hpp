@@ -32,14 +32,14 @@ class UserPage : public QWidget {
         ~UserPage();
         CustomButton *getLogOutButton() const;
         void paintEvent(QPaintEvent *event) override;
-        void init(std::vector<User *> _users);
+        void init(const std::vector<User *>& _users);
         void setUserInfo(const std::string &login, const std::string &ip);
     private:
         QHBoxLayout *_hLayout;
         CustomWidget *_usersWidget;
-        QWidget *_callWidget;
-        QWidget *_callWidgetTop;
-        QWidget *_callWidgetBottom;
+        CustomWidget *_callWidget;
+        CustomWidget *_callWidgetTop;
+        CustomWidget *_callWidgetBottom;
         QScrollArea *_usersList;
         QVBoxLayout *_userVLayout;
         QVBoxLayout *_callVLayout;

@@ -7,7 +7,6 @@
 
 
 #include "ConnectionPage.hpp"
-#include "UserPage.hpp"
 #include "CustomMainWindow.hpp"
 
 ConnectionPage::ConnectionPage(QWidget *parent) : QWidget(parent)
