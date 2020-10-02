@@ -13,7 +13,7 @@
 #endif
 
 #include "Audio/Audio.hpp"
-#include "Network/NetworkUDP.hpp"
+#include "NetworkUDP/NetworkUDP.hpp"
 #include "BabelException.hpp"
 
 class Call : public Audio, public NetworkUDP

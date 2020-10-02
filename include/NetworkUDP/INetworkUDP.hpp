@@ -5,8 +5,8 @@
 ** Created by Emilien
 */
 
-#ifndef BABEL_INETWORK_HPP
-#define BABEL_INETWORK_HPP
+#ifndef BABEL_INETWORKUDP_HPP
+#define BABEL_INETWORKUDP_HPP
 
 #ifdef _WIN32
     #define _WIN32_WINNT  0x0601
@@ -41,4 +41,4 @@ protected:
     int _port;
 };
 
-#endif //BABEL_INETWORK_HPP
+#endif //BABEL_INETWORKUDP_HPP

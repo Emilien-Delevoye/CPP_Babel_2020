@@ -25,17 +25,17 @@ Call::Call(const std::string &IpAddressIn, int port, bool first) : Audio(), Netw
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;
             }
-            this->sendToServer(this->getEncoded(), this->getEncBytes());
+            //this->sendToServer(this->getEncoded(), this->getEncBytes());
 
             // Receive data
-            this->setToDecode(this->getFromUDP(), this->getEncBytesFromUDP());
+            this->setToDecode(this->getEncoded(), this->getEncBytes());
             try {
                 this->decodeData();
             } catch (OpusError &e) {
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;
             }
-            this->setDecoded(this->getDecoded());
+            this->setDecoded(this->getCaptured());
             try {
                 this->writeStream();
             } catch (PortaudioError &e) {

@@ -5,7 +5,7 @@
 ** Created by Emilien
 */
 
-#include "Network/ReceiverUDP.hpp"
+#include "NetworkUDP/ReceiverUDP.hpp"
 #include <thread>
 
 ReceiverUDP::ReceiverUDP(const std::string &IpAddr, int port) : IReceiverUDP(IpAddr, port) {}
@@ -15,7 +15,7 @@ void ReceiverUDP::openServer()
     this->socket.open(udp::v4());
     this->recv_buffer.resize(200);
     this->socket.bind(udp::endpoint(address::from_string("127.0.0.1"), this->_port));
-    socket.async_receive_from(boost::asio::buffer(this->recv_buffer), this->remote_endpoint,
+    this->socket.async_receive_from(boost::asio::buffer(this->recv_buffer), this->remote_endpoint,
         boost::bind(&ReceiverUDP::handleReceive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
     this->q = new std::thread([&] { this->io_service.run(); } );
     std::cout << "Server launched" << std::endl;

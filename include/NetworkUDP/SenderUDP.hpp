@@ -12,7 +12,7 @@
     #define _WIN32_WINNT  0x0601
 #endif
 
-#include "INetwork.hpp"
+#include "INetworkUDP.hpp"
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/array.hpp>

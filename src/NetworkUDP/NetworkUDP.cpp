@@ -5,7 +5,7 @@
 ** Created by Emilien
 */
 
-#include "Network/NetworkUDP.hpp"
+#include "NetworkUDP/NetworkUDP.hpp"
 
 NetworkUDP::NetworkUDP(const std::string &ipAddr, int port, bool first) : SenderUDP(ipAddr, port), ReceiverUDP(ipAddr, port)
 {

@@ -13,6 +13,45 @@ conan_basic_setup()
 find_package(Qt5Widgets CONFIG REQUIRED)
 
 include_directories(${CMAKE_INCLUDE_PATH})
-include_directories(include)
-add_executable(babel src/main.cpp include/Audio/PortAudio.hpp src/Audio/PortAudio.cpp include/Audio/IAudio.hpp include/Audio/Opus.hpp src/Audio/Opus.cpp include/Audio/IEncode.hpp include/BabelException.hpp include/Call.hpp src/Call.cpp include/Network/SenderUDP.hpp include/Network/ReceiverUDP.hpp src/NetworkUDP/SenderUDP.cpp src/NetworkUDP/ReceiverUDP.cpp include/Network/INetwork.hpp src/NetworkUDP/NetworkUDP.cpp include/Network/NetworkUDP.hpp include/Audio/Audio.hpp src/Audio/Audio.cpp)
+include_directories(
+        include
+        src/NetworkTCP)
+add_executable(babel
+        src/main.cpp
+        src/Call.cpp
+
+        src/Audio/PortAudio.cpp
+        src/Audio/Opus.cpp
+        src/Audio/Audio.cpp
+
+        src/NetworkUDP/SenderUDP.cpp
+        src/NetworkUDP/ReceiverUDP.cpp
+        src/NetworkUDP/NetworkUDP.cpp
+
+        src/NetworkTCP/server/InstanceClientTCP.cpp
+        src/NetworkTCP/server/ServerTCP.cpp
+
+
+        include/Call.hpp
+        include/BabelException.hpp
+
+        include/Audio/PortAudio.hpp
+        include/Audio/IAudio.hpp
+        include/Audio/Opus.hpp
+        include/Audio/IEncode.hpp
+        include/Audio/Audio.hpp
+
+        include/NetworkUDP/SenderUDP.hpp
+        include/NetworkUDP/ReceiverUDP.hpp
+        include/NetworkUDP/INetworkUDP.hpp
+        include/NetworkUDP/NetworkUDP.hpp
+
+        include/NetworkTCP/server/InstanceClientTCP.hpp
+        include/NetworkTCP/server/ServerTCP.hpp
+        include/NetworkTCP/Communication.hpp
+        include/NetworkTCP/NetworkTCP.hpp
+        include/NetworkTCP/Logger.hpp src/NetworkTCP/client/ClientTcp.cpp include/NetworkTCP/client/ClientTcp.hpp
+        #src/NetworkTCP/tmp.cpp
+        )
+
 target_link_libraries(babel ${CONAN_LIBS} Qt5::Widgets)

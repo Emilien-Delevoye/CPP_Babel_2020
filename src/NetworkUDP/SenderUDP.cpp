@@ -5,7 +5,7 @@
 ** Created by Emilien
 */
 
-#include "Network/SenderUDP.hpp"
+#include "NetworkUDP/SenderUDP.hpp"
 
 SenderUDP::SenderUDP(const std::string &IpAddr, int port) : ISenderUDP(IpAddr, port) {}
 
