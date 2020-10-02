@@ -60,3 +60,7 @@ CustomButton *ConnectionPage::getConnectButton() const
 {
     return _connectButton;
 }
+
+void ConnectionPage::init()
+{
+}

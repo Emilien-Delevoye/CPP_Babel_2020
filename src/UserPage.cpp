@@ -10,8 +10,6 @@
 
 UserPage::UserPage(QWidget *parent) : QWidget(parent)
 {
-    User *user;
-
     _userLogin = new CustomText(this);
     _userIP = new CustomText(this);
     _callWidgetBottom = new CustomWidget(this);
@@ -26,7 +24,30 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
     _callWidget = new QWidget(this);
     _callButton = new CustomButton(this, "Call");
     _logOutButton = new CustomButton(this, "Log out");
+}
 
+UserPage::~UserPage()
+{
+
+}
+
+void UserPage::paintEvent(QPaintEvent *event)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+
+    QWidget::paintEvent(event);
+}
+
+CustomButton *UserPage::getLogOutButton() const
+{
+    return _logOutButton;
+}
+
+void UserPage::init( std::vector<User *> _users)
+{
     _usersList->setWidgetResizable( true);
 
     _callButton->setProperty("name", "call");
@@ -41,17 +62,8 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
     _usersWidget->setProperty("name", "userWidget");
     _usersList->setWidget(_usersWidget);
 
-    connect(_logOutButton, SIGNAL(clicked()), this, SLOT( navToConnectionPage()));
-
-
-    for (int i = 0; i < 40; i++) {
-        user = new User(this, "Jean" + std::to_string(i), "127.0.0.1");
-        user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        std::string tooltip = std::string("Display informations about ") + std::string("Jean") + std::to_string(i);
-        user->setToolTip(tooltip.c_str());
-        _users.push_back(user);
-        user->setMinimumHeight(50);
-        _userVLayout->addWidget(user);
+    for (auto _user : _users) {
+        _userVLayout->addWidget(_user);
     }
 
     _usersWidget->setLayout(_userVLayout);
@@ -71,27 +83,9 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
     setLayout(_hLayout);
 }
 
-UserPage::~UserPage()
+void UserPage::setUserInfo(const std::string &login, const std::string &ip)
 {
-
+    _userLogin->setText(QString::fromStdString(login));
+    _userIP->setText(QString::fromStdString(ip));
 }
 
-void UserPage::paintEvent(QPaintEvent *event)
-{
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-
-    QWidget::paintEvent(event);
-}
-
-void UserPage::navToConnectionPage()
-{
-    auto * test = dynamic_cast<CustomMainWindow *>(parent());//->navToPage();
-}
-
-CustomButton *UserPage::getLogOutButton() const
-{
-    return _logOutButton;
-}

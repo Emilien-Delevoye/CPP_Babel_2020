@@ -32,10 +32,9 @@ class UserPage : public QWidget {
         ~UserPage();
         CustomButton *getLogOutButton() const;
         void paintEvent(QPaintEvent *event) override;
-    private slots:
-        void navToConnectionPage();
+        void init(std::vector<User *> _users);
+        void setUserInfo(const std::string &login, const std::string &ip);
     private:
-        std::vector<User *> _users;
         QHBoxLayout *_hLayout;
         CustomWidget *_usersWidget;
         QWidget *_callWidget;
