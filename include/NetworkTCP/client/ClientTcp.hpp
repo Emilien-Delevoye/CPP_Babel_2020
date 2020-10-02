@@ -12,6 +12,7 @@
 #include <boost/asio.hpp>
 #include <iostream>
 #include <string>
+#include "NetworkTCP/Communication.hpp"
 
 using boost::asio::ip::tcp;
 
@@ -31,6 +32,7 @@ private:
     boost::asio::io_context io_context_;
     tcp::socket socket_{io_context_};
     tcp::resolver resolver;
+    Communication com_;
 };
 
 

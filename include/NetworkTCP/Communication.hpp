@@ -13,10 +13,13 @@
 #endif
 
 #include <string>
+#include <utility>
 #include <vector>
 #include <boost/asio/buffer.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/serialization/vector.hpp>
 
 class Communication {
 public:
@@ -27,7 +30,7 @@ public:
         PICK_UP,
         UPDATE_CLIENTS
     };
-    Communication(Communication::type t, std::string & ip, std::string & port) : t_(t), ip_(ip), port_(port) {}
+    Communication(Communication::type t, std::string ip="127.0.0.1", std::string port="8080") : t_(t), ip_(std::move(ip)), port_(std::move(port)) {}
 
     type t_;
 
@@ -42,7 +45,16 @@ public:
     std::vector<std::string> names_;
     std::vector<std::string> ips_;
     std::vector<std::string> ports_;
-private:
+
+    static std::string serializeObj(Communication &obj) {
+        std::stringstream ss;
+        boost::archive::binary_oarchive oa(ss);
+        oa << obj;
+
+        return ss.str();
+    }
+
+public:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {

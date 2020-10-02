@@ -32,6 +32,7 @@ public:
 
 private:
     void handleConnections();
+    //void handleMessage(void *);
     boost::asio::io_service io_service_;
     int i = 0;
     tcp::acceptor acceptor_;

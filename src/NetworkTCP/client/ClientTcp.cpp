@@ -9,11 +9,12 @@
 #include <memory>
 #include <iostream>
 
-ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_)
+ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_), com_(Communication::PRESENTATION)
 {
     boost::asio::connect(socket_, resolver.resolve(ip, port));
     async_read();
-    write("I'm the client, here is my first message !");
+
+    write(Communication::serializeObj(com_));
     io_context_.run();
 }
 
