@@ -33,6 +33,46 @@ CustomButton[name="login"]:pressed
     color: #ff79c6;
 }
 
+CustomButton[name="call"]
+{
+    background-color: #45cd66;
+    font-weight: bolder;
+    padding: 8px 12px;
+    color: #f8f8f2;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+CustomButton[name="call"]:hover
+{
+    background-color: #359e51;
+}
+
+CustomButton[name="call"]:pressed
+{
+    color: #3272a4;
+}
+
+CustomButton[name="logout"]
+{
+    background-color: #ff5555;
+    font-weight: bolder;
+    padding: 8px 12px;
+    color: #f8f8f2;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+CustomButton[name="logout"]:hover
+{
+    background-color: #c43d3d;
+}
+
+CustomButton[name="logout"]:pressed
+{
+    color: #3272a4;
+}
+
 QLabel {
     color: #f8f8f2;
     font-weight: bolder;
@@ -50,7 +90,7 @@ QScrollBar {
     background-color: transparent;
 }
 
-CustomWidget[name="test"]
+CustomWidget[name="userWidget"]
 {
     background-color: transparent;
     color: transparent;
@@ -73,3 +113,8 @@ User {
 User:hover {
     background-color: #9276c1;
 }
+
+User:pressed {
+    color: #6db7cb;
+}
+

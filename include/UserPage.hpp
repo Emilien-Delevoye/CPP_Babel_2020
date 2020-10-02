@@ -40,6 +40,9 @@ class UserPage : public QWidget {
         QVBoxLayout *_callVLayout;
         CustomButton *_callButton;
         CustomButton *_logOutButton;
+        QString *_userLogin;
+        QString *_userIP;
+
 };
 
 #endif //BABEL_USERPAGE_HPP
