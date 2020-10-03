@@ -20,7 +20,8 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         navToUserPage();
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
-        navToConnectionPage();
+        if (!_callInProgress)
+            navToConnectionPage();
     });
     connect(_userPage->getCallButton(), &QPushButton::clicked, [=]() {
         _callInProgress = true;
