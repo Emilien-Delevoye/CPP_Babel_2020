@@ -30,11 +30,11 @@
 class UserPage : public QWidget {
     Q_OBJECT
     public:
-        UserPage(QWidget *parent = nullptr);
+        explicit UserPage(QWidget *parent = nullptr);
         ~UserPage();
         CustomButton *getLogOutButton() const;
         void paintEvent(QPaintEvent *event) override;
-        void init(const std::vector<User *>& _users);
+        void init(const std::vector<User *>& _users, const std::string &serverIP, const std::string &userLogin);
         CustomButton *getHangUpButton() const;
         CustomButton *getCallButton() const;
         void setUserInfo(const std::string &login, const std::string &ip);
@@ -45,21 +45,25 @@ class UserPage : public QWidget {
         CustomWidget *_usersWidget;
         CustomWidget *_callWidget;
         CustomWidget *_callWidgetTop;
+        CustomWidget *_callWidgetMiddle;
         CustomWidget *_callWidgetBottom;
         QScrollArea *_usersList;
         QVBoxLayout *_userVLayout;
         QVBoxLayout *_callVLayout;
         QVBoxLayout *_callVLayoutTop;
+        QVBoxLayout *_callVLayoutMiddle;
         QHBoxLayout *_callHLayoutBottom;
         CustomButton *_callButton;
         CustomButton *_logOutButton;
-        CustomText *_userLogin;
-        CustomText *_userIP;
+        CustomText *_userLoginToCall;
+        CustomText *_userIPToCall;
         CustomButton *_hangUpButton;
         QTimer *_timer;
         CustomText *_timerText;
         CustomText *_actualTime;
         int _elapsedSeconds;
+        CustomText *_userConnectedText;
+        CustomText *_serverIPText;
 
 
 };

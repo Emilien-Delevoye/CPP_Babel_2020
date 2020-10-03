@@ -9,11 +9,13 @@
 
 UserPage::UserPage(QWidget *parent) : QWidget(parent)
 {
-    _userLogin = new CustomText(this);
-    _userIP = new CustomText(this);
-    _callWidgetBottom = new CustomWidget(this);
+    _userLoginToCall = new CustomText(this);
+    _userIPToCall = new CustomText(this);
     _callWidgetTop = new CustomWidget(this);
+    _callWidgetBottom = new CustomWidget(this);
+    _callWidgetMiddle = new CustomWidget(this);
     _callVLayoutTop = new QVBoxLayout(_callWidgetTop);
+    _callVLayoutMiddle = new QVBoxLayout(_callWidgetMiddle);
     _callHLayoutBottom = new QHBoxLayout(_callWidgetBottom);
     _usersList = new QScrollArea(this);
     _usersWidget = new CustomWidget(this);
@@ -27,6 +29,8 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
     _timer = new QTimer(this);
     _timerText = new CustomText(this);
     _actualTime = new CustomText(this);
+    _userConnectedText = new CustomText(this);
+    _serverIPText = new CustomText(this);
     _timer->setInterval(1000);
     _elapsedSeconds = 0;
     connect(_timer, &QTimer::timeout, [&]() {
@@ -62,32 +66,36 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
     _hangUpButton->setProperty("name", "hangup");
     _hangUpButton->hide();
     _logOutButton->setToolTip("Disconnect yourself from the server");
-    _userLogin->setText("login");
-    _userLogin->setProperty("name", "userLogin");
-    _userIP->setText("127.0.0.1");
-    _userIP->setProperty("name", "userIP");
+    _userLoginToCall->setText("login");
+    _userLoginToCall->setProperty("name", "userLogin");
+    _userIPToCall->setText("127.0.0.1");
+    _userIPToCall->setProperty("name", "userIP");
     _timerText->setProperty("name", "timerText");
     _usersWidget->setProperty("name", "userWidget");
     _usersList->setWidget(_usersWidget);
+    _callWidgetTop->setProperty("name", "callWidgetTop");
     _callWidgetBottom->setProperty("name", "callWidgetBottom");
 
     _usersWidget->setLayout(_userVLayout);
     _hLayout->addWidget(_usersList);
     _callVLayoutTop->addWidget(_actualTime);
-    _callVLayoutTop->addSpacing(50);
-    _callVLayoutTop->addWidget(_userLogin);
-    _callVLayoutTop->addSpacing(20);
-    _callVLayoutTop->addWidget(_userIP);
-    _callVLayoutTop->addSpacing(20);
-    _callVLayoutTop->addWidget(_timerText);
-    _callVLayoutTop->addSpacing(30);
-    _callVLayoutTop->addWidget(_callButton);
-    _callVLayoutTop->addWidget(_hangUpButton);
-    _callVLayoutTop->setAlignment(Qt::AlignCenter);
-    _callWidgetTop->setLayout(_callVLayoutTop);
+    _callVLayoutTop->addWidget(_serverIPText);
+    _callVLayoutTop->addWidget(_userConnectedText);
+    _callVLayoutTop->addWidget(_actualTime);
+    _callVLayoutMiddle->addWidget(_userLoginToCall);
+    _callVLayoutMiddle->addSpacing(20);
+    _callVLayoutMiddle->addWidget(_userIPToCall);
+    _callVLayoutMiddle->addSpacing(20);
+    _callVLayoutMiddle->addWidget(_timerText);
+    _callVLayoutMiddle->addSpacing(30);
+    _callVLayoutMiddle->addWidget(_callButton);
+    _callVLayoutMiddle->addWidget(_hangUpButton);
+    _callVLayoutMiddle->setAlignment(Qt::AlignCenter);
+    _callWidgetMiddle->setLayout(_callVLayoutMiddle);
     _callHLayoutBottom->addWidget(_logOutButton);
     _callWidgetBottom->setLayout(_callHLayoutBottom);
     _callVLayout->addWidget(_callWidgetTop);
+    _callVLayout->addWidget(_callWidgetMiddle);
     _callVLayout->addWidget(_callWidgetBottom);
     _callWidget->setLayout(_callVLayout);
     _hLayout->addWidget(_callWidget);
@@ -115,25 +123,28 @@ CustomButton *UserPage::getLogOutButton() const
     return _logOutButton;
 }
 
-void UserPage::init(const std::vector<User *>& _users)
+void UserPage::init(const std::vector<User *>& _users, const std::string &serverIP, const std::string &userLogin)
 {
     for (auto user : _users) {
         _userVLayout->addWidget(user);
     }
-    _userLogin->hide();
-    _userIP->hide();
+    _userLoginToCall->hide();
+    _userIPToCall->hide();
     _callButton->hide();
     _hangUpButton->hide();
+
+    _userConnectedText->setText(QString::fromStdString(std::string("Connected as : " + userLogin)));
+    _serverIPText->setText(QString::fromStdString(std::string("Server IP : " + serverIP)));
 }
 
 void UserPage::setUserInfo(const std::string &login, const std::string &ip)
 {
-    _userLogin->setText(QString::fromStdString(login));
-    _userIP->setText(QString::fromStdString(ip));
+    _userLoginToCall->setText(QString::fromStdString(login));
+    _userIPToCall->setText(QString::fromStdString(ip));
     _callButton->setText(QString::fromStdString("Call ") + QString::fromStdString(login));
 
-    _userLogin->show();
-    _userIP->show();
+    _userLoginToCall->show();
+    _userIPToCall->show();
     _callButton->show();
 }
 

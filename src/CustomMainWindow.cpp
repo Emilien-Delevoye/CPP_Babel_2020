@@ -83,7 +83,7 @@ void CustomMainWindow::navToUserPage()
             }
         });
     }
-    _userPage->init(_users);
+    _userPage->init(_users, _serverIP, _userLogin);
     _pages->setCurrentWidget(_userPage);
 }
 

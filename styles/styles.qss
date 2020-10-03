@@ -148,3 +148,8 @@ CustomWidget[name="callWidgetBottom"]
 {
     max-height: 52px;
 }
+
+CustomWidget[name="callWidgetTop"]
+{
+    max-height: 100px;
+}
