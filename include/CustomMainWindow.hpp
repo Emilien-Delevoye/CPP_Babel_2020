@@ -37,11 +37,13 @@ class CustomMainWindow : public QMainWindow {
         QStackedWidget *_pages;
         std::string _otherIP;
         std::string _otherLogin;
-        std::string _userIP;
+        std::string _serverIP;
         std::string _userLogin;
+        std::string _userPassword;
         bool _callInProgress;
         void navToUserPage();
         void navToConnectionPage();
+        bool checkField() const;
 
 };
 

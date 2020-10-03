@@ -13,10 +13,12 @@ ConnectionPage::ConnectionPage(QWidget *parent) : QWidget(parent)
 {
     _vLayout = new QVBoxLayout(this);
     _formLayout = new QFormLayout(this);
-    _formWidget = new QWidget(this);
+    _formWidget = new CustomWidget(this);
     _connectButton = new CustomButton(this, "Connect");
+    _errorMessage = new CustomText(this, "Error :");
 
     _connectButton->setProperty("name", "login");
+    _errorMessage->setProperty("name", "error");
     _vLayout->setMargin(80);
 
     _lineEdits[HOME_IP_LINE_EDIT] = new CustomLineEdit(this);
@@ -36,6 +38,9 @@ ConnectionPage::ConnectionPage(QWidget *parent) : QWidget(parent)
 
     _vLayout->setMargin(300);
     _vLayout->addWidget(_formWidget, 0,Qt::AlignCenter);
+    _vLayout->setSpacing(32);
+    _vLayout->addWidget(_errorMessage, 0,Qt::AlignCenter);
+    _errorMessage->hide();
     _vLayout->setSpacing(32);
     _vLayout->addWidget(_connectButton, 0,Qt::AlignCenter);
     setLayout(_vLayout);
@@ -62,15 +67,23 @@ CustomButton *ConnectionPage::getConnectButton() const
 
 void ConnectionPage::init()
 {
+    _errorMessage->hide();
 }
 
-void ConnectionPage::fillUserInfo(std::string &userLogin, std::string &userIp) const
+void ConnectionPage::fillUserInfo(std::string &serverIp, std::string &userLogin, std::string &userPassword) const
 {
+    serverIp = _lineEdits[HOME_IP_LINE_EDIT]->text().toStdString();
     userLogin = _lineEdits[HOME_LOGIN_LINE_EDIT]->text().toStdString();
-    userIp = _lineEdits[HOME_IP_LINE_EDIT]->text().toStdString();
+    userPassword =  _lineEdits[HOME_PASSWORD_LINE_EDIT]->text().toStdString();
 }
 
 void ConnectionPage::emptyPassword()
 {
     _lineEdits[HOME_PASSWORD_LINE_EDIT]->clear();
+}
+
+void ConnectionPage::setError(const std::string &errorMessage)
+{
+    _errorMessage->setText(QString::fromStdString(errorMessage));
+    _errorMessage->show();
 }

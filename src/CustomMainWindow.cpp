@@ -15,16 +15,14 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     _userPage = new UserPage(this);
     _pages = new QStackedWidget(this);
 
-    _otherIP = "ip";
-    _otherLogin = "login";
-    _userIP = "ip";
-    _userLogin = "login";
     _callInProgress = false;
 
     connect(_connectionPage->getConnectButton(), &QPushButton::clicked, [=]() {
-        _connectionPage->fillUserInfo(_userLogin, _userIP);
-        navToUserPage();
-        qDebug() << "Connected as " << QString::fromStdString(_userLogin) << " with Ip address " << QString::fromStdString(_userIP) << endl;
+        _connectionPage->fillUserInfo(_serverIP, _userLogin, _userPassword);
+        if (checkField()) {
+            navToUserPage();
+            qDebug() << "Connected as " << QString::fromStdString(_userLogin) << " with Ip address " << QString::fromStdString(_serverIP) << endl;
+        }
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
         if (!_callInProgress) {
@@ -99,4 +97,19 @@ void CustomMainWindow::navToConnectionPage()
 
     _connectionPage->init();
     _pages->setCurrentWidget(_connectionPage);
+}
+
+bool CustomMainWindow::checkField() const
+{
+    if (_serverIP.empty()) {
+        _connectionPage->setError("Error: Server field is empty.");
+        return false;
+    } else if (_userLogin.empty()) {
+        _connectionPage->setError("Error: Login field is empty.");
+        return false;
+    } else if (_userPassword.empty()) {
+        _connectionPage->setError("Error: Password field is empty.");
+        return false;
+    }
+    return true;
 }

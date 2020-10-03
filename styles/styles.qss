@@ -13,6 +13,11 @@ CustomText {
     font-weight: bold;
 }
 
+CustomText[name="error"] {
+    color: #ff5555;
+    font-weight: bold;
+}
+
 CustomButton[name="login"]
 {
     background-color: #8be9fd;

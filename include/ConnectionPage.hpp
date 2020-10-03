@@ -15,25 +15,29 @@
 #include <QPainter>
 #include "CustomLineEdit.hpp"
 #include "CustomButton.hpp"
+#include "CustomText.hpp"
+#include "CustomWidget.hpp"
 #include "enum.hpp"
 
 
 class ConnectionPage : public QWidget {
     Q_OBJECT
     public:
-        ConnectionPage(QWidget *parent = nullptr);
+        explicit ConnectionPage(QWidget *parent = nullptr);
         ~ConnectionPage();
         void paintEvent(QPaintEvent *event) override;
         CustomButton *getConnectButton() const;
         void init();
-        void fillUserInfo(std::string &userLogin, std::string &userIp) const;
+        void fillUserInfo(std::string &serverIp, std::string &userLogin, std::string &userPassword) const;
         void emptyPassword();
+        void setError(const std::string &errorMessage);
     private:
         CustomButton *_connectButton;
         QMap<QtLineEditID, CustomLineEdit *> _lineEdits;
         QVBoxLayout *_vLayout;
         QFormLayout *_formLayout;
-        QWidget *_formWidget;
+        CustomWidget *_formWidget;
+        CustomText *_errorMessage;
 };
 
 #endif //BABEL_CONNECTIONPAGE_HPP
