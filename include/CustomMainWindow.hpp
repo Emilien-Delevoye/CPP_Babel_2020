@@ -35,8 +35,10 @@ class CustomMainWindow : public QMainWindow {
         UserPage *_userPage;
         std::vector<User *> _users;
         QStackedWidget *_pages;
-        std::string _ipToCall;
-        std::string _loginToCall;
+        std::string _otherIP;
+        std::string _otherLogin;
+        std::string _userIP;
+        std::string _userLogin;
         bool _callInProgress;
         void navToUserPage();
         void navToConnectionPage();

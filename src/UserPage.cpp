@@ -26,9 +26,12 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
     _hangUpButton = new CustomButton(this, "Hang up");
     _timer = new QTimer(this);
     _timerText = new CustomText(this);
+    _actualTime = new CustomText(this);
     _timer->setInterval(1000);
     _elapsedSeconds = 0;
     connect(_timer, &QTimer::timeout, [&]() {
+        QString time1 = QTime::currentTime().toString();
+
         _elapsedSeconds++;
         int hours;
         int minutes;
@@ -45,6 +48,8 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
             + ":" + std::string((minutes < 10 ? "0" : "") + std::to_string(minutes) +
             ":" + std::string((seconds < 10 ? "0" : "") + std::to_string(seconds))));
         _timerText->setText(concat.c_str());
+        _actualTime->setText(time1);
+
     } );
     _timer->start();
     _timerText->hide();
@@ -68,9 +73,14 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
 
     _usersWidget->setLayout(_userVLayout);
     _hLayout->addWidget(_usersList);
+    _callVLayoutTop->addWidget(_actualTime);
+    _callVLayoutTop->addSpacing(50);
     _callVLayoutTop->addWidget(_userLogin);
+    _callVLayoutTop->addSpacing(20);
     _callVLayoutTop->addWidget(_userIP);
+    _callVLayoutTop->addSpacing(20);
     _callVLayoutTop->addWidget(_timerText);
+    _callVLayoutTop->addSpacing(30);
     _callVLayoutTop->addWidget(_callButton);
     _callVLayoutTop->addWidget(_hangUpButton);
     _callVLayoutTop->setAlignment(Qt::AlignCenter);

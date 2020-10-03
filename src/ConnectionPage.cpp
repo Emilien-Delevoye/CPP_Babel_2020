@@ -63,3 +63,14 @@ CustomButton *ConnectionPage::getConnectButton() const
 void ConnectionPage::init()
 {
 }
+
+void ConnectionPage::fillUserInfo(std::string &userLogin, std::string &userIp) const
+{
+    userLogin = _lineEdits[HOME_LOGIN_LINE_EDIT]->text().toStdString();
+    userIp = _lineEdits[HOME_IP_LINE_EDIT]->text().toStdString();
+}
+
+void ConnectionPage::emptyPassword()
+{
+    _lineEdits[HOME_PASSWORD_LINE_EDIT]->clear();
+}

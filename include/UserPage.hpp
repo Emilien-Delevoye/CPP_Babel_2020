@@ -58,6 +58,7 @@ class UserPage : public QWidget {
         CustomButton *_hangUpButton;
         QTimer *_timer;
         CustomText *_timerText;
+        CustomText *_actualTime;
         int _elapsedSeconds;
 
 

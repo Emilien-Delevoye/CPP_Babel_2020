@@ -11,17 +11,26 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
 {
     setWindowTitle(title);
 
-    _userPage = new UserPage(this);
     _connectionPage = new ConnectionPage(this);
+    _userPage = new UserPage(this);
     _pages = new QStackedWidget(this);
+
+    _otherIP = "ip";
+    _otherLogin = "login";
+    _userIP = "ip";
+    _userLogin = "login";
     _callInProgress = false;
 
     connect(_connectionPage->getConnectButton(), &QPushButton::clicked, [=]() {
+        _connectionPage->fillUserInfo(_userLogin, _userIP);
         navToUserPage();
+        qDebug() << "Connected as " << QString::fromStdString(_userLogin) << " with Ip address " << QString::fromStdString(_userIP) << endl;
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
-        if (!_callInProgress)
+        if (!_callInProgress) {
+            _connectionPage->emptyPassword();
             navToConnectionPage();
+        }
     });
     connect(_userPage->getCallButton(), &QPushButton::clicked, [=]() {
         _callInProgress = true;
@@ -70,9 +79,9 @@ void CustomMainWindow::navToUserPage()
         _users.push_back(user);
         connect(user, &QPushButton::clicked, [=]() {
             if (!_callInProgress) {
-                _ipToCall = user->getIP();
-                _loginToCall = user->getLogin();
-                _userPage->setUserInfo(_loginToCall, _ipToCall);
+                _otherIP = user->getIP();
+                _otherLogin = user->getLogin();
+                _userPage->setUserInfo(_otherLogin, _otherIP);
             }
         });
     }

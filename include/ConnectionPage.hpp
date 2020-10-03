@@ -26,6 +26,8 @@ class ConnectionPage : public QWidget {
         void paintEvent(QPaintEvent *event) override;
         CustomButton *getConnectButton() const;
         void init();
+        void fillUserInfo(std::string &userLogin, std::string &userIp) const;
+        void emptyPassword();
     private:
         CustomButton *_connectButton;
         QMap<QtLineEditID, CustomLineEdit *> _lineEdits;
