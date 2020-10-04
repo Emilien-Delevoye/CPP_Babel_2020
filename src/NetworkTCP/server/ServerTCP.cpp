@@ -8,6 +8,13 @@
 #include "NetworkTCP/server/ServerTCP.hpp"
 #include <thread>
 
+// Receive Msg -> client nb & msg
+// Receive Msg from client -> msg
+// Send Msg to (client, msg)
+// Send Msg to all clients (msg)
+
+/* On reçoit les demandes de call / raccrochage / décrochage */
+
 std::deque<std::shared_ptr<InstanceClientTCP>> ServerTCP::Clients;
 
 ServerTCP::ServerTCP(short port) : acceptor_(io_service_, tcp::endpoint(tcp::v4(), port)),
