@@ -27,7 +27,7 @@ public:
     explicit ReceiverUDP(const std::string &IpAddr, int port);
     void openServer() override;
     std::vector<unsigned char> getFromUDP() override;
-    size_t getEncBytesFromUDP();
+    [[nodiscard]] size_t getEncBytesFromUDP() const;
 private:
     void handleReceive(const boost::system::error_code &error, size_t bytes_transferred);
     boost::asio::io_service io_service;

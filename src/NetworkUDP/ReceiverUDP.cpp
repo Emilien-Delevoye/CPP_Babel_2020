@@ -13,7 +13,7 @@ ReceiverUDP::ReceiverUDP(const std::string &IpAddr, int port) : IReceiverUDP(IpA
 void ReceiverUDP::openServer()
 {
     this->socket.open(udp::v4());
-    this->recv_buffer.resize(200);
+    this->recv_buffer.resize(240);
     this->socket.bind(udp::endpoint(address::from_string("0.0.0.0"), this->_port));
     socket.async_receive_from(boost::asio::buffer(this->recv_buffer), this->remote_endpoint,
         boost::bind(&ReceiverUDP::handleReceive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
@@ -25,7 +25,7 @@ void ReceiverUDP::handleReceive(const boost::system::error_code &error, size_t b
 {
     this->encBytesFromUDP = bytes_transferred;
     if (error) {
-        std::cout << "Receive failed: " << error.message() << "\n";
+        std::cout << "Receive failed: " << error.message() << std::endl;
         return;
     }
     socket.async_receive_from(boost::asio::buffer(this->recv_buffer), this->remote_endpoint,
@@ -37,7 +37,7 @@ std::vector<unsigned char> ReceiverUDP::getFromUDP()
     return this->recv_buffer;
 }
 
-size_t ReceiverUDP::getEncBytesFromUDP()
+size_t ReceiverUDP::getEncBytesFromUDP() const
 {
     return this->encBytesFromUDP;
 }

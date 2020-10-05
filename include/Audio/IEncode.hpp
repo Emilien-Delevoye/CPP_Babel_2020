@@ -17,7 +17,7 @@ class IEncode
         virtual void decodeData() = 0;
     protected:
         //channel and sample data
-        const int CHANNEL_NB = 1;
+        const int CHANNEL_NB = 2;
         //Frames data
         const int SAMPLE_RATE = 48000;
         const int FRAME_SIZE = 120;

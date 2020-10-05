@@ -26,9 +26,11 @@ class SenderUDP : ISenderUDP {
 public:
     explicit SenderUDP(const std::string &IpAddr, int port);
     void sendToServer(std::vector<unsigned char> in, size_t frameSize) override;
+    ~SenderUDP();
 private:
-    udp::socket *socket = nullptr;
-    udp::endpoint *remote_endpoint = nullptr;
+    udp::socket *_socket = nullptr;
+    udp::endpoint *_remote_endpoint = nullptr;
+    boost::asio::io_service _io_service;
 };
 
 #endif //BABEL_SENDERUDP_HPP
