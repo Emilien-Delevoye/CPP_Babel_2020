@@ -39,6 +39,7 @@ bin
 CMakeFiles
 x64
 build
+doc/html
 Babel.sln	
 *.vcxproj
 *.filters
