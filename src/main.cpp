@@ -7,8 +7,11 @@
 
 #include "Call.hpp"
 
+int status_sound = 0;
+
 int main(int argc, char **argv)
 {
+    status_sound = std::stoi(argv[3]);
     try {
         Call call("127.0.0.1", std::stoi(argv[1]), std::stoi(argv[2]));
     } catch (FatalError &e) {

@@ -7,6 +7,8 @@
 
 #include "Call.hpp"
 
+extern int status_sound;
+
 Call::Call(const std::string &IpAddressIn, int PortReceiver, int PortSender) : Audio(), NetworkUDP(IpAddressIn, PortReceiver, PortSender)
 {
     while (this->_callActive) {
@@ -37,7 +39,8 @@ Call::Call(const std::string &IpAddressIn, int PortReceiver, int PortSender) : A
             }
             this->setDecoded(this->getDecoded());
             try {
-                this->writeStream();
+                if (status_sound == 1)
+                    this->writeStream();
             } catch (PortaudioError &e) {
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;
