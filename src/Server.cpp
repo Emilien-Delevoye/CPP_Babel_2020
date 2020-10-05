@@ -9,13 +9,16 @@
 
 [[noreturn]] Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
 {
+    Communication com(Communication::UPDATE_CLIENTS);
+
     while (true) {
-        if (serverTCP_.newClientConnected() or serverTCP_.newClientDisconnected()) {
-            serverTCP_.sendMessageToAllClientsConnected();
+        /*if (serverTCP_.newClientDisconnected()) {
+            serverTCP_.sendMessageToAllClientsConnected(msg);
         }
         if (serverTCP_.newMessageReceived()) {
             serverTCP_.getNewMessageReceivedClientId();
-            serverTCP_.sendMessageToClient(1);
+            serverTCP_.sendMessageToClient(1, msg);
         }
+        sleep(2);*/
     }
 }

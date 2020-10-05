@@ -24,12 +24,13 @@ void InstanceClientTCP::read()
             disconnected_ = true;
         } else {
             // If not disconnected, we print the received message
+            dataLength_ = length;
+
             std::cout << "\033[31m[Client's message]:\033[0m ";
             std::cout.write(data_, length);
-            dataLength_ = length;
             std::cout << "\n";
-            sleep(1);
-            write(std::string("Automatic answer from server id: ") + std::to_string(this->id_));
+
+            write(std::string("Message well received on id: ") + std::to_string(this->id_));
         }
     };
 

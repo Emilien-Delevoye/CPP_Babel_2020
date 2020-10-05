@@ -9,7 +9,7 @@
 #include <memory>
 #include <iostream>
 
-ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_), com_(Communication::PRESENTATION)
+ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_), com_(Communication::PRESENTATION, "0.0.0.0")
 {
     boost::asio::connect(socket_, resolver.resolve(ip, port));
     async_read();

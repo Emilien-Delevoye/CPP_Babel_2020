@@ -47,13 +47,12 @@ bool ServerTCP::newClientConnected()
 
 bool ServerTCP::newClientDisconnected()
 {
-    for (int i = 0; i < ServerTCP::clients_.size(); ++i) {
-        if (clients_[i]->isDisconnected()) {
-            clients_.erase(ServerTCP::clients_.begin() + i);
-            return true;
-        }
-    }
-    return true;
+    auto rv = std::any_of(clients_.begin(), clients_.end(), [](const std::shared_ptr<InstanceClientTCP> &o) {return o->isDisconnected();});
+
+    clients_.erase(std::remove_if(clients_.begin(), clients_.end(),
+                   [](const std::shared_ptr<InstanceClientTCP>& o) {return o->isDisconnected();}),
+                   clients_.end());
+    return rv;
 }
 
 void ServerTCP::sendMessageToAllClientsConnected(std::string &msg)
@@ -64,28 +63,22 @@ void ServerTCP::sendMessageToAllClientsConnected(std::string &msg)
 
 bool ServerTCP::newMessageReceived()
 {
-    for (auto &c : clients_)
-        if (!c->getData().empty()) {
-            messageClientId_ = c->getId();
-            return true;
-        }
-    return false;
+    return std::any_of(clients_.begin(), clients_.end(), [](const std::shared_ptr<InstanceClientTCP> &o) {return !o->getData().empty();});;
 }
 
 std::string ServerTCP::getNewMessageReceivedClientId()
 {
     for (auto &c : clients_)
-        if (c->getId() == messageClientId_ and messageClientId_ != -1)
-            return c->getData();
-    std::cerr << "\033[31;1mError Empty message\033[0m" << std::endl;
+        if (!c->getData().empty())
+            return c->getDataClear();
+    printf("omg\n");
     return std::string("");
 }
 
 void ServerTCP::sendMessageToClient(int id, std::string &msg)
 {
-    for (auto &c : clients_) {
+    for (auto &c : clients_)
         if (c->getId() == id)
             c->write(msg);
-    }
 }
 

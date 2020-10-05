@@ -46,7 +46,6 @@ private:
 
     std::thread *thread_ = nullptr;
     int idCounter_ = 0;
-    int messageClientId_ = -1;
     bool newClientConnected_ = false;
 };
 

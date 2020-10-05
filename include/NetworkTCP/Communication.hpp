@@ -19,6 +19,7 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #include <iostream>
 
@@ -49,13 +50,20 @@ public:
     std::vector<std::string> ports_;
 
     static std::string serializeObj(Communication &obj) {
-        std::stringstream ss;
+        std::ostringstream ss;
         boost::archive::binary_oarchive oa(ss);
-        oa << obj;
+        oa & obj;
 
         return ss.str();
     }
-    inline void ping() {std::cout << "ping" << std::endl;}
+    static Communication unSerializeObj(std::string &obj) {
+        Communication c(Communication::PRESENTATION);
+        std::istringstream ss(obj);
+        boost::archive::binary_iarchive ia(ss);
+        ia & c;
+
+        return c;
+    }
 public:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)

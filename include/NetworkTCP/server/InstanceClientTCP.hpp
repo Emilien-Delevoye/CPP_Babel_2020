@@ -37,6 +37,11 @@ public:
     void start();
     void write(std::string);
     std::string getData() {return std::string(data_, dataLength_);}
+    std::string getDataClear() {
+        std::string tmp = getData();
+        clear();
+        return tmp;
+    }
     void clear() {memset(data_, 0, max_length);}
     int getId() {return id_;}
     bool isDisconnected() {return disconnected_;}
