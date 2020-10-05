@@ -17,7 +17,6 @@
         }
         if (serverTCP_.newClientConnected()) {
             serverTCP_.sendMessageToAllClientsConnected(tmp);
-
         }
 
         /*

@@ -37,16 +37,10 @@ void ClientTCP::async_read()
                 cbf_(tmp);
                 std::cout << "sanity check well passed" << std::endl;
             } catch (boost::archive::archive_exception &e) {
-                std::cerr << e.what() << std::endl;
-                async_write(errorMessage);
-            } else {
-                async_write(validMessage);
+                std::cerr << "\033[31mERROR \033[0m" << e.what() << std::endl;
             }
-
             std::cout << std::endl;
 
-            // Answer "Automatic answer from client"
-            async_write(std::string("Automatic answer from client"));
         }
     };
     socket_.async_read_some(boost::asio::buffer(buffer_, max_length), Hrd);

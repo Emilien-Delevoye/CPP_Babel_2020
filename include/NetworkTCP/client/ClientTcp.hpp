@@ -36,9 +36,6 @@ private:
     tcp::resolver resolver;
     std::thread *thread_ = nullptr;
     callBackFct cbf_;
-    std::string errorMessage;
-    std::string validMessage;
 };
-
 
 #endif //BABEL_CLIENTTCP_HPP

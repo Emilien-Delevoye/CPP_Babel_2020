@@ -49,8 +49,20 @@ add_executable(babel
         include/NetworkTCP/server/InstanceClientTCP.hpp
         include/NetworkTCP/server/ServerTCP.hpp
         include/NetworkTCP/Communication.hpp
-        include/NetworkTCP/Logger.hpp src/NetworkTCP/client/ClientTcp.cpp include/NetworkTCP/client/ClientTcp.hpp
-        #src/NetworkTCP/tmp.cpp
-        src/Server.cpp include/Server.hpp include/NetworkTCP/server/CallBacks.hpp)
+        include/NetworkTCP/Logger.hpp
+        src/NetworkTCP/client/ClientTcp.cpp
+        include/NetworkTCP/client/ClientTcp.hpp
+        src/Server.cpp
+        include/Server.hpp
+        include/NetworkTCP/server/CallBacks.hpp
+        src/Users.cpp
+        include/Users.hpp)
 
 target_link_libraries(babel ${CONAN_LIBS} Qt5::Widgets)
+
+file(GLOB files "*.cpp")
+foreach(file ${files})
+    get_filename_component(file_basename ${file} NAME_WE)
+    add_executable(${file_basename} ${file})
+    target_link_libraries(${file_basename} PRIVATE sqlite_orm sqlite3)
+endforeach()
