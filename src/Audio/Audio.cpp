@@ -17,8 +17,10 @@ Audio::Audio() : Opus(), PortAudio()
         this->startStream();
     } catch (OpusError &e) {
         std::cerr << e.what() << std::endl;
+        throw FatalError("FatalError (Opus): ", std::string(e.what()));
     } catch (PortaudioError &e) {
         std::cerr << e.what() << std::endl;
+        throw FatalError("FatalError (PortAudio): ", std::string(e.what()));
     } catch (std::exception &e) {
         std::cerr << "Pas Pouet 2 " << e.what() << std::endl;
     }

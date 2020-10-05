@@ -31,6 +31,13 @@ class BabelException : public std::exception
         std::string _message;
 };
 
+class FatalError : public BabelException
+{
+public:
+    explicit FatalError(std::string const &component = "Fatal Error: ",
+                        std::string const &message = "A fatal error occured.") : BabelException(component, message) {};
+};
+
 class OpusError : public BabelException
 {
     public:
