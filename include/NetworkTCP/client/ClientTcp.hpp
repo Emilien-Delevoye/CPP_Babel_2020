@@ -23,16 +23,21 @@ public:
     void async_read();
     void write(std::string msg);
     void async_write(std::string);
+    void setCheckMessageIntegrityCallBack(callBackFct);
 
 private:
     enum {
         max_length = 1024
     };
-    char data_[max_length];
+    char buffer_[max_length];
+    std::string data;
     boost::asio::io_context io_context_;
     tcp::socket socket_{io_context_};
     tcp::resolver resolver;
-    Communication com_;
+    std::thread *thread_ = nullptr;
+    callBackFct cbf_;
+    std::string errorMessage;
+    std::string validMessage;
 };
 
 

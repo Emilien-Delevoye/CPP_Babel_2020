@@ -32,6 +32,7 @@ void server() {
     std::string defaultPort = "8080";
 
     ClientTCP client(defaultIP, defaultPort);
+    client.setCheckMessageIntegrityCallBack(&Communication::unSerializeObj);
 
     while (true);
 }

@@ -24,16 +24,15 @@ void ServerTCP::handleConnections()
     [this](boost::system::error_code ec) {
         if (!ec) {
             ++idCounter_;
-            newClientConnected_ = true;
             std::cout << "New Connection (ID: " + std::to_string(idCounter_) + ")" << std::endl;
             std::shared_ptr<InstanceClientTCP> newClient = std::make_shared<InstanceClientTCP>(
                     std::move(socket_), idCounter_);
             newClient->start();
             ServerTCP::clients_.push_back(newClient);
+            newClientConnected_ = true;
         }
         handleConnections();
     };
-
     acceptor_.async_accept(socket_, Hco);
 }
 
@@ -57,8 +56,10 @@ bool ServerTCP::newClientDisconnected()
 
 void ServerTCP::sendMessageToAllClientsConnected(std::string &msg)
 {
-    for (auto &c : clients_)
+    for (auto &c : clients_) {
+        printf("id %d\n", c->getId());
         c->write(msg);
+    }
 }
 
 bool ServerTCP::newMessageReceived()

@@ -30,7 +30,8 @@ void InstanceClientTCP::read()
             std::cout.write(data_, length);
             std::cout << "\n";
 
-            write(std::string("Message well received on id: ") + std::to_string(this->id_));
+            //write(std::string("Message well received on id: ") + std::to_string(this->id_));
+            read();
         }
     };
 

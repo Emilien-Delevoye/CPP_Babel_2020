@@ -23,7 +23,6 @@
 #include <boost/serialization/vector.hpp>
 #include <iostream>
 
-
 class Communication {
 public:
     enum type {
@@ -31,7 +30,8 @@ public:
         CALL,
         HANG_UP,
         PICK_UP,
-        UPDATE_CLIENTS
+        UPDATE_CLIENTS,
+        CONFIRMATION
     };
     Communication(Communication::type t, std::string ip="127.0.0.1", std::string port="8080") : t_(t), ip_(std::move(ip)), port_(std::move(port)) {}
 
@@ -68,8 +68,10 @@ public:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
-        ar & id_;
         ar & t_;
+
+        ar & id_;
+        ar & name_;
         ar & ip_;
         ar & port_;
 
@@ -79,6 +81,6 @@ public:
         ar & ports_;
     }
 };
-typedef void (Communication::*callBackFct)();
+typedef Communication (*callBackFct)(std::string &obj);
 
 #endif //BABEL_COMMUNICATION_HPP
