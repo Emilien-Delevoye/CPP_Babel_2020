@@ -27,7 +27,7 @@ using boost::asio::ip::address;
 
 class ServerTCP {
 public:
-    ServerTCP(short port);
+    ServerTCP(std::string& ip, short port);
     static std::deque<std::shared_ptr<InstanceClientTCP>> Clients;
 
 private:

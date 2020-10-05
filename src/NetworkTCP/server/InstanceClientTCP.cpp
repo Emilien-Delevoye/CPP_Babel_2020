@@ -21,10 +21,10 @@ void InstanceClientTCP::read()
 
                 // If the client is disconnected
                 if ((boost::asio::error::eof == ec) || (boost::asio::error::connection_reset == ec)) {
-                    std::cout << "Disconnected ID: " + std::to_string(connectionId) << std::endl;
+                    std::cout << "Disconnected ID: " + std::to_string(id_) << std::endl;
                     // Search it in the client list
                     for (int i = 0; i < ServerTCP::Clients.size(); ++i) {
-                        if (ServerTCP::Clients[i]->connectionId == connectionId)
+                        if (ServerTCP::Clients[i]->id_ == id_)
                             // Remove him from the list
                             ServerTCP::Clients.erase(ServerTCP::Clients.begin() + i);
                     }
@@ -37,7 +37,7 @@ void InstanceClientTCP::read()
                     //memset(data_, 0, length);
                     //strcpy(data_, "Automactic answer from server");
                     sleep(1);
-                    write(std::string("Automactic answer from server id: ") + std::to_string(this->connectionId));
+                    write(std::string("Automactic answer from server id: ") + std::to_string(this->id_));
                 }
             };
 

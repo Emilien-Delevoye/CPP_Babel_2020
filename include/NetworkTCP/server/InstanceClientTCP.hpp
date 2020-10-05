@@ -36,7 +36,7 @@ public:
 
     void start();
 
-    int connectionId;
+    int id_;
 private:
     void read();
     void write(std::string);

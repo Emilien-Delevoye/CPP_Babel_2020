@@ -16,17 +16,18 @@ using boost::asio::ip::tcp;
 using namespace std;
 
 void server() {
+    std::string defaultIP = "0.0.0.0";
     short defaultPort = 8080;
 
     try {
-        ServerTCP s(defaultPort);
+        ServerTCP s(defaultIP, defaultPort);
     } catch (std::exception &e) {
         std::cerr << "Exception: " << e.what() << "\n";
     }
 }
 
 [[noreturn]] void client() {
-    std::string defaultIP = "127.0.0.1";
+    std::string defaultIP = "0.0.0.0";
     std::string defaultPort = "8080";
 
     ClientTCP client(defaultIP, defaultPort);

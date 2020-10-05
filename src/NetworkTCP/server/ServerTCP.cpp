@@ -17,8 +17,10 @@
 
 std::deque<std::shared_ptr<InstanceClientTCP>> ServerTCP::Clients;
 
-ServerTCP::ServerTCP(short port) : acceptor_(io_service_, tcp::endpoint(tcp::v4(), port)),
-                                   socket_(io_service_) {
+ServerTCP::ServerTCP(std::string &ip, short port) : acceptor_(io_service_,
+                                                              tcp::endpoint(address::from_string(ip), port)),
+                                                    socket_(io_service_)
+{
     handleConnections();
     std::cout << "Server Started! Listening on Port(" + std::to_string(port) + ")" << std::endl;
     io_service_.run();
@@ -31,9 +33,10 @@ void ServerTCP::handleConnections()
                 if (!ec) {
                     ++i;
                     std::cout << "New Connection (ID: " + std::to_string(i) + ")" << std::endl;
-                    std::shared_ptr<InstanceClientTCP> newClient = std::make_shared<InstanceClientTCP>(std::move(socket_));
+                    std::shared_ptr<InstanceClientTCP> newClient = std::make_shared<InstanceClientTCP>(
+                            std::move(socket_));
                     newClient->start();
-                    newClient->connectionId = i;
+                    newClient->id_ = i;
                     ServerTCP::Clients.push_back(newClient);
                 }
                 handleConnections();
