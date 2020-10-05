@@ -7,7 +7,7 @@
 
 #include "Network/NetworkUDP.hpp"
 
-NetworkUDP::NetworkUDP(const std::string &ipAddr, int PortReceiver, int PortSender) : SenderUDP(ipAddr, PortSender), ReceiverUDP(ipAddr, PortReceiver)
+NetworkUDP::NetworkUDP(const std::string &ipAddr, int PortReceiver, int PortSender, Audio *audio) : SenderUDP(ipAddr, PortSender), ReceiverUDP(ipAddr, PortReceiver, audio)
 {
     this->openServer();
 }

@@ -24,7 +24,7 @@ using boost::asio::ip::address;
 
 class ReceiverUDP : IReceiverUDP {
 public:
-    explicit ReceiverUDP(const std::string &IpAddr, int port);
+    explicit ReceiverUDP(const std::string &IpAddr, int port, Audio *audio);
     void openServer() override;
     std::vector<unsigned char> getFromUDP() override;
     [[nodiscard]] size_t getEncBytesFromUDP() const;

@@ -16,7 +16,7 @@
 #include "PortAudio.hpp"
 
 class Audio : public Opus, public PortAudio {
-protected:
+public:
     explicit Audio();
 };
 

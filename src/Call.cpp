@@ -9,38 +9,38 @@
 
 extern int status_sound;
 
-Call::Call(const std::string &IpAddressIn, int PortReceiver, int PortSender) : Audio(), NetworkUDP(IpAddressIn, PortReceiver, PortSender)
+Call::Call(const std::string &IpAddressIn, int PortReceiver, int PortSender) : _audio(), _networkUDP(IpAddressIn, PortReceiver, PortSender, &_audio)
 {
     while (this->_callActive) {
         try {
             // Send Data
             try {
-                this->readStream();
+                this->_audio.readStream();
             } catch (PortaudioError &e) {
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;
             }
-            this->setCaptured(this->getCaptured());
+            this->_audio.setCaptured(this->_audio.getCaptured());
             try {
-                this->encodeData();
+                this->_audio.encodeData();
             } catch (OpusError &e) {
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;
             }
-            this->sendToServer(this->getEncoded(), this->getEncBytes());
+            this->_networkUDP.sendToServer(this->_audio.getEncoded(), this->_audio.getEncBytes());
 
             // Receive data
-            this->setToDecode(this->getFromUDP(), this->getEncBytesFromUDP());
+            this->_audio.setToDecode(this->_networkUDP.getFromUDP(), this->_networkUDP.getEncBytesFromUDP());
             try {
-                this->decodeData();
+                this->_audio.decodeData();
             } catch (OpusError &e) {
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;
             }
-            this->setDecoded(this->getDecoded());
+            this->_audio.setDecoded(this->_audio.getDecoded());
             try {
                 if (status_sound == 1)
-                    this->writeStream();
+                    this->_audio.writeStream();
             } catch (PortaudioError &e) {
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;

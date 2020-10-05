@@ -16,8 +16,8 @@
 #include "SenderUDP.hpp"
 
 class NetworkUDP : public ReceiverUDP, public SenderUDP {
-protected:
-    explicit NetworkUDP(const std::string &ipAddr, int PortReceiver, int PortSender);
+public:
+    explicit NetworkUDP(const std::string &ipAddr, int PortReceiver, int PortSender, Audio *audio);
 };
 
 #endif //BABEL_NETWORKUDP_HPP

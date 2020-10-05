@@ -8,7 +8,7 @@
 #include "Network/ReceiverUDP.hpp"
 #include <thread>
 
-ReceiverUDP::ReceiverUDP(const std::string &IpAddr, int port) : IReceiverUDP(IpAddr, port) {}
+ReceiverUDP::ReceiverUDP(const std::string &IpAddr, int port, Audio *audio) : IReceiverUDP(IpAddr, port, audio) {}
 
 void ReceiverUDP::openServer()
 {
