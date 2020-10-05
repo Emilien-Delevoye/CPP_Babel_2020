@@ -1,21 +1,23 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file User.hpp
+ * @brief User class prototype
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ * This class is useful to describe how the User is represented in our program.
+ * This class is composed of two methods (getter) and two member variables (login and ip).
+ *
 */
 
 #ifndef BABEL_USER_HPP
 #define BABEL_USER_HPP
 
-#include <string>
 #include "CustomButton.hpp"
 
 class User : public CustomButton {
     Q_OBJECT
     public:
-        User(QWidget *parent, const std::string &login = "login", const std::string &ip = "ip");
-        ~User();
+        explicit User(QWidget *parent = nullptr, const std::string &login = "login", const std::string &ip = "ip");
         std::string getLogin() const;
         std::string getIP() const;
     private:

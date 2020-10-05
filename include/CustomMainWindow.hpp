@@ -1,8 +1,12 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file CustomMainWindow.hpp
+ * @brief CustomMainWindow class prototype
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ * This class permit to create the main window of your application.<br>
+ * This class inherit from QMainWindow.<br>
+ * This class inherit from QMainWindow.
 */
 
 #ifndef B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H
@@ -11,9 +15,8 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <QFormLayout>
-#include <QApplication>
 #include <QDesktopWidget>
-#include <QWidget>
+#include <QApplication>
 #include <QDebug>
 #include <QFile>
 #include <QStackedWidget>
@@ -27,9 +30,10 @@
 class CustomMainWindow : public QMainWindow {
     Q_OBJECT
     public:
-        explicit CustomMainWindow(QWidget *parent = nullptr, const QString &title = "Window");
-        ~CustomMainWindow();
-        void centered();
+        explicit CustomMainWindow(QWidget *parent = nullptr, const QString &title = "Babel");
+        void navToUserPage();
+        void navToConnectionPage();
+        bool checkField() const;
     private:
         ConnectionPage *_connectionPage;
         UserPage *_userPage;
@@ -41,9 +45,6 @@ class CustomMainWindow : public QMainWindow {
         std::string _userLogin;
         std::string _userPassword;
         bool _callInProgress;
-        void navToUserPage();
-        void navToConnectionPage();
-        bool checkField() const;
 
 };
 

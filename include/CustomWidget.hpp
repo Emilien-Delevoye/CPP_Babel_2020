@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file CustomWidget.hpp
+ * @brief CustomWidget class prototype
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ * This class permit to create customisable widget.
+ *
 */
 
 #ifndef BABEL_CUSTOMWIDGET_HPP
@@ -16,8 +19,7 @@
 class CustomWidget : public QWidget {
     Q_OBJECT
     public:
-        CustomWidget(QWidget *parent = nullptr);
-        ~CustomWidget();
+        explicit CustomWidget(QWidget *parent = nullptr);
         void paintEvent(QPaintEvent *event) override;
     private:
 

@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file CustomText.hpp
+ * @brief CustomText class prototype
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ * This class permit to create customisable text.
+ *
 */
 
 #ifndef BABEL_CUSTOMTEXT_HPP
@@ -13,7 +16,7 @@
 class CustomText : public QLabel {
     Q_OBJECT
     public:
-        CustomText(QWidget *parent = nullptr, const QString &text = "text");
+        explicit CustomText(QWidget *parent = nullptr, const QString &text = "text");
     private:
 
 };
