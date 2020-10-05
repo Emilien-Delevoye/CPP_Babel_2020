@@ -7,7 +7,7 @@
 
 #include "Call.hpp"
 
-Call::Call(const std::string &IpAddressIn, int port, bool first) : Audio(), NetworkUDP(IpAddressIn, port, first)
+Call::Call(const std::string &IpAddressIn, int PortReceiver, int PortSender) : Audio(), NetworkUDP(IpAddressIn, PortReceiver, PortSender)
 {
     while (this->_callActive) {
         try {

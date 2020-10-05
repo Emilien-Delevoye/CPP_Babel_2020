@@ -19,7 +19,7 @@
 class Call : public Audio, public NetworkUDP
 {
 public:
-    explicit Call(const std::string &IpAddress, int port, bool first);
+    explicit Call(const std::string &IpAddress, int PortReceiver, int PortSender);
     void setMicState(bool state);
     void setSoundState(bool state);
     void stopCall();

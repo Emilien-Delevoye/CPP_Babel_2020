@@ -9,6 +9,6 @@
 
 int main(int argc, char **argv)
 {
-    Call call("127.0.0.1", 4242, true);
+    Call call("127.0.0.1", std::stoi(argv[1]), std::stoi(argv[2]));
     return 0;
 }
