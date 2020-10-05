@@ -20,6 +20,8 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
+#include <iostream>
+
 
 class Communication {
 public:
@@ -53,7 +55,7 @@ public:
 
         return ss.str();
     }
-
+    inline void ping() {std::cout << "ping" << std::endl;}
 public:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
@@ -69,5 +71,6 @@ public:
         ar & ports_;
     }
 };
+typedef void (Communication::*callBackFct)();
 
 #endif //BABEL_COMMUNICATION_HPP

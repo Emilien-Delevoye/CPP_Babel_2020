@@ -12,7 +12,6 @@
     #define _WIN32_WINNT  0x0601
 #endif
 
-#include "NetworkTCP/Communication.hpp"
 #include "NetworkTCP/server/InstanceClientTCP.hpp"
 
 #include <boost/asio.hpp>
@@ -21,6 +20,7 @@
 #include <string>
 #include <iostream>
 #include <deque>
+#include "NetworkTCP/Communication.hpp"
 
 using boost::asio::ip::tcp;
 using boost::asio::ip::address;
@@ -32,11 +32,13 @@ public:
 
 private:
     void handleConnections();
-    //void handleMessage(void *);
+
     boost::asio::io_service io_service_;
-    int i = 0;
     tcp::acceptor acceptor_;
     tcp::socket socket_;
+
+    std::thread *thread_ = nullptr;
+    int idCounter_ = 0;
 };
 
 

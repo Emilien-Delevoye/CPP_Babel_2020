@@ -9,6 +9,7 @@
 
 #include "NetworkTCP/server/ServerTCP.hpp"
 #include "NetworkTCP/client/ClientTcp.hpp"
+#include "Server.hpp"
 #include <boost/asio.hpp>
 #include "NetworkTCP/Logger.hpp"
 
@@ -20,7 +21,7 @@ void server() {
     short defaultPort = 8080;
 
     try {
-        ServerTCP s(defaultIP, defaultPort);
+        Server s(defaultIP, defaultPort);
     } catch (std::exception &e) {
         std::cerr << "Exception: " << e.what() << "\n";
     }

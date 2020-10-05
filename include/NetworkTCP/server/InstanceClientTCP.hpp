@@ -32,20 +32,22 @@ using boost::asio::ip::tcp;
 
 class InstanceClientTCP : public std::enable_shared_from_this<InstanceClientTCP> {
 public:
-    InstanceClientTCP(tcp::socket socket) : socket_(std::move(socket)) {}
+    InstanceClientTCP(tcp::socket socket, int id) : socket_(std::move(socket)), id_(id) {clear();}
 
     void start();
-
-    int id_;
+    void write(std::string);
+    std::string getData() {return std::string(data_, dataLength_);}
+    void clear() {memset(data_, 0, max_length);}
 private:
     void read();
-    void write(std::string);
 
+    int id_;
     tcp::socket socket_;
     enum {
         max_length = 1024
     };
-    char data_[max_length];
+    char data_[max_length]{};
+    size_t dataLength_ = 0;
 };
 
 #endif //BABEL_INSTANCECLIENTTCP_HPP

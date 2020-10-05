@@ -49,9 +49,8 @@ add_executable(babel
         include/NetworkTCP/server/InstanceClientTCP.hpp
         include/NetworkTCP/server/ServerTCP.hpp
         include/NetworkTCP/Communication.hpp
-        include/NetworkTCP/NetworkTCP.hpp
         include/NetworkTCP/Logger.hpp src/NetworkTCP/client/ClientTcp.cpp include/NetworkTCP/client/ClientTcp.hpp
         #src/NetworkTCP/tmp.cpp
-        )
+        src/Server.cpp include/Server.hpp include/NetworkTCP/server/CallBacks.hpp)
 
 target_link_libraries(babel ${CONAN_LIBS} Qt5::Widgets)
