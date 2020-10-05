@@ -13,8 +13,8 @@
         if (serverTCP_.newClientConnected() or serverTCP_.newClientDisconnected()) {
             serverTCP_.sendMessageToAllClientsConnected();
         }
-        if (serverTCP_.newMessageReveiced()) {
-            serverTCP_.getNewMessageReveicedClientId();
+        if (serverTCP_.newMessageReceived()) {
+            serverTCP_.getNewMessageReceivedClientId();
             serverTCP_.sendMessageToClient(1);
         }
     }

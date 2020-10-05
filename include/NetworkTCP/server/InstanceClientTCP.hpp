@@ -38,6 +38,8 @@ public:
     void write(std::string);
     std::string getData() {return std::string(data_, dataLength_);}
     void clear() {memset(data_, 0, max_length);}
+    int getId() {return id_;}
+    bool isDisconnected() {return disconnected_;}
 private:
     void read();
 
@@ -48,6 +50,7 @@ private:
     };
     char data_[max_length]{};
     size_t dataLength_ = 0;
+    bool disconnected_ = false;
 };
 
 #endif //BABEL_INSTANCECLIENTTCP_HPP

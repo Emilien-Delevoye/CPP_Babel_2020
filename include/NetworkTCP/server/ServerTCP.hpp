@@ -28,17 +28,26 @@ using boost::asio::ip::address;
 class ServerTCP {
 public:
     ServerTCP(std::string& ip, short port);
-    static std::deque<std::shared_ptr<InstanceClientTCP>> Clients;
+    bool newClientConnected();
+    bool newClientDisconnected();
+    void sendMessageToAllClientsConnected(std::string& msg);
+    bool newMessageReceived();
+    std::string getNewMessageReceivedClientId();
+
+    void sendMessageToClient(int id, std::string& msg);
 
 private:
     void handleConnections();
 
+    std::deque<std::shared_ptr<InstanceClientTCP>> clients_;
     boost::asio::io_service io_service_;
     tcp::acceptor acceptor_;
     tcp::socket socket_;
 
     std::thread *thread_ = nullptr;
     int idCounter_ = 0;
+    int messageClientId_ = -1;
+    bool newClientConnected_ = false;
 };
 
 
