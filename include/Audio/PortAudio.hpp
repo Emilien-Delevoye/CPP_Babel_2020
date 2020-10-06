@@ -19,21 +19,31 @@
 #include "BabelException.hpp"
 
 class PortAudio: public IAudio {
-    public:
-        PortAudio();
-        void startStream() final;
-        void readStream() override;
-        void writeStream() override;
-        void stopStream() final;
-        std::vector<unsigned short> getCaptured();
-        void setDecoded(std::vector<unsigned short>);
-        ~PortAudio();
-    private:
-        void init() final;
-        void stop() final;
-        PaStream *stream = nullptr;
-        std::vector<unsigned short> captured;
-        std::vector<unsigned short> decoded;
+public:
+    PortAudio();
+    void init() final;
+    [[nodiscard]] int getInputChannelNb() const override;
+    [[nodiscard]] int getOutputChannelNb() const override;
+    void startStream(int, int) final;
+    void readStream() override;
+    void writeStream() override;
+    void stopStream() final;
+    std::vector<unsigned short> getCaptured();
+    void setDecoded(std::vector<unsigned short>);
+    ~PortAudio();
+private:
+    void stop() final;
+    enum _st {
+            INPUT = 0,
+            OUTPUT = 1
+        };
+    PaStreamParameters _portAudioParameters[2];
+    const PaDeviceInfo* _deviceInfo[2];
+    PaStream *_stream = nullptr;
+    std::vector<unsigned short> _captured;
+    std::vector<unsigned short> _decoded;
+    int _numChannels[2];
+    bool _init = false;
 };
 
 #endif //BABEL_PORTAUDIO_HPP

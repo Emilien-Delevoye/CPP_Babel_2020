@@ -11,7 +11,9 @@
 class IAudio {
     public:
         virtual void init() = 0;
-        virtual void startStream() = 0;
+        [[nodiscard]] virtual int getInputChannelNb() const = 0;
+        [[nodiscard]] virtual int getOutputChannelNb() const = 0;
+        virtual void startStream(int, int) = 0;
         virtual void readStream() = 0;
         virtual void writeStream() = 0;
         virtual void stopStream() = 0;
