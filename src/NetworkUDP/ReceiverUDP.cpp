@@ -8,6 +8,8 @@
 #include "Network/ReceiverUDP.hpp"
 #include <thread>
 
+extern int read_value;
+
 ReceiverUDP::ReceiverUDP(const std::string &IpAddr, int port, Audio *audio) : IReceiverUDP(IpAddr, port, audio) {}
 
 void ReceiverUDP::openServer()
@@ -28,8 +30,6 @@ void ReceiverUDP::handleReceive(const boost::system::error_code &error, size_t b
         std::cout << "Receive failed: " << error.message() << std::endl;
         return;
     }
-    socket.async_receive_from(boost::asio::buffer(this->recv_buffer), this->remote_endpoint,
-        boost::bind(&ReceiverUDP::handleReceive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
     // Receive data
     this->_audio->setToDecode(this->recv_buffer, bytes_transferred);
     try {
@@ -39,10 +39,13 @@ void ReceiverUDP::handleReceive(const boost::system::error_code &error, size_t b
     }
     this->_audio->setDecoded(this->_audio->getDecoded());
     try {
-        this->_audio->writeStream();
+        if (read_value == 1)
+            this->_audio->writeStream();
     } catch (PortaudioError &e) {
         std::cerr << e.getComponent() << e.what() << std::endl;
     }
+    socket.async_receive_from(boost::asio::buffer(this->recv_buffer), this->remote_endpoint,
+        boost::bind(&ReceiverUDP::handleReceive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
 std::vector<unsigned char> ReceiverUDP::getFromUDP()

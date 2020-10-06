@@ -7,8 +7,12 @@
 
 #include "Call.hpp"
 
+int read_value = 0;
+
 int main(int argc, char **argv)
 {
+    if (argc == 4)
+        read_value = std::stoi(argv[3]);
     try {
         Call call("127.0.0.1", std::stoi(argv[1]), std::stoi(argv[2]));
     } catch (FatalError &e) {
