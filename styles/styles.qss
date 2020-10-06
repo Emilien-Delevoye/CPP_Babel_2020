@@ -1,0 +1,155 @@
+ConnectionPage
+{
+    background-color: #282a36;
+}
+
+CustomLineEdit {
+    color: #44475a;
+    background-color: #f8f8f2;
+}
+
+CustomText {
+    color: #f8f8f2;
+    font-weight: bold;
+}
+
+CustomText[name="error"] {
+    color: #ff5555;
+    font-weight: bold;
+}
+
+CustomButton[name="login"]
+{
+    background-color: #8be9fd;
+    font-weight: bolder;
+    padding: 8px 12px;
+    color: #282a36;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+CustomButton[name="login"]:hover
+{
+    background-color: #6db7cb;
+}
+
+CustomButton[name="login"]:pressed
+{
+    color: #ff79c6;
+}
+
+CustomButton[name="call"]
+{
+    background-color: #45cd66;
+    font-weight: bolder;
+    padding: 8px 12px;
+    color: #f8f8f2;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+CustomButton[name="call"]:hover
+{
+    background-color: #359e51;
+}
+
+CustomButton[name="call"]:pressed
+{
+    color: #3272a4;
+}
+
+CustomButton[name="logout"]
+{
+    background-color: #ff5555;
+    font-weight: bolder;
+    padding: 8px 12px;
+    color: #f8f8f2;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+CustomButton[name="logout"]:hover
+{
+    background-color: #c43d3d;
+}
+
+CustomButton[name="logout"]:pressed
+{
+    color: #3272a4;
+}
+
+CustomButton[name="hangup"]
+{
+    background-color: #ff5555;
+    font-weight: bolder;
+    padding: 8px 12px;
+    color: #f8f8f2;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+CustomButton[name="hangup"]:hover
+{
+    background-color: #c43d3d;
+}
+
+CustomButton[name="hangup"]:pressed
+{
+    color: #3272a4;
+}
+
+QLabel {
+    color: #f8f8f2;
+    font-weight: bolder;
+    font-size: 16px;
+    qproperty-alignment: AlignCenter;
+}
+
+
+UserPage {
+    background-color: #282a36;
+}
+
+
+QScrollBar {
+    color: #f8f8f2;
+    background-color: transparent;
+}
+
+CustomWidget[name="userWidget"]
+{
+    background-color: transparent;
+    color: transparent;
+}
+
+QScrollArea {
+    background-color: transparent;
+}
+
+User {
+    color: #f8f8f2;
+    font-weight: bolder;
+    font-size: 16px;
+    background-color: #bd93f9;
+    margin: 5px;
+    border-radius: 10px;
+    max-height: 40px;
+}
+
+User:hover {
+    background-color: #9276c1;
+}
+
+User:pressed {
+    color: #6db7cb;
+}
+
+CustomWidget[name="callWidgetBottom"]
+{
+    max-height: 52px;
+}
+
+CustomWidget[name="callWidgetTop"]
+{
+    max-height: 100px;
+}
