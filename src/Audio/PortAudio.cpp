@@ -26,8 +26,31 @@ void PortAudio::init()
 
 void PortAudio::startStream()
 {
-    PaError err = Pa_OpenDefaultStream(&this->stream, this->CHANNEL_NB, this->CHANNEL_NB, paInt16, this->SAMPLE_RATE,
-        this->FRAME_SIZE, nullptr, nullptr);
+    PaStreamParameters portAudioParameters[2];
+    const PaDeviceInfo* deviceInfo[2];
+    int numChannels;
+    const int INPUT = 0;
+    const int OUTPUT = 1;
+
+    portAudioParameters[INPUT].device = Pa_GetDefaultInputDevice();
+    portAudioParameters[OUTPUT].device = Pa_GetDefaultOutputDevice();
+    deviceInfo[INPUT] = Pa_GetDeviceInfo(portAudioParameters[INPUT].device);
+    deviceInfo[OUTPUT] = Pa_GetDeviceInfo(portAudioParameters[OUTPUT].device);
+    if (deviceInfo[INPUT]->maxInputChannels < deviceInfo[OUTPUT]->maxOutputChannels)
+        numChannels = deviceInfo[INPUT]->maxInputChannels;
+    else
+        numChannels = deviceInfo[OUTPUT]->maxOutputChannels;
+    portAudioParameters[INPUT].channelCount = numChannels;
+    portAudioParameters[INPUT].sampleFormat = paInt16;
+    portAudioParameters[INPUT].suggestedLatency = deviceInfo[INPUT]->defaultHighInputLatency;
+    portAudioParameters[INPUT].hostApiSpecificStreamInfo = nullptr;
+    portAudioParameters[OUTPUT].channelCount = numChannels;
+    portAudioParameters[OUTPUT].sampleFormat = paInt16;
+    portAudioParameters[OUTPUT].suggestedLatency = deviceInfo[OUTPUT]->defaultHighOutputLatency;
+    portAudioParameters[OUTPUT].hostApiSpecificStreamInfo = nullptr;
+    //Open Stream
+    PaError err = Pa_OpenStream(&this->stream, &portAudioParameters[INPUT], &portAudioParameters[OUTPUT],
+        this->SAMPLE_RATE, 512, paClipOff, nullptr, nullptr);
     if (err != paNoError) {
         std::cout << err << std::endl;
         std::cout << "Error unavailable -> " << paDeviceUnavailable << std::endl;

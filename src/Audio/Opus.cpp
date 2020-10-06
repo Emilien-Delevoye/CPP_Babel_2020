@@ -24,8 +24,7 @@ void Opus::createEncoder()
 
     this->enc = opus_encoder_create(this->SAMPLE_RATE, this->CHANNEL_NB, OPUS_APPLICATION_AUDIO, &opusErrorCode);
     if (opusErrorCode != OPUS_OK) {
-        std::cerr << opusErrorCode << std::endl;
-        throw OpusError("Opus: ", "Error : Opus encode creation error.");
+        throw OpusError("Opus: ", opus_strerror(opusErrorCode));
     }
     opusErrorCode = opus_encoder_ctl(this->enc, OPUS_SET_BITRATE(64000));
     //TMP -> Surveiller ce paramètre, il est intéressant sur le taux de compression
