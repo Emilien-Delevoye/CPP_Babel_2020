@@ -11,6 +11,7 @@
 
 #include "NetworkTCP/Communication.hpp"
 #include "NetworkTCP/server/ServerTCP.hpp"
+#include "Users.hpp"
 
 class Server {
 public:
@@ -18,6 +19,8 @@ public:
 
 private:
     ServerTCP serverTCP_;
+    Communication com_ = Communication(Communication::PRESENTATION);
+    DataBase db_;
 
 };
 
