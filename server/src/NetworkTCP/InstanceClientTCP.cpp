@@ -5,8 +5,8 @@
 ** Created by Cyprien
 */
 
-#include "NetworkTCP/server/InstanceClientTCP.hpp"
-#include "NetworkTCP/server/ServerTCP.hpp"
+#include "InstanceClientTCP.hpp"
+#include "ServerTCP.hpp"
 
 void InstanceClientTCP::start()
 {

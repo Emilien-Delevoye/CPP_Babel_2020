@@ -9,8 +9,8 @@
 #ifndef BABEL_SERVER_HPP
 #define BABEL_SERVER_HPP
 
-#include "NetworkTCP/Communication.hpp"
-#include "NetworkTCP/server/ServerTCP.hpp"
+#include "Communication.hpp"
+#include "ServerTCP.hpp"
 #include "Users.hpp"
 
 class Server {
@@ -21,7 +21,6 @@ private:
     ServerTCP serverTCP_;
     Communication com_ = Communication(Communication::PRESENTATION);
     DataBase db_;
-
 };
 
 

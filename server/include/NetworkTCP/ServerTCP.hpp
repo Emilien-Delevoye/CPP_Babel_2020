@@ -12,15 +12,14 @@
     #define _WIN32_WINNT  0x0601
 #endif
 
-#include "NetworkTCP/server/InstanceClientTCP.hpp"
-
+#include "InstanceClientTCP.hpp"
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/array.hpp>
 #include <string>
 #include <iostream>
 #include <deque>
-#include "NetworkTCP/Communication.hpp"
+#include "Communication.hpp"
 
 using boost::asio::ip::tcp;
 using boost::asio::ip::address;

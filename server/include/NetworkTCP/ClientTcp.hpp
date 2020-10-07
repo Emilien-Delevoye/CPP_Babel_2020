@@ -12,7 +12,7 @@
 #include <boost/asio.hpp>
 #include <iostream>
 #include <string>
-#include "NetworkTCP/Communication.hpp"
+#include "Communication.hpp"
 
 using boost::asio::ip::tcp;
 

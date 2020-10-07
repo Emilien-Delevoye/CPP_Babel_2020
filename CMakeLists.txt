@@ -1,5 +1,5 @@
 project(Babel)
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "./bin")
 
 if (UNIX)
@@ -16,104 +16,107 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 
 QT5_WRAP_CPP(MOC_Files
-        include/CustomMainWindow.hpp
-        include/CustomButton.hpp
-        include/User.hpp
-        include/UserPage.hpp
-        include/ConnectionPage.hpp
-        include/CustomLineEdit.hpp
-        include/CustomWidget.hpp
-        include/CustomText.hpp
-        )
+        client/include/CustomMainWindow.hpp
+        client/include/CustomButton.hpp
+        client/include/User.hpp
+        client/include/UserPage.hpp
+        client/include/ConnectionPage.hpp
+        client/include/CustomLineEdit.hpp
+        client/include/CustomWidget.hpp
+        client/include/CustomText.hpp
+)
 
-include_directories(${CMAKE_INCLUDE_PATH})
 include_directories(
-        include
-        src/NetworkTCP)
-add_executable(babel
-        src/main.cpp
-        src/Call.cpp
+        ${CMAKE_INCLUDE_PATH}
 
-        src/Audio/PortAudio.cpp
-        src/Audio/Opus.cpp
-        src/Audio/Audio.cpp
+        client/../shared/include
+        client/include/NetworkUDP
+        client/include/Audio
+        client/include
+        client/src
 
-        src/NetworkUDP/SenderUDP.cpp
-        src/NetworkUDP/ReceiverUDP.cpp
-        src/NetworkUDP/NetworkUDP.cpp
+        server/include/NetworkTCP/client
+        server/include/NetworkTCP/server
+        server/include/NetworkTCP
+        server/../shared/include
+        server/include
+        server/src
+)
 
-        src/NetworkTCP/server/InstanceClientTCP.cpp
-        src/NetworkTCP/server/ServerTCP.cpp
+set(CLIENT_SOURCES
+        client/src/main.cpp
+        client/src/Audio/PortAudio.cpp
+        client/src/Audio/Opus.cpp
+        client/src/CustomMainWindow.cpp
+        client/src/CustomButton.cpp
+        client/src/CustomText.cpp
+        client/src/CustomLineEdit.cpp
+        client/src/ConnectionPage.cpp
+        client/src/UserPage.cpp
+        client/src/User.cpp
+        client/src/CustomWidget.cpp
+        client/src/Audio/Audio.cpp
+        client/src/NetworkUDP/NetworkUDP.cpp
+        client/src/NetworkUDP/ReceiverUDP.cpp
+        client/src/NetworkUDP/SenderUDP.cpp
+        client/src/Call.cpp
+)
+
+set(CLIENT_INCLUDES
+        client/include/Audio/PortAudio.hpp
+        client/include/Audio/IAudio.hpp
+        client/include/Audio/Opus.hpp
+        client/include/Audio/IEncode.hpp
+        client/include/CustomMainWindow.hpp
+        client/include/CustomButton.hpp
+        client/include/enum.hpp
+        client/include/CustomText.hpp
+        client/include/CustomLineEdit.hpp
+        client/include/ConnectionPage.hpp
+        client/include/UserPage.hpp
+        client/include/User.hpp
+        client/include/CustomWidget.hpp
+        client/include/Audio/Audio.hpp
+        client/include/NetworkUDP/INetworkUDP.hpp
+        client/include/NetworkUDP/NetworkUDP.hpp
+        client/include/NetworkUDP/ReceiverUDP.hpp
+        client/include/NetworkUDP/SenderUDP.hpp
+        client/include/Call.hpp
+        shared/include/Communication.hpp
+        shared/include/BabelException.hpp
+)
 
 
-        include/Call.hpp
-        include/BabelException.hpp
+set(SERVER_SOURCES
+        server/src/main.cpp
+        server/src/NetworkTCP/InstanceClientTCP.cpp
+        server/src/NetworkTCP/ServerTCP.cpp
+        server/src/NetworkTCP/ClientTcp.cpp
+        server/src/Server.cpp
+        shared/src/Users.cpp
+)
 
-        include/Audio/PortAudio.hpp
-        include/Audio/IAudio.hpp
-        include/Audio/Opus.hpp
-        include/Audio/IEncode.hpp
-        include/Audio/Audio.hpp
+set(SERVER_INCLUDES
+        server/include/NetworkTCP/InstanceClientTCP.hpp
+        server/include/NetworkTCP/ServerTCP.hpp
+        server/include/NetworkTCP/ClientTcp.hpp
+        server/include/Logger.hpp
+        server/include/Server.hpp
+        shared/include/Communication.hpp
+        shared/include/BabelException.hpp
+        shared/include/Users.hpp
+)
 
-        include/NetworkUDP/SenderUDP.hpp
-        include/NetworkUDP/ReceiverUDP.hpp
-        include/NetworkUDP/INetworkUDP.hpp
-        include/NetworkUDP/NetworkUDP.hpp
+add_executable(babel_client ${MOC_Files} ${CLIENT_SOURCES} ${CLIENT_INCLUDES})
 
-        include/NetworkTCP/server/InstanceClientTCP.hpp
-        include/NetworkTCP/server/ServerTCP.hpp
-        include/NetworkTCP/Communication.hpp
-        include/NetworkTCP/Logger.hpp
-        src/NetworkTCP/client/ClientTcp.cpp
-        include/NetworkTCP/client/ClientTcp.hpp
-        src/Server.cpp
-        include/Server.hpp
-        include/NetworkTCP/server/CallBacks.hpp
-        src/Users.cpp
-        include/Users.hpp)
+add_executable(babel_server ${SERVER_SOURCES} ${SERVER_INCLUDES})
 
-include_directories(include)
-add_executable(babel ${MOC_Files}
-        src/main.cpp
-        include/Audio/PortAudio.hpp
-        src/Audio/PortAudio.cpp
-        include/Audio/IAudio.hpp
-        include/Audio/Opus.hpp
-        src/Audio/Opus.cpp
-        include/Audio/IEncode.hpp
-        include/BabelException.hpp
-        src/CustomMainWindow.cpp
-        include/CustomMainWindow.hpp
-        src/CustomButton.cpp
-        include/CustomButton.hpp
-        include/enum.hpp
-        src/CustomText.cpp
-        include/CustomText.hpp
-        src/CustomLineEdit.cpp
-        include/CustomLineEdit.hpp
-        src/ConnectionPage.cpp
-        include/ConnectionPage.hpp
-        src/UserPage.cpp
-        include/UserPage.hpp
-        src/User.cpp
-        include/User.hpp
-        src/CustomWidget.cpp
-        include/CustomWidget.hpp
-        src/Audio/Audio.cpp
-        include/Audio/Audio.hpp
-        include/Network/INetwork.hpp
-        include/Network/NetworkUDP.hpp
-        include/Network/ReceiverUDP.hpp
-        include/Network/SenderUDP.hpp
-        src/NetworkUDP/NetworkUDP.cpp
-        src/NetworkUDP/ReceiverUDP.cpp
-        src/NetworkUDP/SenderUDP.cpp
-        src/Call.cpp
-        include/Call.hpp)
+
 #target_link_libraries(babel ${CONAN_LIBS} opus)
 #target_link_libraries(babel ${CONAN_LIBS} portaudio)
-target_link_libraries(babel ${CONAN_LIBS} Qt5::Widgets)
-target_link_libraries(babel ${CONAN_LIBS} Qt5::Core)
+target_link_libraries(babel_server ${CONAN_LIBS})
+target_link_libraries(babel_client ${CONAN_LIBS} Qt5::Widgets)
+target_link_libraries(babel_client ${CONAN_LIBS} Qt5::Core)
 
 file(GLOB files "*.cpp")
 foreach(file ${files})

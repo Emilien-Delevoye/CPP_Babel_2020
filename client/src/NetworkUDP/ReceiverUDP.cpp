@@ -5,7 +5,7 @@
 ** Created by Emilien
 */
 
-#include "Network/ReceiverUDP.hpp"
+#include "ReceiverUDP.hpp"
 #include <thread>
 
 ReceiverUDP::ReceiverUDP(const std::string &IpAddr, int port, Audio *audio) : IReceiverUDP(IpAddr, port, audio) {}

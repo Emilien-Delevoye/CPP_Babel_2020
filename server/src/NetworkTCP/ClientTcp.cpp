@@ -5,7 +5,7 @@
 ** Created by Cyprien
 */
 
-#include "NetworkTCP/client/ClientTcp.hpp"
+#include "ClientTcp.hpp"
 #include <memory>
 #include <iostream>
 

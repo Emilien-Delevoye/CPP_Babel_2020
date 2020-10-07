@@ -5,8 +5,7 @@
 ** Created by Cyprien
 */
 
-#include "NetworkTCP/server/ServerTCP.hpp"
-#include "NetworkTCP/server/CallBacks.hpp"
+#include "ServerTCP.hpp"
 #include <thread>
 
 ServerTCP::ServerTCP(std::string &ip, short port) :
