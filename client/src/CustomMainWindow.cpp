@@ -42,12 +42,14 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         }
     });
     connect(_userPage->getCallButton(), &QPushButton::clicked, [=]() {
+        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::CALL, _otherId)));
         _callInProgress = true;
         _userPage->showTimer();
         _userPage->getCallButton()->hide();
         _userPage->getHangUpButton()->show();
     });
     connect(_userPage->getHangUpButton(), &QPushButton::clicked, [=]() {
+        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::HANG_UP, _otherId)));
         _callInProgress = false;
         _userPage->hideTimer();
         _userPage->getHangUpButton()->hide();
@@ -58,6 +60,16 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
 
     setCentralWidget(_pages);
     navToConnectionPage();
+
+    _timer = new QTimer(this);
+    _timer->setInterval(1000);
+    connect(_timer, &QTimer::timeout, [&]() {
+        std::string dt = _serverTCP.getDataClear();
+        std::cout << "rcv: " << dt << std::endl;
+
+    } );
+    _timer->start();
+
 }
 
 /*!

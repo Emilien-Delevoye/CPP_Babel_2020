@@ -40,6 +40,8 @@ class UserPage : public CustomWidget {
         void setUserInfo(const std::string &login, const std::string &ip);
         void showTimer();
         void hideTimer();
+        void addUser(User *user);
+
     private:
         QHBoxLayout *_hLayout;
         CustomWidget *_usersWidget;

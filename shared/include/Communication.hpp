@@ -31,14 +31,16 @@ public:
         HANG_UP,
         PICK_UP,
         UPDATE_CLIENTS,
-        CONFIRMATION
+        CONFIRMATION,
+        INIT
     };
-    Communication(Communication::type t, std::string ip="127.0.0.1", std::string port="8080") : t_(t), ip_(std::move(ip)), port_(std::move(port)) {}
+    Communication(Communication::type t=INIT) : t_(t) {}
+    Communication(Communication::type t, int id) : t_(t), id_(id) {}
 
     type t_;
 
     // Call / Presentation
-    int id_;
+    int id_ = -1;
     std::string name_;
     std::string ip_;
     std::string port_;
@@ -50,6 +52,13 @@ public:
     std::vector<std::string> ports_;
 
     static std::string serializeObj(Communication &obj) {
+        std::ostringstream ss;
+        boost::archive::binary_oarchive oa(ss);
+        oa & obj;
+
+        return ss.str();
+    }
+    static std::string serializeObj(Communication obj) {
         std::ostringstream ss;
         boost::archive::binary_oarchive oa(ss);
         oa & obj;

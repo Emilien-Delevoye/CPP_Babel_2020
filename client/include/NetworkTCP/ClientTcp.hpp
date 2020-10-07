@@ -25,7 +25,14 @@ public:
     void async_read();
     void write(std::string msg);
     void async_write(std::string);
-    void setCheckMessageIntegrityCallBack(callBackFct);
+
+    std::string getData() {return std::string(buffer_, dataLength_);}
+    std::string getDataClear() {
+        std::string tmp = getData();
+        clear();
+        return tmp;
+    }
+    void clear() {memset(buffer_, 0, max_length);}
 
 private:
     enum {
@@ -37,6 +44,7 @@ private:
     tcp::socket socket_{io_context_};
     tcp::resolver resolver;
     std::thread *thread_ = nullptr;
+    size_t dataLength_ = 0;
 };
 
 #endif //BABEL_CLIENTTCP_HPP

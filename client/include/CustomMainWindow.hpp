@@ -40,14 +40,21 @@ class CustomMainWindow : public QMainWindow {
         UserPage *_userPage;
         std::vector<User *> _users;
         QStackedWidget *_pages;
+
+        int _otherId;
         std::string _otherIP;
         std::string _otherLogin;
+
         std::string _serverIP;
         std::string _serverPort;
         std::string _userLogin;
         std::string _userPassword;
         bool _callInProgress;
+
         ClientTCP _serverTCP;
+        Communication _com;
+
+        QTimer *_timer;
 };
 
 #endif //B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H

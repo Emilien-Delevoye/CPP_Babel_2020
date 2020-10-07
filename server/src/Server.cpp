@@ -10,13 +10,12 @@
 [[noreturn]] Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
 {
     Communication com(Communication::UPDATE_CLIENTS);
-    auto tmp = Communication::serializeObj(com);
     while (true) {
         if (serverTCP_.newClientDisconnected()) {
-            serverTCP_.sendMessageToAllClientsConnected(tmp);
+            //serverTCP_.sendMessageToAllClientsConnected(tmp);
         }
         if (serverTCP_.newClientConnected()) {
-            serverTCP_.sendMessageToAllClientsConnected(tmp);
+            //serverTCP_.sendMessageToAllClientsConnected(tmp);
         }
 
         /*

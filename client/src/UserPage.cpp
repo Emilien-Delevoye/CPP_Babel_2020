@@ -205,3 +205,8 @@ void UserPage::hideTimer()
     _timerText->hide();
 }
 
+void UserPage::addUser(User *user)
+{
+    _userVLayout->addWidget(user);
+}
+
