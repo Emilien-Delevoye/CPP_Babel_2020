@@ -30,7 +30,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         _connectionPage->fillUserInfo(_serverIP, _userLogin, _userPassword);
         if (checkField()) {
             navToUserPage();
-            qDebug() << "Connected as " << QString::fromStdString(_userLogin) << " with Ip address " << QString::fromStdString(_serverIP) << endl;
+            qDebug() << "Connected as " << qPrintable(_userLogin.c_str()) << " with Ip address " << qPrintable(_userLogin.c_str()) << endl;
         }
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
