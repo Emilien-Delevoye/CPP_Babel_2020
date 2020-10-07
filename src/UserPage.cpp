@@ -1,13 +1,22 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file UserPage.cpp
+ * @brief UserPage class implementation
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ *
 */
 
 #include "UserPage.hpp"
 
-UserPage::UserPage(QWidget *parent) : QWidget(parent)
+/*!
+ * \brief The constructor of UserPage inherit of the CustomWidget class.
+ * \param parent Parent widget (default value set to : nullptr)
+ *
+ * This constructor set all class variable, their property and their position thanks to the different layout.
+*/
+
+UserPage::UserPage(QWidget *parent) : CustomWidget(parent)
 {
     _userLoginToCall = new CustomText(this);
     _userIPToCall = new CustomText(this);
@@ -60,7 +69,7 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
 
     _usersList->setWidgetResizable( true);
     _usersList->setFixedWidth(360);
-    _usersList->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
+    _usersList->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn);
     _callButton->setProperty("name", "call");
     _logOutButton->setProperty("name", "logout");
     _hangUpButton->setProperty("name", "hangup");
@@ -103,60 +112,80 @@ UserPage::UserPage(QWidget *parent) : QWidget(parent)
     setLayout(_hLayout);
 }
 
-UserPage::~UserPage()
-{
-
-}
-
-void UserPage::paintEvent(QPaintEvent *event)
-{
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-
-    QWidget::paintEvent(event);
-}
+/*!
+ * \brief This method return the _logoutButton member variable of UserPage.
+*/
 
 CustomButton *UserPage::getLogOutButton() const
 {
     return _logOutButton;
 }
 
-void UserPage::init(const std::vector<User *>& _users, const std::string &serverIP, const std::string &userLogin)
+/*!
+ * \brief This method is called before any navigation on the UserPage
+ * \param users CustomMainWindow _users variable reference.
+ * \param serverIP CustomMainWindow _serverIP variable reference.
+ * \param userLogin CustomMainWindow _userLogin variable reference.
+ *
+ * This method permit to replace, reset, hide or for example change some text or button.
+ * Moreover, it set the CustomMainWindow variables users, serverIP and userLogin.
+*/
+
+void UserPage::init(const std::vector<User *>& users, const std::string &serverIP, const std::string &userLogin)
 {
-    for (auto user : _users) {
-        _userVLayout->addWidget(user);
+    for (auto _user : users) {
+        _userVLayout->addWidget(_user);
     }
     _userLoginToCall->hide();
     _userIPToCall->hide();
     _callButton->hide();
     _hangUpButton->hide();
 
-    _userConnectedText->setText(QString::fromUtf8(std::string("Connected as : " + userLogin).c_str()));
-    _serverIPText->setText(QString::fromUtf8(std::string("Server IP : " + serverIP).c_str()));
+    _userConnectedText->setText(qPrintable(std::string("Connected as : " + userLogin).c_str()));
+    _serverIPText->setText(qPrintable(std::string("Server IP : " + serverIP).c_str()));
 }
+
+/*!
+ * \brief This method is called when a User is clicked.
+ * \param login login of the clicked user.
+ * \param ip ip of the clicked user
+ *
+ * This method permit update _userLoginToCall, _userIPToCall and _callButton texts
+*/
 
 void UserPage::setUserInfo(const std::string &login, const std::string &ip)
 {
-    _userLoginToCall->setText(QString::fromUtf8(login.c_str()));
-    _userIPToCall->setText(QString::fromUtf8(ip.c_str()));
-    _callButton->setText(QString::fromUtf8("Call ") + QString::fromUtf8(login.c_str()));
+    _userLoginToCall->setText(qPrintable((login.c_str())));
+    _userIPToCall->setText(qPrintable((ip.c_str())));
+    _callButton->setText(qPrintable(std::string("Call " + login).c_str()));
 
     _userLoginToCall->show();
     _userIPToCall->show();
     _callButton->show();
 }
 
+/*!
+ * \brief This method return the _hangUpButton member variable of UserPage.
+*/
+
 CustomButton *UserPage::getHangUpButton() const
 {
     return _hangUpButton;
 }
 
+/*!
+ * \brief This method return the _callButton member variable of UserPage.
+*/
+
 CustomButton *UserPage::getCallButton() const
 {
     return _callButton;
 }
+
+/*!
+ * \brief This method reset the _timer value which represent call duration and then show it to the user.
+ * This method is call just before a call start.
+*/
 
 void UserPage::showTimer()
 {
@@ -165,6 +194,11 @@ void UserPage::showTimer()
     _timerText->setText("00:00:00");
     _timerText->show();
 }
+
+/*!
+ * \brief This method hide the call timer
+ * This method is call just after the user hang up the call
+*/
 
 void UserPage::hideTimer()
 {

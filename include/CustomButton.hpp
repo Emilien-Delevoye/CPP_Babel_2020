@@ -13,8 +13,7 @@
 class CustomButton : public QPushButton {
     Q_OBJECT
     public:
-        CustomButton(QWidget *parent = nullptr, const QString &text = "text");
-        ~CustomButton();
+        explicit CustomButton(QWidget *parent = nullptr, const QString &text = "text");
     private:
 };
 

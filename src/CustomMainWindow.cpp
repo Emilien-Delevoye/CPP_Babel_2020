@@ -1,11 +1,20 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file CustomMainWindow.cpp
+ * @brief CustomMainWindow class implementation
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ *
 */
 
 #include "CustomMainWindow.hpp"
+
+/*!
+ * \brief CustomMainWindow constructor
+ * \param parent parent widget (default value set to : nullptr)
+ * \param title window's title
+ * This constructor inherit from QMainWindow and permit to create the pages and establish some button's connection thanks to Qt "connect" method.
+*/
 
 CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMainWindow(parent)
 {
@@ -21,7 +30,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         _connectionPage->fillUserInfo(_serverIP, _userLogin, _userPassword);
         if (checkField()) {
             navToUserPage();
-            qDebug() << "Connected as " << QString::fromUtf8(_userLogin.c_str()) << " with Ip address " << QString::fromUtf8(_serverIP.c_str()) << endl;
+            qDebug() << "Connected as " << qPrintable(_userLogin.c_str()) << " with Ip address " << qPrintable(_userLogin.c_str()) << endl;
         }
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
@@ -49,21 +58,12 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     navToConnectionPage();
 }
 
-CustomMainWindow::~CustomMainWindow()
-{
-
-}
-
-void CustomMainWindow::centered()
-{
-    QDesktopWidget *desktop = QApplication::desktop();
-    int screenWidth = desktop->width();
-    int screenHeight = desktop->height();
-    int x = (screenWidth - 500) / 2;
-    int y = (screenHeight - 200) / 2;
-
-    move(x, y);
-}
+/*!
+ * \brief This method permit to navigate to the UserPage
+ * The navigation happens after the user click on the "connect" button from the ConnectionPage (the fields have to be valid).<br>
+ * Before navigation, this method create all the User Button and connect them to the callback represented by a anonymous function (lambda).<br>
+ * Moreover, the  method is called, and then, the central widget is updated.
+*/
 
 void CustomMainWindow::navToUserPage()
 {
@@ -71,7 +71,7 @@ void CustomMainWindow::navToUserPage()
     for (int i = 0; i < 10; i++) {
         user = new User(_userPage, "Jean" + std::to_string(i), std::string("127.0.0.") + std::to_string(i));
         user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        std::string tooltip = std::string("Display informations about ") + std::string("Jean") + std::to_string(i);
+        std::string tooltip = std::string("Display information about ") + std::string("Jean") + std::to_string(i);
         user->setToolTip(tooltip.c_str());
         user->setMinimumHeight(50);
         _users.push_back(user);
@@ -87,6 +87,13 @@ void CustomMainWindow::navToUserPage()
     _pages->setCurrentWidget(_userPage);
 }
 
+/*!
+ * \brief This method permit to navigate to the ConnectionPage
+ * The navigation happens after the user click on the button from the UserPage.<br>
+ * Before navigation, this method delete all User Button in order to free some memory and clear _users vector.<br>
+ * Moreover, the method is called, and then, the central widget is updated.
+*/
+
 void CustomMainWindow::navToConnectionPage()
 {
     for (auto userToDelete : _users)
@@ -98,6 +105,12 @@ void CustomMainWindow::navToConnectionPage()
     _connectionPage->init();
     _pages->setCurrentWidget(_connectionPage);
 }
+
+/*!
+ * \brief This method permit to check the ConnectPage fields.
+ * If on the field isn't correct or if the connection with the DB failed, an error message is showed to the user corresponding the the happening error.<br>
+ * (example: "Error: Server field is empty)"
+*/
 
 bool CustomMainWindow::checkField() const
 {

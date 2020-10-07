@@ -21,8 +21,3 @@ void CustomWidget::paintEvent(QPaintEvent *event)
 
     QWidget::paintEvent(event);
 }
-
-CustomWidget::~CustomWidget()
-{
-
-}

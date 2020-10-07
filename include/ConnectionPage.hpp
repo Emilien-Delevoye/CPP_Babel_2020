@@ -20,12 +20,10 @@
 #include "enum.hpp"
 
 
-class ConnectionPage : public QWidget {
+class ConnectionPage : public CustomWidget {
     Q_OBJECT
     public:
         explicit ConnectionPage(QWidget *parent = nullptr);
-        ~ConnectionPage();
-        void paintEvent(QPaintEvent *event) override;
         CustomButton *getConnectButton() const;
         void init();
         void fillUserInfo(std::string &serverIp, std::string &userLogin, std::string &userPassword) const;

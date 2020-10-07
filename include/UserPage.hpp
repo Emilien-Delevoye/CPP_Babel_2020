@@ -27,13 +27,11 @@
 #include "enum.hpp"
 #include "User.hpp"
 
-class UserPage : public QWidget {
+class UserPage : public CustomWidget {
     Q_OBJECT
     public:
         explicit UserPage(QWidget *parent = nullptr);
-        ~UserPage();
         CustomButton *getLogOutButton() const;
-        void paintEvent(QPaintEvent *event) override;
         void init(const std::vector<User *>& _users, const std::string &serverIP, const std::string &userLogin);
         CustomButton *getHangUpButton() const;
         CustomButton *getCallButton() const;

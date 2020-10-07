@@ -13,9 +13,4 @@ CustomButton::CustomButton(QWidget *parent, const QString &text) : QPushButton(p
     setCursor(Qt::PointingHandCursor);
 }
 
-CustomButton::~CustomButton()
-{
-
-}
-
 

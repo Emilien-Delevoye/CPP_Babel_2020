@@ -28,8 +28,6 @@ class CustomMainWindow : public QMainWindow {
     Q_OBJECT
     public:
         explicit CustomMainWindow(QWidget *parent = nullptr, const QString &title = "Window");
-        ~CustomMainWindow();
-        void centered();
     private:
         ConnectionPage *_connectionPage;
         UserPage *_userPage;

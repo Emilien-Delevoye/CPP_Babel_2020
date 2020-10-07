@@ -15,7 +15,6 @@ class User : public CustomButton {
     Q_OBJECT
     public:
         User(QWidget *parent, const std::string &login = "login", const std::string &ip = "ip");
-        ~User();
         std::string getLogin() const;
         std::string getIP() const;
     private:
