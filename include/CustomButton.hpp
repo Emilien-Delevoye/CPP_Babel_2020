@@ -1,8 +1,12 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file CustomButton.hpp
+ * @brief CustomButton class prototype
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ * This class permit to create custom button inherited from QPushButton.
+ * To call a function when the CustomButton is clicked, you have to use the connect method from QT (see: CustomMainWindow).
+ *
 */
 
 #ifndef BABEL_CUSTOMBUTTON_HPP

@@ -1,8 +1,12 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file UserPage.hpp
+ * @brief UserPage class prototype
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ * This class represent the user page (visible once the user is connected).<br>
+ * This class permit the connection with another user connected to the same server.<br>
+ * YThe user can go back to the connection page thanks to the logout button.
 */
 
 #ifndef BABEL_USERPAGE_HPP
@@ -15,8 +19,6 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QSizePolicy>
-#include <QStyleOption>
-#include <QPainter>
 #include <QScrollArea>
 #include <QTimer>
 #include <QTime>

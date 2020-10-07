@@ -1,18 +1,20 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file ConnectionPage.hpp
+ * @brief ConnectionPage class prototype
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ * This class represent the connection page (first page seeing by the user).<br>
+ * This class permit the connection to the server thanks to different fields.<br>
+ * Once connected, the user will navigate to the UserPage.
+ *
 */
 
 #ifndef BABEL_CONNECTIONPAGE_HPP
 #define BABEL_CONNECTIONPAGE_HPP
 
-#include <QWidget>
 #include <QVBoxLayout>
 #include <QFormLayout>
-#include <QStyleOption>
-#include <QPainter>
 #include "CustomLineEdit.hpp"
 #include "CustomButton.hpp"
 #include "CustomText.hpp"

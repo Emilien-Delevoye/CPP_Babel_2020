@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file CustomWidget.hpp
+ * @brief CustomWidget class prototype
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ * This class permit to create customisable widget.
+ *
 */
 
 #ifndef BABEL_CUSTOMWIDGET_HPP

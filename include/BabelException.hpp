@@ -1,8 +1,12 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file BabelException.hpp
+ * @brief BabelExceptionclass prototype
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ *
+ * This class permit to deal with Babel error.
+ *
 */
 
 #ifndef BABEL_BABELEXCEPTION_HPP
