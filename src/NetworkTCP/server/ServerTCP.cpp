@@ -48,7 +48,8 @@ bool ServerTCP::newClientDisconnected()
 {
     auto rv = std::any_of(clients_.begin(), clients_.end(), [](const std::shared_ptr<InstanceClientTCP> &o) {return o->isDisconnected();});
 
-    clients_.erase(std::remove_if(clients_.begin(), clients_.end(),
+    if (rv)
+        clients_.erase(std::remove_if(clients_.begin(), clients_.end(),
                    [](const std::shared_ptr<InstanceClientTCP>& o) {return o->isDisconnected();}),
                    clients_.end());
     return rv;

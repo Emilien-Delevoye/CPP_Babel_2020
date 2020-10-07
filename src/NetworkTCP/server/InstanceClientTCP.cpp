@@ -44,9 +44,12 @@ void InstanceClientTCP::write(std::string msg)
     auto Hwt =
     [this, self](boost::system::error_code ec, std::size_t) {
     if (!ec)
-        read();
+        read(); // FIXME ? On retire l'asynchrone ici non ?
     };
 
     std::cout << "\033[32mSend\033[0m " << msg << std::endl;
+    for (auto &i : msg)
+        printf("%d ", i);
+    printf("\n");
     boost::asio::async_write(socket_, boost::asio::buffer(msg, msg.length()), Hwt);
 }

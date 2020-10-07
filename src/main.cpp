@@ -18,7 +18,7 @@ using namespace std;
 
 void server() {
     std::string defaultIP = "0.0.0.0";
-    short defaultPort = 8080;
+    short defaultPort = 8040;
 
     try {
         Server s(defaultIP, defaultPort);
@@ -29,7 +29,7 @@ void server() {
 
 [[noreturn]] void client() {
     std::string defaultIP = "0.0.0.0";
-    std::string defaultPort = "8080";
+    std::string defaultPort = "8040";
 
     ClientTCP client(defaultIP, defaultPort);
     client.setCheckMessageIntegrityCallBack(&Communication::unSerializeObj);

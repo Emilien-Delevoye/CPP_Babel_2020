@@ -9,12 +9,13 @@
 #include "Users.hpp"
 
 #include <utility>
+using namespace std;
 
+// TODO abstract
+// TODO protocole binaire
 
 DataBase::DataBase() : storage(QUERY)
 {
-
-
     storage.sync_schema();
     storage.remove_all<User>();
 
@@ -25,6 +26,7 @@ DataBase::DataBase() : storage(QUERY)
     User david{-1, "David", "Texas",    4242};
     User kim{-1, "Kim", "South-Hall",   4242};
     User james{-1, "James", "Houston",  4242};
+    addRow("yo", "waouh", 21);
 
     paul.id = storage.insert(paul);
     allen.id = storage.insert(allen);
@@ -41,8 +43,16 @@ DataBase::DataBase() : storage(QUERY)
     //std::cout << test << std::endl;
     storage.remove<User>(2);
     auto rows2 = storage.get_all<User>(group_by(&User::id), having(is_equal(&User::id, 3)));
-    for(auto &employee: rows2)
+    for (auto &employee: rows2)
         std::cout << storage.dump(employee) << std::endl;
+
+    vector<tuple<int, std::string, std::string, short>> all_users = storage.select(columns(&User::id, &User::name, &User::ip, &User::port));
+
+    //  decltype(idsNamesSalarys) = vector<tuple<int, string, unique_ptr<double>>>
+    for (auto &tpl: all_users) {
+        std::cout << "id = " << std::get<0>(tpl) << ", name = " << std::get<1>(tpl) << ", ip = " << std::get<2>(tpl);
+        cout << endl;
+    }
 }
 
 int DataBase::addRow(std::string name, std::string ip, short port)
