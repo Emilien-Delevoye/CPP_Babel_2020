@@ -5,7 +5,7 @@
 ** Created by Emilien
 */
 
-#include <Audio/Opus.hpp>
+#include "Audio/Opus.hpp"
 #include <iostream>
 #include <utility>
 
@@ -24,10 +24,9 @@ void Opus::createEncoder()
 
     this->enc = opus_encoder_create(this->SAMPLE_RATE, this->CHANNEL_NB, OPUS_APPLICATION_AUDIO, &opusErrorCode);
     if (opusErrorCode != OPUS_OK) {
-        std::cerr << opusErrorCode << std::endl;
-        throw OpusError("Opus: ", "Error : Opus encode creation error.");
+        throw OpusError("Opus: ", opus_strerror(opusErrorCode));
     }
-    opusErrorCode = opus_encoder_ctl(this->enc, OPUS_SET_BITRATE(256000));
+    opusErrorCode = opus_encoder_ctl(this->enc, OPUS_SET_BITRATE(64000));
     //TMP -> Surveiller ce paramètre, il est intéressant sur le taux de compression
 }
 
@@ -45,7 +44,7 @@ void Opus::createDecoder()
 void Opus::encodeData()
 {
     this->encBytes = opus_encode(enc, reinterpret_cast<opus_int16 const *>(this->captured.data()), this->FRAME_SIZE, encoded.data(), static_cast<opus_int32>(encoded.size()));
-    //TMP -> Le parmaètre encBytes est très important pour l'utilisation de la lib
+    //TMP -> Le paramètre encBytes est très important pour l'utilisation de la lib
     if (this->encBytes < 0)
         throw OpusError("Opus: ", "Error : Opus encode error.");
 }

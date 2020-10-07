@@ -7,16 +7,23 @@
 
 #include "NetworkUDP/SenderUDP.hpp"
 
-SenderUDP::SenderUDP(const std::string &IpAddr, int port) : ISenderUDP(IpAddr, port) {}
+SenderUDP::SenderUDP(const std::string &IpAddr, int port) : ISenderUDP(IpAddr, port)
+{
+    this->_socket = new udp::socket(this->_io_service);
+    this->_socket->open(udp::v4());
+    this->_remote_endpoint = new udp::endpoint(address::from_string(this->_ipAddress), this->_port);
+    this->_socket->connect((*this->_remote_endpoint));
+}
 
 void SenderUDP::sendToServer(std::vector<unsigned char> in, size_t frameSize)
 {
-    boost::asio::io_service io_service;
-    udp::socket sck(io_service);
-    udp::endpoint remoteEndpoint = udp::endpoint(address::from_string(this->_ipAddress), this->_port);
-    sck.open(udp::v4());
-
     boost::system::error_code err;
-    sck.send_to(boost::asio::buffer(in, frameSize), remoteEndpoint, 0, err);
-    sck.close();
+    this->_socket->send(boost::asio::buffer(in, frameSize), 0, err);
+    if (err)
+        std::cerr << err << std::endl;
+}
+
+SenderUDP::~SenderUDP()
+{
+    this->_socket->close();
 }

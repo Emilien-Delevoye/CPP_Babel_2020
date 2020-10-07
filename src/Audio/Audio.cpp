@@ -14,12 +14,12 @@ Audio::Audio() : Opus(), PortAudio()
     try {
         this->createEncoder();
         this->createDecoder();
-        this->startStream();
+        this->startStream(2, 2); //TODO: Mettre le nombre de channel échangé avec l'autre client pour créer le lien entre les deux.
     } catch (OpusError &e) {
-        std::cerr << e.what() << std::endl;
+        throw FatalError("FatalError (Opus): ", e.what());
     } catch (PortaudioError &e) {
-        std::cerr << e.what() << std::endl;
+        throw FatalError("FatalError (PortAudio): ", e.what());
     } catch (std::exception &e) {
-        std::cerr << "Pas Pouet 2 " << e.what() << std::endl;
+        throw FatalError("Fatal Error: ", e.what());
     }
 }

@@ -7,41 +7,25 @@
 
 #include "Call.hpp"
 
-Call::Call(const std::string &IpAddressIn, int port, bool first) : Audio(), NetworkUDP(IpAddressIn, port, first)
+Call::Call(const std::string &IpAddressIn, int PortReceiver, int PortSender) : _audio(), _networkUDP(IpAddressIn, PortReceiver, PortSender, &_audio)
 {
     while (this->_callActive) {
         try {
             // Send Data
             try {
-                this->readStream();
+                this->_audio.readStream();
             } catch (PortaudioError &e) {
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;
             }
-            this->setCaptured(this->getCaptured());
+            this->_audio.setCaptured(this->_audio.getCaptured());
             try {
-                this->encodeData();
+                this->_audio.encodeData();
             } catch (OpusError &e) {
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;
             }
-            //this->sendToServer(this->getEncoded(), this->getEncBytes());
-
-            // Receive data
-            this->setToDecode(this->getEncoded(), this->getEncBytes());
-            try {
-                this->decodeData();
-            } catch (OpusError &e) {
-                std::cerr << e.getComponent() << e.what() << std::endl;
-                continue;
-            }
-            this->setDecoded(this->getCaptured());
-            try {
-                this->writeStream();
-            } catch (PortaudioError &e) {
-                std::cerr << e.getComponent() << e.what() << std::endl;
-                continue;
-            }
+            this->_networkUDP.sendToServer(this->_audio.getEncoded(), this->_audio.getEncBytes());
         } catch (std::exception &e) {
             std::cerr << e.what() << std::endl;
         }

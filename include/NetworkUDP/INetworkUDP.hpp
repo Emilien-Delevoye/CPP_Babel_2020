@@ -12,6 +12,7 @@
     #define _WIN32_WINNT  0x0601
 #endif
 
+#include "Audio/Audio.hpp"
 #include <string>
 #include <vector>
 #include <boost/asio/buffer.hpp>
@@ -30,15 +31,17 @@ protected:
 
 class IReceiverUDP {
 public:
-    explicit IReceiverUDP(const std::string &ipAddr, int port) {
+    explicit IReceiverUDP(const std::string &ipAddr, int port, Audio *audio) {
         this->_ipAddress = ipAddr;
         this->_port = port;
+        this->_audio = audio;
     }
     virtual void openServer() = 0;
     virtual std::vector<unsigned char> getFromUDP() = 0;
 protected:
     std::string _ipAddress;
     int _port;
+    Audio *_audio;
 };
 
 #endif //BABEL_INETWORKUDP_HPP
