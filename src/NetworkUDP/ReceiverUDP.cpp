@@ -8,8 +8,6 @@
 #include "Network/ReceiverUDP.hpp"
 #include <thread>
 
-extern int read_value;
-
 ReceiverUDP::ReceiverUDP(const std::string &IpAddr, int port, Audio *audio) : IReceiverUDP(IpAddr, port, audio) {}
 
 void ReceiverUDP::openServer()
@@ -39,8 +37,7 @@ void ReceiverUDP::handleReceive(const boost::system::error_code &error, size_t b
     }
     this->_audio->setDecoded(this->_audio->getDecoded());
     try {
-        if (read_value == 1)
-            this->_audio->writeStream();
+        this->_audio->writeStream();
     } catch (PortaudioError &e) {
         std::cerr << e.getComponent() << e.what() << std::endl;
     }
