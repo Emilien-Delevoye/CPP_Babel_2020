@@ -72,9 +72,9 @@ void ConnectionPage::init()
 
 void ConnectionPage::fillUserInfo(std::string &serverIp, std::string &userLogin, std::string &userPassword) const
 {
-    serverIp = _lineEdits[HOME_IP_LINE_EDIT]->text().toStdString();
-    userLogin = _lineEdits[HOME_LOGIN_LINE_EDIT]->text().toStdString();
-    userPassword =  _lineEdits[HOME_PASSWORD_LINE_EDIT]->text().toStdString();
+    serverIp = qPrintable(_lineEdits[HOME_IP_LINE_EDIT]->text());//.toStdString();
+    userLogin = qPrintable(_lineEdits[HOME_LOGIN_LINE_EDIT]->text());//.toStdString();
+    userPassword = qPrintable(_lineEdits[HOME_PASSWORD_LINE_EDIT]->text());//.toStdString();
 }
 
 void ConnectionPage::emptyPassword()
@@ -84,6 +84,6 @@ void ConnectionPage::emptyPassword()
 
 void ConnectionPage::setError(const std::string &errorMessage)
 {
-    _errorMessage->setText(QString::fromStdString(errorMessage));
+    _errorMessage->setText(QString::fromUtf8(errorMessage.c_str()));
     _errorMessage->show();
 }

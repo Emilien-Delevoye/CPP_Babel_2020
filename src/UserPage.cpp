@@ -133,15 +133,15 @@ void UserPage::init(const std::vector<User *>& _users, const std::string &server
     _callButton->hide();
     _hangUpButton->hide();
 
-    _userConnectedText->setText(QString::fromStdString(std::string("Connected as : " + userLogin)));
-    _serverIPText->setText(QString::fromStdString(std::string("Server IP : " + serverIP)));
+    _userConnectedText->setText(QString::fromUtf8(std::string("Connected as : " + userLogin).c_str()));
+    _serverIPText->setText(QString::fromUtf8(std::string("Server IP : " + serverIP).c_str()));
 }
 
 void UserPage::setUserInfo(const std::string &login, const std::string &ip)
 {
-    _userLoginToCall->setText(QString::fromStdString(login));
-    _userIPToCall->setText(QString::fromStdString(ip));
-    _callButton->setText(QString::fromStdString("Call ") + QString::fromStdString(login));
+    _userLoginToCall->setText(QString::fromUtf8(login.c_str()));
+    _userIPToCall->setText(QString::fromUtf8(ip.c_str()));
+    _callButton->setText(QString::fromUtf8("Call ") + QString::fromUtf8(login.c_str()));
 
     _userLoginToCall->show();
     _userIPToCall->show();
