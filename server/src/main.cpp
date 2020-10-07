@@ -48,8 +48,10 @@
  * Moreover, it creates the main window and run exec() method from QApplication
 */
 
+#include "Server.hpp"
 
 int main(int argc, char **argv)
 {
-
+    std::string ip("0.0.0.0");
+    Server server(ip, 8080);
 }

@@ -30,8 +30,13 @@ include_directories(
         ${CMAKE_INCLUDE_PATH}
 
         client/../shared/include
+        client/../shared/src
         client/include/NetworkUDP
+        client/src/NetworkUDP
+        client/include/NetworkTCP
+        client/src/NetworkTCP
         client/include/Audio
+        client/src/Audio
         client/include
         client/src
 
@@ -60,7 +65,8 @@ set(CLIENT_SOURCES
         client/src/NetworkUDP/ReceiverUDP.cpp
         client/src/NetworkUDP/SenderUDP.cpp
         client/src/Call.cpp
-)
+        client/src/NetworkTCP/ClientTcp.cpp
+        )
 
 set(CLIENT_INCLUDES
         client/include/Audio/PortAudio.hpp
@@ -82,6 +88,7 @@ set(CLIENT_INCLUDES
         client/include/NetworkUDP/ReceiverUDP.hpp
         client/include/NetworkUDP/SenderUDP.hpp
         client/include/Call.hpp
+        client/include/NetworkTCP/ClientTcp.hpp
         shared/include/Communication.hpp
         shared/include/BabelException.hpp
 )
@@ -91,7 +98,6 @@ set(SERVER_SOURCES
         server/src/main.cpp
         server/src/NetworkTCP/InstanceClientTCP.cpp
         server/src/NetworkTCP/ServerTCP.cpp
-        server/src/NetworkTCP/ClientTcp.cpp
         server/src/Server.cpp
         shared/src/Users.cpp
 )
@@ -99,7 +105,6 @@ set(SERVER_SOURCES
 set(SERVER_INCLUDES
         server/include/NetworkTCP/InstanceClientTCP.hpp
         server/include/NetworkTCP/ServerTCP.hpp
-        server/include/NetworkTCP/ClientTcp.hpp
         server/include/Logger.hpp
         server/include/Server.hpp
         shared/include/Communication.hpp
