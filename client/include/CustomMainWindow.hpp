@@ -26,6 +26,7 @@
 #include "ConnectionPage.hpp"
 #include "UserPage.hpp"
 #include "enum.hpp"
+#include "ClientTcp.hpp"
 
 class CustomMainWindow : public QMainWindow {
     Q_OBJECT
@@ -42,9 +43,11 @@ class CustomMainWindow : public QMainWindow {
         std::string _otherIP;
         std::string _otherLogin;
         std::string _serverIP;
+        std::string _serverPort;
         std::string _userLogin;
         std::string _userPassword;
         bool _callInProgress;
+        ClientTCP _serverTCP;
 };
 
 #endif //B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H

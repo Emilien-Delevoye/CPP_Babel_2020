@@ -10,7 +10,9 @@
 
 void InstanceClientTCP::start()
 {
+    std::cout << socket_.remote_endpoint().address().to_string() << std::endl;
     read();
+
 }
 
 void InstanceClientTCP::read()

@@ -27,8 +27,10 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     _callInProgress = false;
 
     connect(_connectionPage->getConnectButton(), &QPushButton::clicked, [=]() {
-        _connectionPage->fillUserInfo(_serverIP, _userLogin, _userPassword);
+        _connectionPage->fillUserInfo(_serverIP, _serverPort, _userLogin, _userPassword);
         if (checkField()) {
+            qDebug() << qPrintable(_serverIP.data()) << ", " << qPrintable(_serverPort.data()) << endl;
+            _serverTCP.connect(_serverIP, _serverPort);
             navToUserPage();
             qDebug() << "Connected as " << qPrintable(_userLogin.c_str()) << " with Ip address " << qPrintable(_userLogin.c_str()) << endl;
         }
@@ -116,6 +118,9 @@ bool CustomMainWindow::checkField() const
 {
     if (_serverIP.empty()) {
         _connectionPage->setError("Error: Server field is empty.");
+        return false;
+    } else if (_serverPort.empty()) {
+        _connectionPage->setError("Error: Port field is incorrect.");
         return false;
     } else if (_userLogin.empty()) {
         _connectionPage->setError("Error: Login field is empty.");

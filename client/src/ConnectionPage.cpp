@@ -21,6 +21,7 @@ ConnectionPage::ConnectionPage(QWidget *parent) : CustomWidget(parent)
     _lineEdits[HOME_IP_LINE_EDIT] = new CustomLineEdit(this);
     _lineEdits[HOME_LOGIN_LINE_EDIT] = new CustomLineEdit(this);
     _lineEdits[HOME_PASSWORD_LINE_EDIT] = new CustomLineEdit(this);
+    _lineEdits[HOME_PORT_LINE_EDIT] = new CustomLineEdit(this);
     _vLayout = new QVBoxLayout(this);
     _formLayout = new QFormLayout(this);
     _formWidget = new CustomWidget(this);
@@ -34,6 +35,8 @@ ConnectionPage::ConnectionPage(QWidget *parent) : CustomWidget(parent)
 
     _formWidget->setMinimumWidth(300);
     _formLayout->addRow(formValue[HOME_IP_TEXT], _lineEdits[HOME_IP_LINE_EDIT]);
+    _formLayout->setSpacing(16);
+    _formLayout->addRow(formValue[HOME_PORT_TEXT], _lineEdits[HOME_PORT_LINE_EDIT]);
     _formLayout->setSpacing(16);
     _formLayout->addRow(formValue[HOME_LOGIN_TEXT], _lineEdits[HOME_LOGIN_LINE_EDIT]);
     _formLayout->setSpacing(16);
@@ -76,11 +79,12 @@ void ConnectionPage::init()
  * This method permit to fill CustomMainWindow member variables _serverIP, _userLogin and _userPassword with the corresponding field.
 */
 
-void ConnectionPage::fillUserInfo(std::string &serverIp, std::string &userLogin, std::string &userPassword) const
+void ConnectionPage::fillUserInfo(std::string &serverIp, std::string &serverPort, std::string &userLogin, std::string &userPassword) const
 {
     serverIp = qPrintable(_lineEdits[HOME_IP_LINE_EDIT]->text());
+    serverPort = qPrintable(_lineEdits[HOME_PORT_LINE_EDIT]->text());
     userLogin = qPrintable(_lineEdits[HOME_LOGIN_LINE_EDIT]->text());
-    userPassword =  qPrintable(_lineEdits[HOME_PASSWORD_LINE_EDIT]->text());
+    userPassword = qPrintable(_lineEdits[HOME_PASSWORD_LINE_EDIT]->text());
 }
 
 /*!

@@ -28,7 +28,7 @@ class ConnectionPage : public CustomWidget {
         explicit ConnectionPage(QWidget *parent = nullptr);
         CustomButton *getConnectButton() const;
         void init();
-        void fillUserInfo(std::string &serverIp, std::string &userLogin, std::string &userPassword) const;
+        void fillUserInfo(std::string &serverIp, std::string &serverPort, std::string &userLogin, std::string &userPassword) const;
         void emptyPassword();
         void setError(const std::string &errorMessage);
     private:

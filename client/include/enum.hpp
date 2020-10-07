@@ -14,14 +14,16 @@ enum QtButtonsID {
 
 enum QtFormTextValues {
     HOME_IP_TEXT,
+    HOME_PORT_TEXT,
     HOME_LOGIN_TEXT,
     HOME_PASSWORD_TEXT
 };
 
-const std::vector<QString> formValue = {"IP &server :", "&Login :", "&Password :"};
+const std::vector<QString> formValue = {"IP server :", "Port server", "Login :", "Password :"};
 
 enum QtLineEditID {
     HOME_IP_LINE_EDIT,
+    HOME_PORT_LINE_EDIT,
     HOME_LOGIN_LINE_EDIT,
     HOME_PASSWORD_LINE_EDIT
 };

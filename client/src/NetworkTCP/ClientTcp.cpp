@@ -11,6 +11,11 @@
 
 ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_)
 {
+    connect(ip, port);
+}
+
+void ClientTCP::connect(std::string &ip, std::string &port)
+{
     boost::asio::connect(socket_, resolver.resolve(ip, port));
     async_read();
     thread_ = new std::thread([&] { io_context_.run(); });
@@ -34,7 +39,6 @@ void ClientTCP::async_read()
             try {
                 std::cout << "sanity check" << std::endl;
                 auto tmp = std::string(buffer_, length);
-                cbf_(tmp);
                 std::cout << "sanity check well passed" << std::endl;
             } catch (boost::archive::archive_exception &e) {
                 std::cerr << "\033[31mERROR \033[0m" << e.what() << std::endl;
@@ -71,9 +75,4 @@ void ClientTCP::async_write(std::string msg)
 
     std::cout << "\033[32mSend\033[0m " << msg << std::endl;
     boost::asio::async_write(socket_, boost::asio::buffer(msg, msg.length()), Hwt);
-}
-
-void ClientTCP::setCheckMessageIntegrityCallBack(callBackFct cbf)
-{
-    cbf_ = cbf;
 }
