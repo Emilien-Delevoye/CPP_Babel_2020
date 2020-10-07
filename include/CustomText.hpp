@@ -13,7 +13,7 @@
 class CustomText : public QLabel {
     Q_OBJECT
     public:
-        CustomText(QWidget *parent = nullptr, const QString &text = "text");
+        explicit CustomText(QWidget *parent = nullptr, const QString &text = "text");
     private:
 
 };
