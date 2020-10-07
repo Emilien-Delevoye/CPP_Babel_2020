@@ -38,7 +38,6 @@ class CustomMainWindow : public QMainWindow {
     private:
         ConnectionPage *_connectionPage;
         UserPage *_userPage;
-        std::vector<User *> _users;
         QStackedWidget *_pages;
 
         int _otherId;

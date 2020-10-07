@@ -66,8 +66,30 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     connect(_timer, &QTimer::timeout, [&]() {
         std::string dt = _serverTCP.getDataClear();
         std::cout << "rcv: " << dt << std::endl;
+        /* create a new user */
+        /*User *user;
+        user = new User(_userPage, "Jean", std::string("127.0.0."), 4, 5);
+        user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        std::string tooltip = std::string("Display information about ") + std::string("Jean");
+        user->setToolTip(tooltip.c_str());
+        user->setMinimumHeight(50);
+        connect(user, &QPushButton::clicked, [=]() {
+            if (!_callInProgress) {
+                _otherIP = user->getIP();
+                _otherLogin = user->getLogin();
+                _userPage->setUserInfo(_otherLogin, _otherIP);
+            }
+        });
+        _userPage->addUser(user);*/
 
-    } );
+         // delete a  user with
+
+        //_userPage->deleteUser(5);
+
+        // delete all user
+
+        //_userPage->deleteAllUser();
+    });
     _timer->start();
 
 }
@@ -81,23 +103,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
 
 void CustomMainWindow::navToUserPage()
 {
-    User *user;
-    for (int i = 0; i < 10; i++) {
-        user = new User(_userPage, "Jean" + std::to_string(i), std::string("127.0.0.") + std::to_string(i));
-        user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        std::string tooltip = std::string("Display information about ") + std::string("Jean") + std::to_string(i);
-        user->setToolTip(tooltip.c_str());
-        user->setMinimumHeight(50);
-        _users.push_back(user);
-        connect(user, &QPushButton::clicked, [=]() {
-            if (!_callInProgress) {
-                _otherIP = user->getIP();
-                _otherLogin = user->getLogin();
-                _userPage->setUserInfo(_otherLogin, _otherIP);
-            }
-        });
-    }
-    _userPage->init(_users, _serverIP, _userLogin);
+    _userPage->init(_serverIP, _userLogin);
     _pages->setCurrentWidget(_userPage);
 }
 
@@ -110,12 +116,6 @@ void CustomMainWindow::navToUserPage()
 
 void CustomMainWindow::navToConnectionPage()
 {
-    for (auto userToDelete : _users)
-    {
-        delete userToDelete;
-    }
-    _users.clear();
-
     _connectionPage->init();
     _pages->setCurrentWidget(_connectionPage);
 }

@@ -34,15 +34,18 @@ class UserPage : public CustomWidget {
     public:
         explicit UserPage(QWidget *parent = nullptr);
         CustomButton *getLogOutButton() const;
-        void init(const std::vector<User *>& _users, const std::string &serverIP, const std::string &userLogin);
+        void init(const std::string &serverIP, const std::string &userLogin);
         CustomButton *getHangUpButton() const;
         CustomButton *getCallButton() const;
         void setUserInfo(const std::string &login, const std::string &ip);
         void showTimer();
         void hideTimer();
         void addUser(User *user);
+        void deleteUser(int id);
+        void deleteAllUser();
 
     private:
+        std::vector<User *> _users;
         QHBoxLayout *_hLayout;
         CustomWidget *_usersWidget;
         CustomWidget *_callWidget;
