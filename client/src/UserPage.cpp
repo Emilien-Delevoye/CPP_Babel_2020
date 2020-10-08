@@ -35,6 +35,7 @@ UserPage::UserPage(QWidget *parent) : CustomWidget(parent)
     _callButton = new CustomButton(this, "Call");
     _logOutButton = new CustomButton(this, "Log out");
     _hangUpButton = new CustomButton(this, "Hang up");
+    _pickUpButton = new CustomButton(this, "Pick up");
     _timer = new QTimer(this);
     _timerText = new CustomText(this);
     _actualTime = new CustomText(this);
@@ -74,6 +75,8 @@ UserPage::UserPage(QWidget *parent) : CustomWidget(parent)
     _logOutButton->setProperty("name", "logout");
     _hangUpButton->setProperty("name", "hangup");
     _hangUpButton->hide();
+    _pickUpButton->setProperty("name", "pickup");
+    _pickUpButton->hide();
     _logOutButton->setToolTip("Disconnect yourself from the server");
     _userLoginToCall->setText("login");
     _userLoginToCall->setProperty("name", "userLogin");
@@ -99,6 +102,7 @@ UserPage::UserPage(QWidget *parent) : CustomWidget(parent)
     _callVLayoutMiddle->addSpacing(30);
     _callVLayoutMiddle->addWidget(_callButton);
     _callVLayoutMiddle->addWidget(_hangUpButton);
+    _callVLayoutMiddle->addWidget(_pickUpButton);
     _callVLayoutMiddle->setAlignment(Qt::AlignCenter);
     _callWidgetMiddle->setLayout(_callVLayoutMiddle);
     _callHLayoutBottom->addWidget(_logOutButton);
@@ -241,4 +245,31 @@ void UserPage::deleteAllUser()
         delete user;
     }
     _users.clear();
+}
+
+CustomButton *UserPage::getPickUpButton() const
+{
+    return _pickUpButton;
+}
+
+User *UserPage::findUser(const int id)
+{
+    User *user;
+
+    for (auto & u : _users) {
+        if (u->getID() == id)
+            user = u;
+    }
+    return user;
+}
+
+void UserPage::incomingCall(const int id)
+{
+    User *user = findUser(id);
+
+    _callButton->hide();
+    _userLoginToCall->setText(qPrintable(user->getLogin().c_str()));
+    _userIPToCall->setText(qPrintable(user->getIP().c_str()));
+    _pickUpButton->show();
+    _hangUpButton->show();
 }

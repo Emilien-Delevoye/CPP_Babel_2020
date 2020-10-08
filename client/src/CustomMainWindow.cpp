@@ -51,6 +51,12 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         _userPage->getHangUpButton()->hide();
         _userPage->getCallButton()->show();
     });
+    connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() {
+        _callInProgress = true;
+        _userPage->showTimer();
+        _userPage->getPickUpButton()->hide();
+        _userPage->getHangUpButton()->show();
+    });
     _pages->addWidget(_userPage);
     _pages->addWidget(_connectionPage);
 
@@ -92,8 +98,13 @@ void CustomMainWindow::startServerBackCall()
 
             if (msg.t_ == Communication::NEW_USER)
                 newUser(msg);
-            if (msg.t_ == Communication::DISCONNECTED_USER)
+            else if (msg.t_ == Communication::DISCONNECTED_USER)
                 _userPage->deleteUser(msg.id_);
+            else if (msg.t_ == Communication::PICK_UP) {
+                _otherLogin = _userPage->findUser(msg.id_)->getLogin();
+                _otherIP = _userPage->findUser(msg.id_)->getIP();
+                _userPage->incomingCall(msg.id_);
+            }
             setupClients(msg);
         }
     });

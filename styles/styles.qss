@@ -58,6 +58,26 @@ CustomButton[name="call"]:pressed
     color: #3272a4;
 }
 
+CustomButton[name="pickup"]
+{
+    background-color: #45cd66;
+    font-weight: bolder;
+    padding: 8px 12px;
+    color: #f8f8f2;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+CustomButton[name="pickup"]:hover
+{
+    background-color: #359e51;
+}
+
+CustomButton[name="pickup"]:pressed
+{
+    color: #3272a4;
+}
+
 CustomButton[name="logout"]
 {
     background-color: #ff5555;

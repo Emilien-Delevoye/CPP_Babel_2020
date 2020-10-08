@@ -37,6 +37,7 @@ class UserPage : public CustomWidget {
         void init(const std::string &serverIP, const std::string &userLogin);
         CustomButton *getHangUpButton() const;
         CustomButton *getCallButton() const;
+        CustomButton *getPickUpButton() const;
         void setUserInfo(const std::string &login, const std::string &ip);
         void showTimer();
         void hideTimer();
@@ -45,6 +46,8 @@ class UserPage : public CustomWidget {
         void deleteAllUser();
         bool userExists(int id);
         std::vector<User *> getUsers() {return _users;}
+        void incomingCall(int id);
+        User *findUser(int id);
 
     private:
         std::vector<User *> _users;
@@ -62,6 +65,7 @@ class UserPage : public CustomWidget {
         QHBoxLayout *_callHLayoutBottom;
         CustomButton *_callButton;
         CustomButton *_logOutButton;
+        CustomButton *_pickUpButton;
         CustomText *_userLoginToCall;
         CustomText *_userIPToCall;
         CustomButton *_hangUpButton;

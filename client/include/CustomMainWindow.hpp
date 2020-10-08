@@ -47,6 +47,7 @@ private:
     int _otherId;
     std::string _otherIP;
     std::string _otherLogin;
+    short _otherPort = -1;
 
     std::string _serverIP;
     std::string _serverPort;
