@@ -42,7 +42,8 @@ private:
         };
     PaStreamParameters _portAudioParameters[2];
     const PaDeviceInfo* _deviceInfo[2];
-    PaStream *_stream = nullptr;
+    PaStream *_streamInput = nullptr;
+    PaStream *_streamOutput = nullptr;
     std::vector<unsigned short> _captured;
     std::vector<unsigned short> _decoded;
     int _numChannels[2];
