@@ -276,3 +276,15 @@ void UserPage::incomingCall(const int id)
     _userIPToCall->show();
     _callButton->setText(qPrintable(std::string("Call " + user->getLogin()).c_str()));
 }
+
+void UserPage::endcomingCall(const int id)
+{
+    User *user = findUser(id);
+
+    hideTimer();
+    getHangUpButton()->hide();
+    getPickUpButton()->hide();
+    getCallButton()->show();
+    _userLoginToCall->setText(qPrintable(std::string(user->getLogin()).c_str()));
+    _callButton->setText(qPrintable(std::string("Call " + user->getLogin()).c_str()));
+}

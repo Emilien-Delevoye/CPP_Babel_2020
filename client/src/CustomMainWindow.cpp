@@ -47,10 +47,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     connect(_userPage->getHangUpButton(), &QPushButton::clicked, [=]() {
         _serverTCP.async_write(Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId, 4241)));
         _callInProgress = false;
-        _userPage->hideTimer();
-        _userPage->getHangUpButton()->hide();
-        _userPage->getPickUpButton()->hide();
-        _userPage->getCallButton()->show();
+        _userPage->endcomingCall(_otherId);
     });
     connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() {
         _serverTCP.async_write(Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
@@ -82,7 +79,7 @@ void CustomMainWindow::ConnectLogToServer()
             _connectionPage->setError("Invalid password");
         }
     } else {
-        _connectionPage->setError("Error while connection to the server.");
+        _connectionPage->setError("Error while connecting to the server.");
     }
 }
 
@@ -116,10 +113,7 @@ void CustomMainWindow::startServerBackCall()
                 _userPage->incomingCall(msg.id_);
             } else if (msg.t_ == Communication::HANG_UP) {
                 _callInProgress = false;
-                _userPage->hideTimer();
-                _userPage->getHangUpButton()->hide();
-                _userPage->getPickUpButton()->hide();
-                _userPage->getCallButton()->show();
+                _userPage->endcomingCall(msg.id_);
             }
             setupClients(msg);
         }

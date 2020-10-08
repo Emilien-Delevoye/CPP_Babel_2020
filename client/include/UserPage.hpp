@@ -48,6 +48,7 @@ class UserPage : public CustomWidget {
         std::vector<User *> getUsers() {return _users;}
         void incomingCall(int id);
         User *findUser(int id);
+        void endcomingCall(const int id);
 
     private:
         std::vector<User *> _users;
