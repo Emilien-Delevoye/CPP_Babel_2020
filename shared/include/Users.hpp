@@ -21,7 +21,8 @@
     make_column("LOGIN", &User::login), \
     make_column("PASSWORD", &User::password), \
     make_column("IP", &User::ip), \
-    make_column("PORT", &User::port)))
+    make_column("PORT", &User::port),\
+    make_column("CONNECTED", &User::connected)))
 
 using namespace sqlite_orm;
 
@@ -31,7 +32,7 @@ struct User {
     std::string password;
     std::string ip;
     short port;
-    // Password ?
+    bool connected;
 };
 
 template <typename... Args>
@@ -42,7 +43,7 @@ auto make_storage_query() {
 class DataBase {
 public:
     DataBase();
-    int addRow(std::string name, std::string password, std::string ip, short port);
+    int addRow(std::string name, std::string password, std::string ip, short port, bool connected);
     void removeRow(int id);
 
     std::string getLogin(int id) {return storage.get<User>(id).login;}
@@ -57,6 +58,9 @@ public:
 
     std::string getPasswordFromLogin(std::string login);
     void removeRowFromLogin(std::string login);
+
+    void disconnectClient(const int id);
+    void connectClient(const int id);
 
 private:
     decltype(make_storage_query()) storage;

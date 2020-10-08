@@ -27,9 +27,9 @@ DataBase::DataBase() : storage(QUERY)
     std::cout << "=======" << std::endl;
 }
 
-int DataBase::addRow(std::string name, std::string password, std::string ip, short port)
+int DataBase::addRow(std::string name, std::string password, std::string ip, short port, bool connected)
 {
-    return storage.insert(User{-1, std::move(name), std::move(password), std::move(ip), port});
+    return storage.insert(User{-1, std::move(name), std::move(password), std::move(ip), port, connected});
 }
 
 void DataBase::removeRow(int id)
@@ -56,4 +56,18 @@ void DataBase::removeRowFromLogin(std::string login)
         if (std::get<1>(tpl) == login)
             removeRow(std::get<0>(tpl));
     }
+}
+
+void DataBase::disconnectClient(const int id)
+{
+    auto client = storage.get<User>(id);
+    client.connected = false;
+    storage.update(client);
+}
+
+void DataBase::connectClient(const int id)
+{
+    auto client = storage.get<User>(id);
+    client.connected = true;
+    storage.update(client);
 }

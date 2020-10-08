@@ -21,9 +21,11 @@ Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
     while (true) {
         if (serverTCP_.isDisconnectedClients()) {
             auto disconnectedClients = serverTCP_.getDisconnectedClientsIds();
-            for (int c : disconnectedClients)
+            for (int c : disconnectedClients) {
                 serverTCP_.sendMessageToAllClientsConnected(
                         Communication(Communication::DISCONNECTED_USER, idLInkInstanceDb_[c]).serialize());
+                db_.disconnectClient(idLInkInstanceDb_[c]);
+            }
         }
         if (serverTCP_.newMessageReceived()) {
             auto msg = Communication::unSerializeObj(serverTCP_.getNewMessageReceivedClientId());
@@ -61,7 +63,7 @@ void Server::manageNewClients(const Communication &msg)
         auto port = msg.port_;
 
         db_.removeRowFromLogin(msg.login_);
-        int idDb = db_.addRow(login, password, ip, port);
+        int idDb = db_.addRow(login, password, ip, port, true);
         int idInstance = serverTCP_.getIdClientLastMsg();
 
         idLInkDbInstance_[idDb] = idInstance;
