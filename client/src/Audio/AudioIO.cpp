@@ -60,6 +60,8 @@ void AudioIO::startStream(int channelInputClient, int channelOutputClient)
     this->_portAudioParameters[OUTPUT].sampleFormat = paInt16;
     this->_portAudioParameters[OUTPUT].suggestedLatency = this->_deviceInfo[OUTPUT]->defaultHighOutputLatency;
     this->_portAudioParameters[OUTPUT].hostApiSpecificStreamInfo = nullptr;
+    std::cout << "Name Output Device : " << this->_deviceInfo[OUTPUT]->name << std::endl;
+    std::cout << "Name Input Device : " << this->_deviceInfo[INPUT]->name << std::endl;
     //Open Stream
     PaError err = Pa_OpenStream(&this->_stream, &this->_portAudioParameters[INPUT], &this->_portAudioParameters[OUTPUT],
         this->SAMPLE_RATE, 512, paClipOff, nullptr, nullptr);
@@ -82,8 +84,12 @@ void AudioIO::readStream()
 void AudioIO::writeStream()
 {
     PaError err = Pa_WriteStream(_stream, _decoded.data(), this->FRAME_SIZE);
-    if (err != paNoError)
-        throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
+    if (err != paNoError) {
+        if (err == paOutputUnderflowed)
+            throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
+        else
+            throw FatalError("PortAudio: ", static_cast<std::string>(Pa_GetErrorText(err)));
+    }
 }
 
 void AudioIO::stopStream()

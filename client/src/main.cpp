@@ -49,17 +49,23 @@
 */
 
 #include "CustomMainWindow.hpp"
-
+/*
 int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
-    /* Style */
     QFile File("../../styles/styles.qss");
     File.open(QFile::ReadOnly);
     QString StyleSheet = QLatin1String(File.readAll());
     a.setStyleSheet(StyleSheet);
-    /* ===== */
     auto *babel = new CustomMainWindow(nullptr, "Babel");
     babel->show();
     return a.exec();
+}*/
+
+#include "Call.hpp"
+
+int main()
+{
+    auto call = Call("127.0.0.1", 4242, 4242);
+    return (0);
 }
