@@ -33,8 +33,17 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
 
             _serverTCP.connect(_serverIP, _serverPort);
             _serverTCP.write(Communication(Communication::PRESENTATION, _userLogin, _userPassword).serialize());
-            navToUserPage();
-            qDebug() << "Connected as " << qPrintable(_userLogin.c_str()) << " with Ip address " << qPrintable(_userLogin.c_str()) << endl;
+            if (/*connection validée*/false) {
+                if (/*login exist*/false) {
+                    //...
+                } else {
+                    //...
+                }
+                navToUserPage();
+                qDebug() << "Connected as " << qPrintable(_userLogin.c_str()) << " with Ip address " << qPrintable(_userLogin.c_str()) << endl;
+            } else {/*connection pas validée*/
+                _connectionPage->setError("Error while connection to the server.");
+            }
         }
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
