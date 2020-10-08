@@ -61,4 +61,5 @@ int main(int argc, char **argv)
     }
     std::string ip(argv[1]);
     Server server(ip, std::atoi(argv[2]));
+    server.run();
 }

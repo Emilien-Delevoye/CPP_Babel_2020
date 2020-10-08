@@ -22,6 +22,7 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #include <iostream>
+#include <sstream>
 
 class Communication {
 public:

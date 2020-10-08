@@ -28,6 +28,5 @@ Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
             serverTCP_.getNewMessageReceivedClientId();
             serverTCP_.sendMessageToClient(1, msg);
         }
-        sleep(2);
     }
 }
