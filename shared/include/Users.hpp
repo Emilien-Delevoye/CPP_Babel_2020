@@ -18,7 +18,7 @@
 #define QUERY make_storage("select.sqlite", \
     make_table("Users", \
     make_column("ID", &User::id, primary_key()), \
-    make_column("NAME", &User::name), \
+    make_column("NAME", &User::login), \
     make_column("IP", &User::ip), \
     make_column("PORT", &User::port)))
 
@@ -26,7 +26,8 @@ using namespace sqlite_orm;
 
 struct User {
     int id;
-    std::string name;
+    std::string login;
+    std::string password;
     std::string ip;
     short port;
     // Password ?
@@ -40,19 +41,25 @@ auto make_storage_query() {
 class DataBase {
 public:
     DataBase();
-    int addRow(std::string name, std::string ip, short port);
+    int addRow(std::string name, std::string password, std::string ip, short port);
     void removeRow(int id);
 
-    std::string getName(int id) {return storage.get<User>(id).name;}
+    std::string getLogin(int id) {return storage.get<User>(id).login;}
+    std::string getPassword(int id) {return storage.get<User>(id).password;}
     std::string getIP(int id) {return storage.get<User>(id).ip;}
     short getPort(int id) {return storage.get<User>(id).port;}
 
-    std::vector<std::tuple<int, std::string, std::string, short>> getAllData();
+    std::vector<int> getIds() {return storage.select(&User::id);}
+    std::vector<std::string> getLogins() {return storage.select(&User::login);}
+    std::vector<std::string> getIPs() {return storage.select(&User::ip);}
+    std::vector<short> getPorts() {return storage.select(&User::port);}
+
+    std::string getPasswordFromLogin(std::string login);
+    void removeRowFromLogin(std::string login);
+
 private:
     decltype(make_storage_query()) storage;
 
 };
-
-
 
 #endif //BABEL_USERS_HPP

@@ -20,8 +20,11 @@ public:
 
 private:
     ServerTCP serverTCP_;
-    Communication com_ = Communication(Communication::PRESENTATION);
     DataBase db_;
+
+    std::vector<std::pair<int, int>> idLInkServerInstance_;
+
+    void manageNewClients(const Communication &msg);
 };
 
 

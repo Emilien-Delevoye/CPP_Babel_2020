@@ -31,7 +31,7 @@ public:
         CALL,
         HANG_UP,
         PICK_UP,
-        UPDATE_CLIENTS,
+        SETUP,
         CONFIRMATION,
         INIT,
         NEW_USER,
@@ -41,31 +41,26 @@ public:
     Communication(Communication::type t, int myId, int id) : t_(t), myId_(myId), id_(id) {}
     Communication(Communication::type t, int id) : t_(t), id_(id) {}
     Communication(Communication::type t, std::string login, std::string password) : t_(t), login_(login), password_(password) {}
+    Communication(Communication::type t, int id, std::string login, std::string ip, short port) : t_(t), id_(id), login_(login), ip_(ip), port_(port) {}
 
     type t_;
 
     int myId_ = -1;
+    bool connectionAccepted = false;
 
     // Call / Presentation / New / Disconnected
     int id_ = -1;
     std::string login_;
     std::string password_;
     std::string ip_;
-    std::string port_;
+    short port_;
 
     // Update clients
     std::vector<int> ids_;
     std::vector<std::string> logins_;
     std::vector<std::string> ips_;
-    std::vector<std::string> ports_;
+    std::vector<short> ports_;
 
-    static std::string serializeObj(Communication &obj) {
-        std::ostringstream ss;
-        boost::archive::binary_oarchive oa(ss);
-        oa & obj;
-
-        return ss.str();
-    }
     static std::string serializeObj(Communication obj) {
         std::ostringstream ss;
         boost::archive::binary_oarchive oa(ss);
@@ -80,7 +75,9 @@ public:
 
         return ss.str();
     }
-    static Communication unSerializeObj(std::string &obj) {
+
+    static Communication unSerializeObj(std::string obj) {
+        std::cout << "deseria " << obj << std::endl;
         Communication c(Communication::PRESENTATION);
         std::istringstream ss(obj);
         boost::archive::binary_iarchive ia(ss);
@@ -94,8 +91,12 @@ public:
     {
         ar & t_;
 
+        ar & myId_;
+        ar & connectionAccepted;
+
         ar & id_;
         ar & login_;
+        ar & password_;
         ar & ip_;
         ar & port_;
 

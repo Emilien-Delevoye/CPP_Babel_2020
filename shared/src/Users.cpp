@@ -12,21 +12,19 @@
 using namespace std;
 
 // TODO abstract
-// TODO protocole binaire
 
 DataBase::DataBase() : storage(QUERY)
 {
     storage.sync_schema();
     storage.remove_all<User>();
 
-    User paul{-1, "Paul", "California", 4242};
-    User allen{-1, "Allen", "Texas",    4242};
-    User teddy{-1, "Teddy", "Norway",   4242};
-    User mark{-1, "Mark", "Rich-Mond",  4242};
-    User david{-1, "David", "Texas",    4242};
-    User kim{-1, "Kim", "South-Hall",   4242};
-    User james{-1, "James", "Houston",  4242};
-    addRow("yo", "waouh", 21);
+    User paul{-1, "Paul", "pass", "California", 4242};
+    User allen{-1, "Allen", "pass", "Texas",    4242};
+    User teddy{-1, "Teddy", "pass", "Norway",   4242};
+    User mark{-1, "Mark", "pass", "Rich-Mond",  4242};
+    User david{-1, "David", "pass", "Texas",    4242};
+    User kim{-1, "Kim", "pass", "South-Hall",   4242};
+    User james{-1, "James", "pass", "Houston",  4242};
 
     paul.id = storage.insert(paul);
     allen.id = storage.insert(allen);
@@ -46,7 +44,7 @@ DataBase::DataBase() : storage(QUERY)
     for (auto &employee: rows2)
         std::cout << storage.dump(employee) << std::endl;
 
-    vector<tuple<int, std::string, std::string, short>> all_users = storage.select(columns(&User::id, &User::name, &User::ip, &User::port));
+    vector<tuple<int, std::string, std::string, short>> all_users = storage.select(columns(&User::id, &User::login, &User::ip, &User::port));
 
     //  decltype(idsNamesSalarys) = vector<tuple<int, string, unique_ptr<double>>>
     for (auto &tpl: all_users) {
@@ -55,12 +53,33 @@ DataBase::DataBase() : storage(QUERY)
     }
 }
 
-int DataBase::addRow(std::string name, std::string ip, short port)
+int DataBase::addRow(std::string name, std::string password, std::string ip, short port)
 {
-    return storage.insert(User{-1, std::move(name), std::move(ip), port});
+    return storage.insert(User{-1, std::move(name), std::move(password), std::move(ip), port});
 }
 
 void DataBase::removeRow(int id)
 {
     storage.remove<User>(id);
+}
+
+std::string DataBase::getPasswordFromLogin(std::string login)
+{
+    vector<tuple<int, std::string>> all_users = storage.select(columns(&User::id, &User::login));
+
+    for (auto &tpl: all_users) {
+        if (std::get<1>(tpl) == login)
+            return getPassword(std::get<0>(tpl));
+    }
+    return ("");
+}
+
+void DataBase::removeRowFromLogin(std::string login)
+{
+    vector<tuple<int, std::string>> all_users = storage.select(columns(&User::id, &User::login));
+
+    for (auto &tpl: all_users) {
+        if (std::get<1>(tpl) == login)
+            removeRow(std::get<0>(tpl));
+    }
 }

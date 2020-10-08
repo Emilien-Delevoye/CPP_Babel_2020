@@ -29,20 +29,23 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     connect(_connectionPage->getConnectButton(), &QPushButton::clicked, [=]() {
         _connectionPage->fillUserInfo(_serverIP, _serverPort, _userLogin, _userPassword);
         if (checkField()) {
-            qDebug() << qPrintable(_serverIP.data()) << ", " << qPrintable(_serverPort.data()) << endl;
+//            qDebug() << qPrintable(_serverIP.data()) << ", " << qPrintable(_serverPort.data()) << endl;
 
-            _serverTCP.connect(_serverIP, _serverPort);
-            _serverTCP.write(Communication(Communication::PRESENTATION, _userLogin, _userPassword).serialize());
-            if (/*connection validée*/false) {
-                if (/*login exist*/false) {
-                    //...
+            if (_serverTCP.connect(_serverIP, _serverPort)) {
+//                qDebug() << qPrintable("\033[31mwrite\033[0m") << qPrintable(_userLogin.data()) << "," << qPrintable(_userPassword.data()) << endl;
+                _serverTCP.write(Communication(Communication::PRESENTATION, _userLogin, _userPassword).serialize());
+
+//                qDebug() << qPrintable("\033[31mread\033[0m") << endl;
+                auto msg = Communication::unSerializeObj(std::string(_serverTCP.read()));
+
+                if (msg.connectionAccepted) {
+                    startServerBackCall();
+                    navToUserPage();
+                    qDebug() << "Connected as" << qPrintable(_userLogin.c_str()) << "with Password" << qPrintable(_userPassword.c_str()) << endl;
                 } else {
-                    //...
+                    _connectionPage->setError("Invalid password");
                 }
-                startServerBackCall();
-                navToUserPage();
 
-                qDebug() << "Connected as " << qPrintable(_userLogin.c_str()) << " with Ip address " << qPrintable(_userLogin.c_str()) << endl;
             } else {/*connection pas validée*/
                 _connectionPage->setError("Error while connection to the server.");
             }
@@ -79,47 +82,51 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
 
 void CustomMainWindow::startServerBackCall()
 {
+    _serverTCP.clear();
+    _serverTCP.startAsyncRead();
     _timer = new QTimer(this);
     _timer->setInterval(1000);
     connect(_timer, &QTimer::timeout, [&]() {
-        std::string dt = _serverTCP.getDataClear();
-        auto msg = Communication::unSerializeObj(dt);
-        std::cout << "\033[32;1mRcv: \033[0m" << dt << std::endl;
-        if (msg.t_ == Communication::NEW_USER)
-            newUser(msg);
-        if (msg.t_ == Communication::DISCONNECTED_USER)
-            _userPage->deleteUser(msg.id_);
+        if (!_serverTCP.getData().empty()) {
+            std::string dt = _serverTCP.getDataClear();
+            std::cout << dt << std::endl;
+            auto msg = Communication::unSerializeObj(dt);
+            if (msg.t_ == Communication::NEW_USER)
+                newUser(msg);
+            if (msg.t_ == Communication::DISCONNECTED_USER)
+                _userPage->deleteUser(msg.id_);
 
-        /* create a new user */
-        /*User *user;
-        user = new User(_userPage, "Jean", std::string("127.0.0."), 4, 5);
-        user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        std::string tooltip = std::string("Display information about ") + std::string("Jean");
-        user->setToolTip(tooltip.c_str());
-        user->setMinimumHeight(50);
-        connect(user, &QPushButton::clicked, [=]() {
-            if (!_callInProgress) {
-                _otherIP = user->getIP();
-                _otherLogin = user->getLogin();
-                _userPage->setUserInfo(_otherLogin, _otherIP);
-            }
-        });
-        _userPage->addUser(user);*/
+            /* create a new user */
+            /*User *user;
+            user = new User(_userPage, "Jean", std::string("127.0.0."), 4, 5);
+            user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+            std::string tooltip = std::string("Disp²lay information about ") + std::string("Jean");
+            user->setToolTip(tooltip.c_str());
+            user->setMinimumHeight(50);
+            connect(user, &QPushButton::clicked, [=]() {
+                if (!_callInProgress) {
+                    _otherIP = user->getIP();
+                    _otherLogin = user->getLogin();
+                    _userPage->setUserInfo(_otherLogin, _otherIP);
+                }
+            });
+            _userPage->addUser(user);*/
 
-         // delete a  user with
+            // delete a  user with
 
-        //_userPage->deleteUser(5);
+            //_userPage->deleteUser(5);
 
-        // delete all user
+            // delete all user
 
-        //_userPage->deleteAllUser();
+            //_userPage->deleteAllUser();
+        }
     });
     _timer->start();
 }
 
 void CustomMainWindow::newUser(const Communication &msg)
 {
-    auto user = new User(_userPage, msg.login_, msg.ip_, atoi(msg.port_.data()), msg.id_);
+    auto user = new User(_userPage, msg.login_, msg.ip_, msg.port_, msg.id_);
 
     user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     std::string tooltip = std::string("Display information about ") + std::string(user->getLogin());

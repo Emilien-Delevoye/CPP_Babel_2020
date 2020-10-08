@@ -14,10 +14,19 @@ ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_)
     connect(ip, port);
 }
 
-void ClientTCP::connect(std::string &ip, std::string &port)
+bool ClientTCP::connect(std::string &ip, std::string &port)
 {
+    try {
+        boost::asio::connect(socket_, resolver.resolve(ip, port));
+    } catch (boost::wrapexcept<boost::system::system_error> &e) {
+        std::cerr << e.what() << std::endl;
+        return false;
+    }
+    return true;
+}
 
-    boost::asio::connect(socket_, resolver.resolve(ip, port));
+void ClientTCP::startAsyncRead()
+{
     async_read();
     thread_ = new std::thread([&] { io_context_.run(); });
 }
@@ -32,20 +41,10 @@ void ClientTCP::async_read()
         if ((boost::asio::error::eof == ec) || (boost::asio::error::connection_reset == ec)) {
             std::cout << "Disconnected !" << std::endl;
         } else {
+            dataLength_ = length;
             // If not disconnected, we print the received message
             std::cout << "\033[31m[Server's message]:\033[0m ";
             std::cout.write(buffer_, length);
-            dataLength_ = length;
-            std::cout << "\n";
-            isData = true;
-
-            try {
-                std::cout << "sanity check" << std::endl;
-                auto tmp = std::string(buffer_, length);
-                std::cout << "sanity check well passed" << std::endl;
-            } catch (boost::archive::archive_exception &e) {
-                std::cerr << "\033[31mERROR \033[0m" << e.what() << std::endl;
-            }
             std::cout << std::endl;
         }
     };
