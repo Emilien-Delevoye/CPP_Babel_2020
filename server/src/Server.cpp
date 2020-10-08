@@ -8,6 +8,9 @@
 #include "Server.hpp"
 
 //TODO vérifier que 2 clients ne se log pas avec le même login en même temps
+//TODO correctement gérer les ports
+//TODO gérer les clients offline
+//TODO Quand on est sur un client et qu'il se déconnecte il faut retirer la possibilité de le call
 
 Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
 {
@@ -20,7 +23,7 @@ Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
             auto disconnectedClients = serverTCP_.getDisconnectedClientsIds();
             for (int c : disconnectedClients)
                 serverTCP_.sendMessageToAllClientsConnected(
-                        Communication(Communication::DISCONNECTED_USER, c).serialize());
+                        Communication(Communication::DISCONNECTED_USER, idLInkInstanceDb_[c]).serialize());
         }
         if (serverTCP_.newMessageReceived()) {
             auto msg = Communication::unSerializeObj(serverTCP_.getNewMessageReceivedClientId());
