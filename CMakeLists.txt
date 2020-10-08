@@ -7,6 +7,8 @@ if (UNIX)
 endif()
 if(WIN32)
     add_compile_options("/std:c++latest")
+    #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /DEF:my_defs.def /NODEFAULTLIB")
+    add_definitions(-D_ITERATOR_DEBUG_LEVEL=0)
 endif()
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -129,3 +131,18 @@ foreach(file ${files})
     add_executable(${file_basename} ${file})
     target_link_libraries(${file_basename} PRIVATE sqlite_orm sqlite3)
 endforeach()
+
+if(MSVC)
+    set(CMAKE_CXX_FLAGS_DEBUG "/DWIN32 /D_WINDOWS /EHsc /WX /wd4355 /wd4251 /wd4250 /wd4996" CACHE STRING "Debug compiler flags" FORCE)
+    set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
+    set(Boost_USE_DEBUG_LIBS         OFF) # ignore debug libs and
+    set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
+    set(Boost_USE_MULTITHREADED      ON)
+    set(Boost_USE_STATIC_RUNTIME    OFF)
+    find_package(Boost 1.71.0 COMPONENTS serialization)
+    if(Boost_FOUND)
+        include_directories(${Boost_INCLUDE_DIRS})
+        target_link_libraries(babel_client ${Boost_LIBRARIES})
+        target_link_libraries(babel_server ${Boost_LIBRARIES})
+    endif()
+endif()

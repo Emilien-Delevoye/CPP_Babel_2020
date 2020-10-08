@@ -16,7 +16,7 @@
 #include "NetworkUDP/NetworkUDP.hpp"
 #include "../../shared/include/BabelException.hpp"
 
-class Call// : public Audio, public NetworkUDP
+class Call
 {
 public:
     explicit Call(const std::string &IpAddress, int PortReceiver, int PortSender);
