@@ -38,21 +38,22 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         }
     });
     connect(_userPage->getCallButton(), &QPushButton::clicked, [=]() {
-        _serverTCP.async_write(Communication(Communication::CALL, _userId, _otherId).serialize());
+        std::cout << "CALL PASSED " << _otherId << std::endl;
+        _serverTCP.async_write(Communication(Communication::CALL, _userId, _otherId, 4242).serialize());
         _callInProgress = true;
-        _userPage->showTimer();
         _userPage->getCallButton()->hide();
         _userPage->getHangUpButton()->show();
     });
     connect(_userPage->getHangUpButton(), &QPushButton::clicked, [=]() {
-        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId)));
+        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId, 4241)));
         _callInProgress = false;
         _userPage->hideTimer();
         _userPage->getHangUpButton()->hide();
+        _userPage->getPickUpButton()->hide();
         _userPage->getCallButton()->show();
     });
     connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() {
-        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId)));
+        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
         _callInProgress = true;
         _userPage->showTimer();
         _userPage->getPickUpButton()->hide();
@@ -93,6 +94,7 @@ void CustomMainWindow::startServerBackCall()
     _timer->setInterval(1000);
     connect(_timer, &QTimer::timeout, [&]() {
         if (!_serverTCP.getData().empty()) {
+            std::cout << "Message received !" << std::endl;
             std::string dt = _serverTCP.getDataClear();
             std::cout << dt << std::endl;
             auto msg = Communication::unSerializeObj(dt);
@@ -102,9 +104,22 @@ void CustomMainWindow::startServerBackCall()
             else if (msg.t_ == Communication::DISCONNECTED_USER)
                 _userPage->deleteUser(msg.id_);
             else if (msg.t_ == Communication::PICK_UP) {
+                std::cout << "CALL ACCEPTED" << msg.id_ << std::endl;
+                _userPage->showTimer();
+
+            } else if (msg.t_ == Communication::CALL) {
+                std::cout << "CALL RECEIVED " << msg.id_ << std::endl;
+                _otherId = _userPage->findUser(msg.id_)->getID();
                 _otherLogin = _userPage->findUser(msg.id_)->getLogin();
                 _otherIP = _userPage->findUser(msg.id_)->getIP();
+                _otherPort = msg.port_;
                 _userPage->incomingCall(msg.id_);
+            } else if (msg.t_ == Communication::HANG_UP) {
+                _callInProgress = false;
+                _userPage->hideTimer();
+                _userPage->getHangUpButton()->hide();
+                _userPage->getPickUpButton()->hide();
+                _userPage->getCallButton()->show();
             }
             setupClients(msg);
         }
@@ -142,6 +157,7 @@ void CustomMainWindow::newUser(User *user)
         if (!_callInProgress) {
             _otherIP = user->getIP();
             _otherLogin = user->getLogin();
+            _otherId = user->getID();
             _userPage->setUserInfo(_otherLogin, _otherIP);
         }
     });

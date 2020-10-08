@@ -268,8 +268,11 @@ void UserPage::incomingCall(const int id)
     User *user = findUser(id);
 
     _callButton->hide();
-    _userLoginToCall->setText(qPrintable(user->getLogin().c_str()));
+    _userLoginToCall->setText(qPrintable(std::string("Incoming call from " + user->getLogin()).c_str()));
     _userIPToCall->setText(qPrintable(user->getIP().c_str()));
     _pickUpButton->show();
     _hangUpButton->show();
+    _userLoginToCall->show();
+    _userIPToCall->show();
+    _callButton->setText(qPrintable(std::string("Call " + user->getLogin()).c_str()));
 }

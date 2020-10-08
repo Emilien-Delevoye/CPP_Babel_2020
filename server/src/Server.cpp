@@ -23,15 +23,12 @@ Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
                         Communication(Communication::DISCONNECTED_USER, c).serialize());
         }
         if (serverTCP_.newMessageReceived()) {
-            printf("New Message\n");
             auto msg = Communication::unSerializeObj(serverTCP_.getNewMessageReceivedClientId());
-            printf("New message ok\n");
             if (msg.t_ == Communication::PRESENTATION)
                 manageNewClients(msg);
             if (msg.t_ == Communication::CALL) {
-                printf("CALL\n");
                 printf("%d is calling %d :\n", msg.myId_, msg.id_);
-                printf("%s\n", db_.getLogin(msg.id_).data());
+                std::cout << idLInkDbInstance_[msg.id_] << std::endl;
                 serverTCP_.sendMessageToClient(idLInkDbInstance_[msg.id_],
                     Communication(Communication::CALL, msg.myId_).serialize());
             }

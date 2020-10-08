@@ -43,9 +43,9 @@ void ClientTCP::async_read()
         } else {
             dataLength_ = length;
             // If not disconnected, we print the received message
-            std::cout << "\033[31m[Server's message]:\033[0m ";
             std::cout.write(buffer_, length);
             std::cout << std::endl;
+            async_read();
         }
     };
     socket_.async_read_some(boost::asio::buffer(buffer_, max_length), Hrd);
@@ -74,6 +74,5 @@ void ClientTCP::async_write(std::string msg)
         }
     };
 
-    std::cout << "\033[32mSend\033[0m " << msg << std::endl;
     boost::asio::async_write(socket_, boost::asio::buffer(msg, msg.length()), Hwt);
 }

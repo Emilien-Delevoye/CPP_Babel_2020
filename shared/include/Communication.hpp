@@ -38,6 +38,7 @@ public:
         DISCONNECTED_USER
     };
     Communication(Communication::type t=INIT) : t_(t) {}
+    Communication(Communication::type t, int myId, int id, short port) : t_(t), myId_(myId), id_(id), port_(port) {}
     Communication(Communication::type t, int myId, int id) : t_(t), myId_(myId), id_(id) {}
     Communication(Communication::type t, int id) : t_(t), id_(id) {}
     Communication(Communication::type t, std::string login, std::string password) : t_(t), login_(login), password_(password) {}
@@ -78,7 +79,6 @@ public:
     }
 
     static Communication unSerializeObj(std::string obj) {
-        std::cout << "deseria " << obj << std::endl;
         Communication c(Communication::PRESENTATION);
         std::istringstream ss(obj);
         boost::archive::binary_iarchive ia(ss);

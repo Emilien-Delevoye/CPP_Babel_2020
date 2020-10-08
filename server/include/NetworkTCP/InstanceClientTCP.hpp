@@ -34,9 +34,7 @@ class InstanceClientTCP : public std::enable_shared_from_this<InstanceClientTCP>
 public:
     InstanceClientTCP(tcp::socket socket, int id) : socket_(std::move(socket)), id_(id) {
         clear();
-        printf("ici\n");
         ip_ = socket_.remote_endpoint().address().to_string();
-        printf("ici\n");
     }
 
     void start();
