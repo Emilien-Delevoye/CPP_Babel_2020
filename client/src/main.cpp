@@ -66,6 +66,14 @@ int main(int argc, char **argv)
 
 int main()
 {
-    auto call = Call("127.0.0.1", 4242, 4242);
-    return (0);
+    try {
+        Call call("127.0.0.1", 4242, 4242);
+        return (0);
+    } catch (FatalError &e) {
+        std::cerr << e.getComponent() << e.what() << std::endl;
+        return (84);
+    } catch (std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        return (84);
+    }
 }

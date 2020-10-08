@@ -86,9 +86,12 @@ void AudioIO::writeStream()
     PaError err = Pa_WriteStream(_stream, _decoded.data(), this->FRAME_SIZE);
     if (err != paNoError) {
         if (err == paOutputUnderflowed)
-            throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
-        else
+            throw AudioIOError("Portaudio: ",
+                " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
+        else {
+            std::cerr << "Bonjour, je suis un petit fils de flute" << std::endl;
             throw FatalError("PortAudio: ", static_cast<std::string>(Pa_GetErrorText(err)));
+        }
     }
 }
 
