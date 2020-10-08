@@ -50,11 +50,11 @@ void Server::manageNewClients(const Communication &msg)
 {
     auto setup = Communication(Communication::SETUP);
 
-    std::cout << "password " << db_.getPasswordFromLogin(msg.login_) << "__" << msg.password_ << std::endl;
     if (db_.getPasswordFromLogin(msg.login_).empty() or db_.getPasswordFromLogin(msg.login_) == msg.password_) {
         auto login = msg.login_;
         auto password = msg.password_;
         auto ip = serverTCP_.getIpId(serverTCP_.getIdClientLastMsg());
+        std::cout << ip << std::endl;
         auto port = msg.port_;
 
         db_.removeRowFromLogin(msg.login_);

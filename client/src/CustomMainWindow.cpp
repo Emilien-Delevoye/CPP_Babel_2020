@@ -213,29 +213,3 @@ bool CustomMainWindow::checkField() const
     }
     return true;
 }
-
-
-
-/* create a new user */
-/*User *user;
-user = new User(_userPage, "Jean", std::string("127.0.0."), 4, 5);
-user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-std::string tooltip = std::string("Disp²lay information about ") + std::string("Jean");
-user->setToolTip(tooltip.c_str());
-user->setMinimumHeight(50);
-connect(user, &QPushButton::clicked, [=]() {
-    if (!_callInProgress) {
-        _otherIP = user->getIP();
-        _otherLogin = user->getLogin();
-        _userPage->setUserInfo(_otherLogin, _otherIP);
-    }
-});
-_userPage->addUser(user);*/
-
-// delete a  user with
-
-//_userPage->deleteUser(5);
-
-// delete all user
-
-//_userPage->deleteAllUser();
