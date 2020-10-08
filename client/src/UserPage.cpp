@@ -226,6 +226,15 @@ void UserPage::deleteUser(int id)
     _users.erase(_users.begin() + savePos);
 }
 
+bool UserPage::userExists(int id)
+{
+    for (auto & u : _users) {
+        if (u->getID() == id)
+            return true;
+    }
+    return false;
+}
+
 void UserPage::deleteAllUser()
 {
     for (auto user : _users) {

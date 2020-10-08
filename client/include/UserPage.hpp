@@ -43,6 +43,8 @@ class UserPage : public CustomWidget {
         void addUser(User *user);
         void deleteUser(int id);
         void deleteAllUser();
+        bool userExists(int id);
+        std::vector<User *> getUsers() {return _users;}
 
     private:
         std::vector<User *> _users;

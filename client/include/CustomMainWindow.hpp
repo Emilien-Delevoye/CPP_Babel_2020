@@ -38,6 +38,7 @@ public:
 
 private:
     void newUser(const Communication &msg);
+    void newUser(User *user);
 
     ConnectionPage *_connectionPage;
     UserPage *_userPage;
@@ -50,6 +51,7 @@ private:
     std::string _serverIP;
     std::string _serverPort;
 
+    int _userId;
     std::string _userLogin;
     std::string _userPassword;
     bool _callInProgress;
@@ -60,6 +62,10 @@ private:
     QTimer *_timer;
 
     void startServerBackCall();
+
+    void ConnectLogToServer();
+
+    void setupClients(const Communication &msg);
 };
 
 #endif //B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H
