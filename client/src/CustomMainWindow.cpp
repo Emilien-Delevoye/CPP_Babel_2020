@@ -30,7 +30,9 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         _connectionPage->fillUserInfo(_serverIP, _serverPort, _userLogin, _userPassword);
         if (checkField()) {
             qDebug() << qPrintable(_serverIP.data()) << ", " << qPrintable(_serverPort.data()) << endl;
+
             _serverTCP.connect(_serverIP, _serverPort);
+            _serverTCP.write(Communication(Communication::PRESENTATION, _userLogin, _userPassword).serialize());
             navToUserPage();
             qDebug() << "Connected as " << qPrintable(_userLogin.c_str()) << " with Ip address " << qPrintable(_userLogin.c_str()) << endl;
         }
@@ -65,7 +67,13 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     _timer->setInterval(1000);
     connect(_timer, &QTimer::timeout, [&]() {
         std::string dt = _serverTCP.getDataClear();
-        std::cout << "rcv: " << dt << std::endl;
+        auto msg = Communication::unSerializeObj(dt);
+        std::cout << "\033[32;1mRcv: \033[0m" << dt << std::endl;
+        if (msg.t_ == Communication::NEW_USER)
+            newUser(msg);
+        if (msg.t_ == Communication::DISCONNECTED_USER)
+            _userPage->deleteUser(msg.id_);
+
         /* create a new user */
         /*User *user;
         user = new User(_userPage, "Jean", std::string("127.0.0."), 4, 5);
@@ -92,6 +100,24 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     });
     _timer->start();
 
+}
+
+void CustomMainWindow::newUser(const Communication &msg)
+{
+    auto user = new User(_userPage, msg.login_, msg.ip_, atoi(msg.port_.data()), msg.id_);
+
+    user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    std::string tooltip = std::string("Display information about ") + std::string(user->getLogin());
+    user->setToolTip(tooltip.c_str());
+    user->setMinimumHeight(50);
+    connect(user, &QPushButton::clicked, [=]() {
+        if (!_callInProgress) {
+            _otherIP = user->getIP();
+            _otherLogin = user->getLogin();
+            _userPage->setUserInfo(_otherLogin, _otherIP);
+        }
+    });
+    _userPage->addUser(user);
 }
 
 /*!

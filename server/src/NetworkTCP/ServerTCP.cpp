@@ -28,24 +28,19 @@ void ServerTCP::handleConnections()
                     std::move(socket_), idCounter_);
             newClient->start();
             ServerTCP::clients_.push_back(newClient);
-            newClientConnected_ = true;
         }
         handleConnections();
     };
     acceptor_.async_accept(socket_, Hco);
 }
 
-bool ServerTCP::newClientConnected()
-{
-    if (!newClientConnected_)
-        return false;
-    newClientConnected_ = false;
-    return true;
-}
-
-bool ServerTCP::newClientDisconnected()
+bool ServerTCP::isDisconnectedClients()
 {
     auto rv = std::any_of(clients_.begin(), clients_.end(), [](const std::shared_ptr<InstanceClientTCP> &o) {return o->isDisconnected();});
+
+    for (auto & client : clients_)
+        if (client->isDisconnected())
+            disconnectedClientsId_.push_back(client->getId());
 
     if (rv)
         clients_.erase(std::remove_if(clients_.begin(), clients_.end(),
@@ -54,10 +49,18 @@ bool ServerTCP::newClientDisconnected()
     return rv;
 }
 
-void ServerTCP::sendMessageToAllClientsConnected(std::string &msg)
+std::vector<int> ServerTCP::getDisconnectedClientsIds()
+{
+    auto tmp = disconnectedClientsId_;
+
+    disconnectedClientsId_.clear();
+    return tmp;
+}
+
+void ServerTCP::sendMessageToAllClientsConnected(std::string msg)
 {
     for (auto &c : clients_) {
-        printf("id %d\n", c->getId());
+        printf("message to id %d\n", c->getId());
         c->write(msg);
     }
 }
@@ -82,4 +85,3 @@ void ServerTCP::sendMessageToClient(int id, std::string &msg)
         if (c->getId() == id)
             c->write(msg);
 }
-

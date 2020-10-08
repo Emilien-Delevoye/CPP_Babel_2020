@@ -32,22 +32,29 @@ public:
         PICK_UP,
         UPDATE_CLIENTS,
         CONFIRMATION,
-        INIT
+        INIT,
+        NEW_USER,
+        DISCONNECTED_USER
     };
     Communication(Communication::type t=INIT) : t_(t) {}
+    Communication(Communication::type t, int myId, int id) : t_(t), myId_(myId), id_(id) {}
     Communication(Communication::type t, int id) : t_(t), id_(id) {}
+    Communication(Communication::type t, std::string login, std::string password) : t_(t), login_(login), password_(password) {}
 
     type t_;
 
-    // Call / Presentation
+    int myId_ = -1;
+
+    // Call / Presentation / New / Disconnected
     int id_ = -1;
-    std::string name_;
+    std::string login_;
+    std::string password_;
     std::string ip_;
     std::string port_;
 
     // Update clients
     std::vector<int> ids_;
-    std::vector<std::string> names_;
+    std::vector<std::string> logins_;
     std::vector<std::string> ips_;
     std::vector<std::string> ports_;
 
@@ -62,6 +69,13 @@ public:
         std::ostringstream ss;
         boost::archive::binary_oarchive oa(ss);
         oa & obj;
+
+        return ss.str();
+    }
+    std::string serialize() const {
+        std::ostringstream ss;
+        boost::archive::binary_oarchive oa(ss);
+        oa & *this;
 
         return ss.str();
     }
@@ -80,12 +94,12 @@ public:
         ar & t_;
 
         ar & id_;
-        ar & name_;
+        ar & login_;
         ar & ip_;
         ar & port_;
 
         ar & ids_;
-        ar & names_;
+        ar & logins_;
         ar & ips_;
         ar & ports_;
     }

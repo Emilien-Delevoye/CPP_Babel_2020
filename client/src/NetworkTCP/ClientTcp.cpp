@@ -36,6 +36,7 @@ void ClientTCP::async_read()
             std::cout.write(buffer_, length);
             dataLength_ = length;
             std::cout << "\n";
+            isData = true;
 
             try {
                 std::cout << "sanity check" << std::endl;
