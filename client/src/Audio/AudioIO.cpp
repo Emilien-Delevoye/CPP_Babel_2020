@@ -61,7 +61,7 @@ void AudioIO::startStream(int channelInputClient, int channelOutputClient)
     this->_numChannels[OUTPUT] = (this->_deviceInfo[OUTPUT]->maxOutputChannels < channelInputClient ? this->_deviceInfo[OUTPUT]->maxOutputChannels : channelInputClient);
     this->_portAudioParameters[INPUT].channelCount = this->_numChannels[INPUT];
     this->_portAudioParameters[INPUT].sampleFormat = paInt16;
-    this->_portAudioParameters[INPUT].suggestedLatency = this->_deviceInfo[INPUT]->defaultHighInputLatency;
+    this->_portAudioParameters[INPUT].suggestedLatency = this->_deviceInfo[INPUT]->defaultLowInputLatency;
     this->_portAudioParameters[INPUT].hostApiSpecificStreamInfo = nullptr;
     this->_portAudioParameters[OUTPUT].channelCount = this->_numChannels[OUTPUT];
     this->_portAudioParameters[OUTPUT].sampleFormat = paInt16;
@@ -70,27 +70,36 @@ void AudioIO::startStream(int channelInputClient, int channelOutputClient)
     std::cout << "Name Output Device : " << this->_deviceInfo[OUTPUT]->name << std::endl;
     std::cout << "Name Input Device : " << this->_deviceInfo[INPUT]->name << std::endl;
     //Open Stream
-    PaError err = Pa_OpenStream(&this->_stream, &this->_portAudioParameters[INPUT], &this->_portAudioParameters[OUTPUT],
+    PaError err = Pa_OpenStream(&this->_streamInput, &this->_portAudioParameters[INPUT], nullptr,
         this->SAMPLE_RATE, 512, paClipOff, nullptr, nullptr);
     if (err != paNoError) {
         std::cout << err << std::endl;
         std::cout << "Error unavailable -> " << paDeviceUnavailable << std::endl;
         throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
     }
-    if (Pa_StartStream(_stream) != paNoError)
+    err = Pa_OpenStream(&this->_streamOutput, nullptr, &this->_portAudioParameters[OUTPUT],
+        this->SAMPLE_RATE, 512, paClipOff, nullptr, nullptr);
+    if (err != paNoError) {
+        std::cout << err << std::endl;
+        std::cout << "Error unavailable -> " << paDeviceUnavailable << std::endl;
+        throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
+    }
+    if (Pa_StartStream(_streamInput) != paNoError)
+        throw AudioIOError("Portaudio: ", " An error occurred while starting stream.");
+    if (Pa_StartStream(_streamOutput) != paNoError)
         throw AudioIOError("Portaudio: ", " An error occurred while starting stream.");
 }
 
 void AudioIO::readStream()
 {
-    PaError err = Pa_ReadStream(_stream, this->_captured.data(), this->FRAME_SIZE);
+    PaError err = Pa_ReadStream(_streamInput, this->_captured.data(), this->FRAME_SIZE);
     if (err != paNoError)
         throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
 }
 
 void AudioIO::writeStream()
 {
-    PaError err = Pa_WriteStream(_stream, _decoded.data(), this->FRAME_SIZE);
+    PaError err = Pa_WriteStream(_streamOutput, _decoded.data(), this->FRAME_SIZE);
     if (err != paNoError) {
         if (err == paOutputUnderflowed)
             throw AudioIOError("Portaudio: ",
@@ -104,7 +113,10 @@ void AudioIO::writeStream()
 
 void AudioIO::stopStream()
 {
-    PaError err = Pa_StopStream(_stream);
+    PaError err = Pa_StopStream(_streamInput);
+    if (err)
+        throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
+    err = Pa_StopStream(_streamOutput);
     if (err)
         throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
 }
