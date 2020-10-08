@@ -26,16 +26,17 @@ void AudioIO::init()
     PaError err = Pa_Initialize();
     if (err != paNoError)
         throw std::exception();
-    this->_portAudioParameters[INPUT].device = Pa_GetDefaultInputDevice();
+/*    this->_portAudioParameters[INPUT].device = Pa_GetDefaultInputDevice();
     this->_portAudioParameters[OUTPUT].device = Pa_GetDefaultOutputDevice();
     std::cout << "Device INPUT nb " << this->_portAudioParameters[INPUT].device << std::endl;
     std::cout << "Device OUTPUT nb " << this->_portAudioParameters[OUTPUT].device << std::endl;
-    if (this->_portAudioParameters[INPUT].device < 0 or this->_portAudioParameters[OUTPUT].device < 0)
+    if (this->_portAudioParameters[INPUT].device < 0 || this->_portAudioParameters[OUTPUT].device < 0)
         throw FatalError("PortAudio", "Get default device");
     this->_deviceInfo[INPUT] = Pa_GetDeviceInfo(this->_portAudioParameters[INPUT].device);
     this->_deviceInfo[OUTPUT] = Pa_GetDeviceInfo(this->_portAudioParameters[OUTPUT].device);
-    if (this->_deviceInfo[INPUT] == nullptr or this->_deviceInfo[OUTPUT] == nullptr)
-        throw FatalError("PortAudio", "Get device info");
+    if (this->_deviceInfo[INPUT] == nullptr || this->_deviceInfo[OUTPUT] == nullptr)
+        throw FatalError("PortAudio", "Get device info");*/
+
 }
 
 int AudioIO::getInputChannelNb() const
@@ -56,7 +57,7 @@ int AudioIO::getOutputChannelNb() const
 
 void AudioIO::startStream(int channelInputClient, int channelOutputClient)
 {
-    this->_numChannels[INPUT] = (this->_deviceInfo[INPUT]->maxInputChannels < channelOutputClient ? this->_deviceInfo[INPUT]->maxInputChannels : channelOutputClient);
+/*    this->_numChannels[INPUT] = (this->_deviceInfo[INPUT]->maxInputChannels < channelOutputClient ? this->_deviceInfo[INPUT]->maxInputChannels : channelOutputClient);
     this->_numChannels[OUTPUT] = (this->_deviceInfo[OUTPUT]->maxOutputChannels < channelInputClient ? this->_deviceInfo[OUTPUT]->maxOutputChannels : channelInputClient);
     this->_portAudioParameters[INPUT].channelCount = this->_numChannels[INPUT];
     this->_portAudioParameters[INPUT].sampleFormat = paInt16;
@@ -71,6 +72,8 @@ void AudioIO::startStream(int channelInputClient, int channelOutputClient)
     //Open Stream
     PaError err = Pa_OpenStream(&this->_stream, &this->_portAudioParameters[INPUT], &this->_portAudioParameters[OUTPUT],
         this->SAMPLE_RATE, 512, paClipOff, nullptr, nullptr);
+    */
+    PaError err = Pa_OpenDefaultStream(&this->_stream, 2, 2, paInt16, this->SAMPLE_RATE, 256, nullptr, nullptr);
     if (err != paNoError) {
         std::cout << err << std::endl;
         std::cout << "Error unavailable -> " << paDeviceUnavailable << std::endl;
