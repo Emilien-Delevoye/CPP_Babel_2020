@@ -114,16 +114,18 @@ set(SERVER_INCLUDES
         shared/include/Users.hpp
 )
 
-add_executable(babel_client ${MOC_Files} ${CLIENT_SOURCES} ${CLIENT_INCLUDES})
+#add_executable(babel_client ${MOC_Files} ${CLIENT_SOURCES} ${CLIENT_INCLUDES})
 
 add_executable(babel_server ${SERVER_SOURCES} ${SERVER_INCLUDES})
 
-
+## NOT USED ##
 #target_link_libraries(babel ${CONAN_LIBS} opus)
 #target_link_libraries(babel ${CONAN_LIBS} portaudio)
+
+## TMP CHANGEMENT ##
 target_link_libraries(babel_server ${CONAN_LIBS})
-target_link_libraries(babel_client ${CONAN_LIBS} Qt5::Widgets)
-target_link_libraries(babel_client ${CONAN_LIBS} Qt5::Core)
+#target_link_libraries(babel_client ${CONAN_LIBS} Qt5::Widgets)
+#target_link_libraries(babel_client ${CONAN_LIBS} Qt5::Core)
 
 file(GLOB files "*.cpp")
 foreach(file ${files})
@@ -142,7 +144,7 @@ if(MSVC)
     find_package(Boost 1.71.0 COMPONENTS serialization)
     if(Boost_FOUND)
         include_directories(${Boost_INCLUDE_DIRS})
-        target_link_libraries(babel_client ${Boost_LIBRARIES})
+#        target_link_libraries(babel_client ${Boost_LIBRARIES})
         target_link_libraries(babel_server ${Boost_LIBRARIES})
     endif()
 endif()
