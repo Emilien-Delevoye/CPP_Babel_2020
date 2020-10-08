@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Emilien
+/*!
+ * @file Audio/AudioIO.hpp
+ * @brief AudioIO class
+ * @author Emilien.D
+ * @version 1.0
+ * @date 08/10/2020
+ *
+ * The AudioIO hpp file describes the override from IAudio and local PortAudio variables.
 */
 
 #ifndef BABEL_AUDIOIO_HPP

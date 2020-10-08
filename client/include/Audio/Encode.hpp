@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Emilien
+/*!
+ * @file Audio/Encode.hpp
+ * @brief Encode class
+ * @author Emilien.D
+ * @version 1.0
+ * @date 08/10/2020
+ *
+ * The Encode class defines the methods and local variables for Opus encapsulation
 */
 
 #ifndef BABEL_ENCODE_HPP

@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Emilien
+/*!
+ * @file Audio/IAudio.hpp
+ * @brief IAudio interface
+ * @author Emilien.D
+ * @version 1.0
+ * @date 08/10/2020
+ *
+ * The IAudio interface describes the methods and constants for the AudioIO class
 */
 
 #ifndef BABEL_IAUDIO_HPP

@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Emilien
+/*!
+ * @file Audio/AudioIO.cpp
+ * @brief AudioIO class
+ * @author Emilien.D
+ * @version 1.0
+ * @date 08/10/2020
+ *
+ * The AudioIO class reads the Input and set the Frame read in a vector, and takes a Frame to write it
 */
 
 #include <iostream>

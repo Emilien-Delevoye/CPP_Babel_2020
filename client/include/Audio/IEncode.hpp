@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Emilien
+/*!
+ * @file Audio/IEncode.hpp
+ * @brief IEncode interface
+ * @author Emilien.D
+ * @version 1.0
+ * @date 08/10/2020
+ *
+ * The IEncode interface describes the methods and constants for the Encode class
 */
 
 #ifndef BABEL_IENCODE_HPP

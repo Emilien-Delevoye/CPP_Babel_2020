@@ -1,8 +1,13 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Emilien
+/*!
+ * @file Audio/Audio.cpp
+ * @brief Audio class
+ * @author Emilien.D
+ * @version 1.0
+ * @date 08/10/2020
+ *
+ * The Audio class heirs from Encode and AudioIO
+ * This class aggregates the Input Audio read, the Output Audio write and the encoding/decoding
+ * The pointer to the object created is send to the NetworkUDP class
 */
 
 #include "Audio/Audio.hpp"
