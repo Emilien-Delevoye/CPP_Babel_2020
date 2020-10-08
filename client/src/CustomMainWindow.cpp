@@ -39,7 +39,9 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
                 } else {
                     //...
                 }
+                startServerBackCall();
                 navToUserPage();
+
                 qDebug() << "Connected as " << qPrintable(_userLogin.c_str()) << " with Ip address " << qPrintable(_userLogin.c_str()) << endl;
             } else {/*connection pas validée*/
                 _connectionPage->setError("Error while connection to the server.");
@@ -72,6 +74,11 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     setCentralWidget(_pages);
     navToConnectionPage();
 
+
+}
+
+void CustomMainWindow::startServerBackCall()
+{
     _timer = new QTimer(this);
     _timer->setInterval(1000);
     connect(_timer, &QTimer::timeout, [&]() {
@@ -108,7 +115,6 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         //_userPage->deleteAllUser();
     });
     _timer->start();
-
 }
 
 void CustomMainWindow::newUser(const Communication &msg)
