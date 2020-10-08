@@ -17,7 +17,7 @@
  *
 */
 
-User::User(QWidget *parent, const std::string &login, const std::string &ip) : CustomButton(parent, QString(login.c_str())), _login(login), _ip(ip)
+User::User(QWidget *parent, const std::string &login, const std::string &ip, short port, int id) : CustomButton(parent, QString(login.c_str())), _login(login), _ip(ip), _port(port), _id(id)
 {
 
 }
@@ -38,4 +38,22 @@ std::string User::getLogin() const
 std::string User::getIP() const
 {
     return _ip;
+}
+
+/*!
+* \brief This method return the _port member variable of User class.
+*/
+
+short User::getPort() const
+{
+    return _port;
+}
+
+/*!
+* \brief This method return the _id member variable of User class.
+*/
+
+int User::getID() const
+{
+    return _id;
 }

@@ -30,9 +30,22 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         _connectionPage->fillUserInfo(_serverIP, _serverPort, _userLogin, _userPassword);
         if (checkField()) {
             qDebug() << qPrintable(_serverIP.data()) << ", " << qPrintable(_serverPort.data()) << endl;
+
             _serverTCP.connect(_serverIP, _serverPort);
-            navToUserPage();
-            qDebug() << "Connected as " << qPrintable(_userLogin.c_str()) << " with Ip address " << qPrintable(_userLogin.c_str()) << endl;
+            _serverTCP.write(Communication(Communication::PRESENTATION, _userLogin, _userPassword).serialize());
+            if (/*connection validée*/false) {
+                if (/*login exist*/false) {
+                    //...
+                } else {
+                    //...
+                }
+                startServerBackCall();
+                navToUserPage();
+
+                qDebug() << "Connected as " << qPrintable(_userLogin.c_str()) << " with Ip address " << qPrintable(_userLogin.c_str()) << endl;
+            } else {/*connection pas validée*/
+                _connectionPage->setError("Error while connection to the server.");
+            }
         }
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
@@ -61,15 +74,65 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     setCentralWidget(_pages);
     navToConnectionPage();
 
+
+}
+
+void CustomMainWindow::startServerBackCall()
+{
     _timer = new QTimer(this);
     _timer->setInterval(1000);
     connect(_timer, &QTimer::timeout, [&]() {
         std::string dt = _serverTCP.getDataClear();
-        std::cout << "rcv: " << dt << std::endl;
+        auto msg = Communication::unSerializeObj(dt);
+        std::cout << "\033[32;1mRcv: \033[0m" << dt << std::endl;
+        if (msg.t_ == Communication::NEW_USER)
+            newUser(msg);
+        if (msg.t_ == Communication::DISCONNECTED_USER)
+            _userPage->deleteUser(msg.id_);
 
-    } );
+        /* create a new user */
+        /*User *user;
+        user = new User(_userPage, "Jean", std::string("127.0.0."), 4, 5);
+        user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        std::string tooltip = std::string("Display information about ") + std::string("Jean");
+        user->setToolTip(tooltip.c_str());
+        user->setMinimumHeight(50);
+        connect(user, &QPushButton::clicked, [=]() {
+            if (!_callInProgress) {
+                _otherIP = user->getIP();
+                _otherLogin = user->getLogin();
+                _userPage->setUserInfo(_otherLogin, _otherIP);
+            }
+        });
+        _userPage->addUser(user);*/
+
+         // delete a  user with
+
+        //_userPage->deleteUser(5);
+
+        // delete all user
+
+        //_userPage->deleteAllUser();
+    });
     _timer->start();
+}
 
+void CustomMainWindow::newUser(const Communication &msg)
+{
+    auto user = new User(_userPage, msg.login_, msg.ip_, atoi(msg.port_.data()), msg.id_);
+
+    user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    std::string tooltip = std::string("Display information about ") + std::string(user->getLogin());
+    user->setToolTip(tooltip.c_str());
+    user->setMinimumHeight(50);
+    connect(user, &QPushButton::clicked, [=]() {
+        if (!_callInProgress) {
+            _otherIP = user->getIP();
+            _otherLogin = user->getLogin();
+            _userPage->setUserInfo(_otherLogin, _otherIP);
+        }
+    });
+    _userPage->addUser(user);
 }
 
 /*!
@@ -81,23 +144,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
 
 void CustomMainWindow::navToUserPage()
 {
-    User *user;
-    for (int i = 0; i < 10; i++) {
-        user = new User(_userPage, "Jean" + std::to_string(i), std::string("127.0.0.") + std::to_string(i));
-        user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        std::string tooltip = std::string("Display information about ") + std::string("Jean") + std::to_string(i);
-        user->setToolTip(tooltip.c_str());
-        user->setMinimumHeight(50);
-        _users.push_back(user);
-        connect(user, &QPushButton::clicked, [=]() {
-            if (!_callInProgress) {
-                _otherIP = user->getIP();
-                _otherLogin = user->getLogin();
-                _userPage->setUserInfo(_otherLogin, _otherIP);
-            }
-        });
-    }
-    _userPage->init(_users, _serverIP, _userLogin);
+    _userPage->init(_serverIP, _userLogin);
     _pages->setCurrentWidget(_userPage);
 }
 
@@ -110,12 +157,6 @@ void CustomMainWindow::navToUserPage()
 
 void CustomMainWindow::navToConnectionPage()
 {
-    for (auto userToDelete : _users)
-    {
-        delete userToDelete;
-    }
-    _users.clear();
-
     _connectionPage->init();
     _pages->setCurrentWidget(_connectionPage);
 }

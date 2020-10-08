@@ -15,7 +15,8 @@
 
 class Server {
 public:
-    [[noreturn]] Server(std::string& ip, short port);
+    Server(std::string& ip, short port);
+    [[noreturn]] void run();
 
 private:
     ServerTCP serverTCP_;

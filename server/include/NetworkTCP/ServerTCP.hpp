@@ -27,11 +27,11 @@ using boost::asio::ip::address;
 class ServerTCP {
 public:
     ServerTCP(std::string& ip, short port);
-    bool newClientConnected();
-    bool newClientDisconnected();
-    void sendMessageToAllClientsConnected(std::string& msg);
+    bool isDisconnectedClients();
+    void sendMessageToAllClientsConnected(std::string msg);
     bool newMessageReceived();
     std::string getNewMessageReceivedClientId();
+    std::vector<int> getDisconnectedClientsIds();
 
     void sendMessageToClient(int id, std::string& msg);
 
@@ -45,7 +45,7 @@ private:
 
     std::thread *thread_ = nullptr;
     int idCounter_ = 0;
-    bool newClientConnected_ = false;
+    std::vector<int> disconnectedClientsId_;
 };
 
 

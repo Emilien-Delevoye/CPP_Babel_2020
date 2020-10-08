@@ -16,6 +16,7 @@ ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_)
 
 void ClientTCP::connect(std::string &ip, std::string &port)
 {
+
     boost::asio::connect(socket_, resolver.resolve(ip, port));
     async_read();
     thread_ = new std::thread([&] { io_context_.run(); });
@@ -36,6 +37,7 @@ void ClientTCP::async_read()
             std::cout.write(buffer_, length);
             dataLength_ = length;
             std::cout << "\n";
+            isData = true;
 
             try {
                 std::cout << "sanity check" << std::endl;

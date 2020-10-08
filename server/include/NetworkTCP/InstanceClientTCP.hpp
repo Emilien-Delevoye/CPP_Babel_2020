@@ -45,6 +45,7 @@ public:
     void clear() {memset(data_, 0, max_length);}
     int getId() {return id_;}
     bool isDisconnected() {return disconnected_;}
+    bool isNew = true;
 private:
     void read();
 

@@ -36,7 +36,10 @@ public:
         clear();
         return tmp;
     }
-    void clear() {memset(buffer_, 0, max_length);}
+    void clear() {
+        memset(buffer_, 0, max_length);
+        isData = false;
+    }
 
 private:
     enum {
@@ -49,6 +52,7 @@ private:
     tcp::resolver resolver;
     std::thread *thread_ = nullptr;
     size_t dataLength_ = 0;
+    bool isData = false;
 };
 
 #endif //BABEL_CLIENTTCP_HPP

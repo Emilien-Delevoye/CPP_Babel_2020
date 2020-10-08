@@ -52,6 +52,13 @@
 
 int main(int argc, char **argv)
 {
-    std::string ip("0.0.0.0");
-    Server server(ip, 8081);
+    if (argc != 3) {
+        std::cout << "Usage:" << std::endl;
+        std::cout << "./babel_server ip port" << std::endl << std::endl;
+        std::cout << "Then open your port with :" << std::endl;
+        std::cout << "firewall-cmd --zone=public --add-port=server_port/tcp" << std::endl;
+        return (84);
+    }
+    std::string ip(argv[1]);
+    Server server(ip, std::atoi(argv[2]));
 }

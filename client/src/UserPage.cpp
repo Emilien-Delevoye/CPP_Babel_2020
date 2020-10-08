@@ -131,11 +131,8 @@ CustomButton *UserPage::getLogOutButton() const
  * Moreover, it set the CustomMainWindow variables users, serverIP and userLogin.
 */
 
-void UserPage::init(const std::vector<User *>& users, const std::string &serverIP, const std::string &userLogin)
+void UserPage::init(const std::string &serverIP, const std::string &userLogin)
 {
-    for (auto _user : users) {
-        _userVLayout->addWidget(_user);
-    }
     _userLoginToCall->hide();
     _userIPToCall->hide();
     _callButton->hide();
@@ -208,5 +205,31 @@ void UserPage::hideTimer()
 void UserPage::addUser(User *user)
 {
     _userVLayout->addWidget(user);
+    _users.push_back(user);
 }
 
+void UserPage::deleteUser(int id)
+{
+    int pos = 0;
+    int savePos = -1;
+
+    User *userToDelete;
+    for (auto user : _users) {
+        if (user->getID() == id) {
+            savePos = pos;
+            userToDelete = user;
+        }
+        pos++;
+    }
+    _userVLayout->removeWidget(userToDelete);
+    delete userToDelete;
+    _users.erase(_users.begin() + savePos);
+}
+
+void UserPage::deleteAllUser()
+{
+    for (auto user : _users) {
+        delete user;
+    }
+    _users.clear();
+}

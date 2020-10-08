@@ -29,32 +29,37 @@
 #include "ClientTcp.hpp"
 
 class CustomMainWindow : public QMainWindow {
-    Q_OBJECT
-    public:
-        explicit CustomMainWindow(QWidget *parent = nullptr, const QString &title = "Babel");
-        void navToUserPage();
-        void navToConnectionPage();
-        bool checkField() const;
-    private:
-        ConnectionPage *_connectionPage;
-        UserPage *_userPage;
-        std::vector<User *> _users;
-        QStackedWidget *_pages;
+Q_OBJECT
+public:
+    explicit CustomMainWindow(QWidget *parent = nullptr, const QString &title = "Babel");
+    void navToUserPage();
+    void navToConnectionPage();
+    bool checkField() const;
 
-        int _otherId;
-        std::string _otherIP;
-        std::string _otherLogin;
+private:
+    void newUser(const Communication &msg);
 
-        std::string _serverIP;
-        std::string _serverPort;
-        std::string _userLogin;
-        std::string _userPassword;
-        bool _callInProgress;
+    ConnectionPage *_connectionPage;
+    UserPage *_userPage;
+    QStackedWidget *_pages;
 
-        ClientTCP _serverTCP;
-        Communication _com;
+    int _otherId;
+    std::string _otherIP;
+    std::string _otherLogin;
 
-        QTimer *_timer;
+    std::string _serverIP;
+    std::string _serverPort;
+
+    std::string _userLogin;
+    std::string _userPassword;
+    bool _callInProgress;
+
+    ClientTCP _serverTCP;
+    Communication _com;
+
+    QTimer *_timer;
+
+    void startServerBackCall();
 };
 
 #endif //B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H
