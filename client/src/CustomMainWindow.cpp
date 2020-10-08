@@ -35,6 +35,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         if (!_callInProgress) {
             _connectionPage->emptyPassword();
             navToConnectionPage();
+            _serverTCP.disconnect();
         }
     });
     connect(_userPage->getCallButton(), &QPushButton::clicked, [=]() {

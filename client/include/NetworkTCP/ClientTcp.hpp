@@ -30,6 +30,7 @@ public:
     void write(std::string msg);
     void async_write(std::string);
     void startAsyncRead();
+    void disconnect();
 
     std::string getData() {return std::string(buffer_, dataLength_);}
     std::string getDataClear() {

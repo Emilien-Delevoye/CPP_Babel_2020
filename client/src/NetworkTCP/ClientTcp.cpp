@@ -10,9 +10,7 @@
 #include <iostream>
 
 ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_)
-{
-    connect(ip, port);
-}
+{}
 
 bool ClientTCP::connect(std::string &ip, std::string &port)
 {
@@ -75,4 +73,10 @@ void ClientTCP::async_write(std::string msg)
     };
 
     boost::asio::async_write(socket_, boost::asio::buffer(msg, msg.length()), Hwt);
+}
+
+void ClientTCP::disconnect()
+{
+    socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+    socket_.close();
 }
