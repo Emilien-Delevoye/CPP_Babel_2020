@@ -1,6 +1,7 @@
 project(Babel)
 cmake_minimum_required(VERSION 3.17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "./bin")
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 
 if (UNIX)
     add_definitions("-fPIC")
@@ -31,8 +32,6 @@ QT5_WRAP_CPP(MOC_Files
 include_directories(
         ${CMAKE_INCLUDE_PATH}
 
-        client/../shared/include
-        client/../shared/src
         client/include/NetworkUDP
         client/src/NetworkUDP
         client/include/NetworkTCP
@@ -42,12 +41,13 @@ include_directories(
         client/include
         client/src
 
-        server/include/NetworkTCP/client
-        server/include/NetworkTCP/server
         server/include/NetworkTCP
-        server/../shared/include
+        server/src/NetworkTCP
         server/include
         server/src
+
+        shared/include
+        shared/src
 )
 
 set(CLIENT_SOURCES
@@ -68,7 +68,7 @@ set(CLIENT_SOURCES
         client/src/NetworkUDP/SenderUDP.cpp
         client/src/Call.cpp
         client/src/NetworkTCP/ClientTcp.cpp
-        )
+)
 
 set(CLIENT_INCLUDES
         client/include/Audio/AudioIO.hpp
@@ -140,7 +140,7 @@ if(MSVC)
     set(Boost_USE_DEBUG_LIBS         OFF) # ignore debug libs and
     set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
     set(Boost_USE_MULTITHREADED      ON)
-    set(Boost_USE_STATIC_RUNTIME    OFF)
+    set(Boost_USE_STATIC_RUNTIME     OFF)
     find_package(Boost 1.71.0 COMPONENTS serialization)
     if(Boost_FOUND)
         include_directories(${Boost_INCLUDE_DIRS})

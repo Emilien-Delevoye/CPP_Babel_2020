@@ -31,9 +31,16 @@ public:
     void sendMessageToAllClientsConnected(std::string msg);
     bool newMessageReceived();
     std::string getNewMessageReceivedClientId();
+    int getIdClientLastMsg() {return clientIdLastMessage_;}
     std::vector<int> getDisconnectedClientsIds();
 
-    void sendMessageToClient(int id, std::string& msg);
+    void sendMessageToClient(int id, std::string msg);
+    std::string getIpId(int id) {
+        for (auto & c : clients_)
+            if (c->getId() == id)
+                return c->getIp();
+        return "";
+    }
 
 private:
     void handleConnections();
@@ -46,6 +53,8 @@ private:
     std::thread *thread_ = nullptr;
     int idCounter_ = 0;
     std::vector<int> disconnectedClientsId_;
+
+    int clientIdLastMessage_ = -1;
 };
 
 

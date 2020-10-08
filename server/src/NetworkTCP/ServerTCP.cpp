@@ -26,8 +26,11 @@ void ServerTCP::handleConnections()
             std::cout << "New Connection (ID: " + std::to_string(idCounter_) + ")" << std::endl;
             std::shared_ptr<InstanceClientTCP> newClient = std::make_shared<InstanceClientTCP>(
                     std::move(socket_), idCounter_);
+            printf("0\n");
             newClient->start();
+            printf("1\n");
             ServerTCP::clients_.push_back(newClient);
+            printf("2\n");
         }
         handleConnections();
     };
@@ -73,13 +76,15 @@ bool ServerTCP::newMessageReceived()
 std::string ServerTCP::getNewMessageReceivedClientId()
 {
     for (auto &c : clients_)
-        if (!c->getData().empty())
+        if (!c->getData().empty()) {
+            clientIdLastMessage_ = c->getId();
             return c->getDataClear();
-    printf("omg\n");
+        }
+    std::cerr << "Error in message recuperation" << std::endl;
     return std::string("");
 }
 
-void ServerTCP::sendMessageToClient(int id, std::string &msg)
+void ServerTCP::sendMessageToClient(int id, std::string msg)
 {
     for (auto &c : clients_)
         if (c->getId() == id)

@@ -24,11 +24,12 @@ class ClientTCP {
 public:
     ClientTCP(std::string& ip, std::string& port);
     ClientTCP() : resolver(io_context_) {}
-    void connect(std::string& ip, std::string& port);
+    bool connect(std::string& ip, std::string& port);
     std::string read();
     void async_read();
     void write(std::string msg);
     void async_write(std::string);
+    void startAsyncRead();
 
     std::string getData() {return std::string(buffer_, dataLength_);}
     std::string getDataClear() {
@@ -38,12 +39,12 @@ public:
     }
     void clear() {
         memset(buffer_, 0, max_length);
-        isData = false;
+        dataLength_ = 0;
     }
 
 private:
     enum {
-        max_length = 1024
+        max_length = 2048
     };
     char buffer_[max_length]{};
     std::string data;
@@ -52,7 +53,6 @@ private:
     tcp::resolver resolver;
     std::thread *thread_ = nullptr;
     size_t dataLength_ = 0;
-    bool isData = false;
 };
 
 #endif //BABEL_CLIENTTCP_HPP

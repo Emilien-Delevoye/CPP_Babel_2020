@@ -10,9 +10,9 @@
 
 void InstanceClientTCP::start()
 {
+
     std::cout << socket_.remote_endpoint().address().to_string() << std::endl;
     read();
-
 }
 
 void InstanceClientTCP::read()
@@ -49,9 +49,9 @@ void InstanceClientTCP::write(std::string msg)
         read(); // FIXME ? On retire l'asynchrone ici non ?
     };
 
-    std::cout << "\033[32mSend\033[0m " << msg << std::endl;
+    /*std::cout << "\033[32mSend\033[0m " << msg << std::endl;
     for (auto &i : msg)
         printf("%d ", i);
-    printf("\n");
+    printf("\n");*/
     boost::asio::async_write(socket_, boost::asio::buffer(msg, msg.length()), Hwt);
 }
