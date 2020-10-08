@@ -32,13 +32,13 @@ void ReceiverUDP::handleReceive(const boost::system::error_code &error, size_t b
     this->_audio->setToDecode(this->recv_buffer, bytes_transferred);
     try {
         this->_audio->decodeData();
-    } catch (OpusError &e) {
+    } catch (EncodeError &e) {
         std::cerr << e.getComponent() << e.what() << std::endl;
     }
     this->_audio->setDecoded(this->_audio->getDecoded());
     try {
         this->_audio->writeStream();
-    } catch (PortaudioError &e) {
+    } catch (AudioIOError &e) {
         std::cerr << e.getComponent() << e.what() << std::endl;
     }
     socket.async_receive_from(boost::asio::buffer(this->recv_buffer), this->remote_endpoint,

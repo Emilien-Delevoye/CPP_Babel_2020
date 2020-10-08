@@ -14,14 +14,14 @@ Call::Call(const std::string &IpAddressIn, int PortReceiver, int PortSender) : _
             // Send Data
             try {
                 this->_audio.readStream();
-            } catch (PortaudioError &e) {
+            } catch (AudioIOError &e) {
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;
             }
             this->_audio.setCaptured(this->_audio.getCaptured());
             try {
                 this->_audio.encodeData();
-            } catch (OpusError &e) {
+            } catch (EncodeError &e) {
                 std::cerr << e.getComponent() << e.what() << std::endl;
                 continue;
             }

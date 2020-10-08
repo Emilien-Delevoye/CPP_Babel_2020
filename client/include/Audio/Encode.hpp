@@ -5,8 +5,8 @@
 ** Created by Emilien
 */
 
-#ifndef BABEL_OPUS_HPP
-#define BABEL_OPUS_HPP
+#ifndef BABEL_ENCODE_HPP
+#define BABEL_ENCODE_HPP
 
 #ifdef _WIN32
     #define _WIN32_WINNT  0x0601
@@ -17,10 +17,10 @@
 #include "IEncode.hpp"
 #include "BabelException.hpp"
 
-class Opus : public IEncode
+class Encode : public IEncode
 {
     public:
-        Opus();
+        Encode();
         void createEncoder() final;
         void createDecoder() final;
         void encodeData() final;
@@ -41,4 +41,4 @@ class Opus : public IEncode
         size_t toDecBytes;
 };
 
-#endif //BABEL_OPUS_HPP
+#endif //BABEL_ENCODE_HPP

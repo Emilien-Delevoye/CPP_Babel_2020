@@ -42,17 +42,17 @@ public:
                         std::string const &message = "A fatal error occured.") : BabelException(component, message) {};
 };
 
-class OpusError : public BabelException
+class EncodeError : public BabelException
 {
     public:
-        explicit OpusError(std::string const &component = "Opus: ",
+        explicit EncodeError(std::string const &component = "Encode: ",
                           std::string const &message = "An error occurred.") : BabelException(component, message) {};
 };
 
-class PortaudioError : public BabelException
+class AudioIOError : public BabelException
 {
 public:
-    explicit PortaudioError(std::string const &component = "Portaudio: ",
+    explicit AudioIOError(std::string const &component = "Portaudio: ",
                             std::string const &message = "An error occurred.") : BabelException(component, message) {};
 };
 

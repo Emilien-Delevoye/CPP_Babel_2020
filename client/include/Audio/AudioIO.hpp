@@ -5,8 +5,8 @@
 ** Created by Emilien
 */
 
-#ifndef BABEL_PORTAUDIO_HPP
-#define BABEL_PORTAUDIO_HPP
+#ifndef BABEL_AUDIOIO_HPP
+#define BABEL_AUDIOIO_HPP
 
 #ifdef _WIN32
     #define _WIN32_WINNT  0x0601
@@ -18,9 +18,9 @@
 #include "IAudio.hpp"
 #include "BabelException.hpp"
 
-class PortAudio: public IAudio {
+class AudioIO: public IAudio {
 public:
-    PortAudio();
+    AudioIO();
     void init() final;
     [[nodiscard]] int getInputChannelNb() const override;
     [[nodiscard]] int getOutputChannelNb() const override;
@@ -30,7 +30,7 @@ public:
     void stopStream() final;
     std::vector<unsigned short> getCaptured();
     void setDecoded(std::vector<unsigned short>);
-    ~PortAudio();
+    ~AudioIO();
 private:
     void stop() final;
     enum _st {
@@ -46,4 +46,4 @@ private:
     bool _init = false;
 };
 
-#endif //BABEL_PORTAUDIO_HPP
+#endif //BABEL_AUDIOIO_HPP

@@ -52,8 +52,8 @@ include_directories(
 
 set(CLIENT_SOURCES
         client/src/main.cpp
-        client/src/Audio/PortAudio.cpp
-        client/src/Audio/Opus.cpp
+        client/src/Audio/AudioIO.cpp
+        client/src/Audio/Encode.cpp
         client/src/CustomMainWindow.cpp
         client/src/CustomButton.cpp
         client/src/CustomText.cpp
@@ -71,9 +71,9 @@ set(CLIENT_SOURCES
         )
 
 set(CLIENT_INCLUDES
-        client/include/Audio/PortAudio.hpp
+        client/include/Audio/AudioIO.hpp
         client/include/Audio/IAudio.hpp
-        client/include/Audio/Opus.hpp
+        client/include/Audio/Encode.hpp
         client/include/Audio/IEncode.hpp
         client/include/CustomMainWindow.hpp
         client/include/CustomButton.hpp

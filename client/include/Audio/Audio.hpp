@@ -12,10 +12,10 @@
     #define _WIN32_WINNT  0x0601
 #endif
 
-#include "Opus.hpp"
-#include "PortAudio.hpp"
+#include "Encode.hpp"
+#include "AudioIO.hpp"
 
-class Audio : public Opus, public PortAudio {
+class Audio : public Encode, public AudioIO {
 public:
     explicit Audio();
 };
