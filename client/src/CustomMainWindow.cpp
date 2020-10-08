@@ -38,20 +38,21 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         }
     });
     connect(_userPage->getCallButton(), &QPushButton::clicked, [=]() {
-        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::CALL, _otherId)));
+        _serverTCP.async_write(Communication(Communication::CALL, _userId, _otherId).serialize());
         _callInProgress = true;
         _userPage->showTimer();
         _userPage->getCallButton()->hide();
         _userPage->getHangUpButton()->show();
     });
     connect(_userPage->getHangUpButton(), &QPushButton::clicked, [=]() {
-        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::HANG_UP, _otherId)));
+        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId)));
         _callInProgress = false;
         _userPage->hideTimer();
         _userPage->getHangUpButton()->hide();
         _userPage->getCallButton()->show();
     });
     connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() {
+        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId)));
         _callInProgress = true;
         _userPage->showTimer();
         _userPage->getPickUpButton()->hide();

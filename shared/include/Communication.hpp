@@ -42,6 +42,7 @@ public:
     Communication(Communication::type t, int id) : t_(t), id_(id) {}
     Communication(Communication::type t, std::string login, std::string password) : t_(t), login_(login), password_(password) {}
     Communication(Communication::type t, int id, std::string login, std::string ip, short port) : t_(t), id_(id), login_(login), ip_(ip), port_(port) {}
+    Communication(Communication::type t, int id, std::string ip, short port) : t_(t), id_(id), ip_(ip), port_(port) {}
 
     type t_;
 

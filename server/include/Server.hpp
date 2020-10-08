@@ -22,7 +22,8 @@ private:
     ServerTCP serverTCP_;
     DataBase db_;
 
-    std::vector<std::pair<int, int>> idLInkServerInstance_;
+    std::map<int, int> idLInkDbInstance_;
+    std::map<int, int> idLInkInstanceDb_;
 
     void manageNewClients(const Communication &msg);
 };

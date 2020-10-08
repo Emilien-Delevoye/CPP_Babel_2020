@@ -23,9 +23,28 @@ Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
                         Communication(Communication::DISCONNECTED_USER, c).serialize());
         }
         if (serverTCP_.newMessageReceived()) {
+            printf("New Message\n");
             auto msg = Communication::unSerializeObj(serverTCP_.getNewMessageReceivedClientId());
+            printf("New message ok\n");
             if (msg.t_ == Communication::PRESENTATION)
                 manageNewClients(msg);
+            if (msg.t_ == Communication::CALL) {
+                printf("CALL\n");
+                printf("%d is calling %d :\n", msg.myId_, msg.id_);
+                printf("%s\n", db_.getLogin(msg.id_).data());
+                serverTCP_.sendMessageToClient(idLInkDbInstance_[msg.id_],
+                    Communication(Communication::CALL, msg.myId_).serialize());
+            }
+            if (msg.t_ == Communication::PICK_UP) {
+                int idWhoCallDb = idLInkInstanceDb_[serverTCP_.getIdClientLastMsg()];
+                serverTCP_.sendMessageToClient(idLInkDbInstance_[msg.id_],
+                    Communication(Communication::PICK_UP, idWhoCallDb).serialize());
+            }
+            if (msg.t_ == Communication::HANG_UP) {
+                int idWhoCallDb = idLInkInstanceDb_[serverTCP_.getIdClientLastMsg()];
+                serverTCP_.sendMessageToClient(idLInkDbInstance_[msg.id_],
+                    Communication(Communication::HANG_UP, idWhoCallDb).serialize());
+            }
         }
     }
 }
@@ -45,7 +64,8 @@ void Server::manageNewClients(const Communication &msg)
         int idDb = db_.addRow(login, password, ip, port);
         int idInstance = serverTCP_.getIdClientLastMsg();
 
-        idLInkServerInstance_.emplace_back(idDb, idInstance);
+        idLInkDbInstance_[idDb] = idInstance;
+        idLInkInstanceDb_[idInstance] = idDb;
 
         setup.connectionAccepted = true;
         setup.id_ = idDb;

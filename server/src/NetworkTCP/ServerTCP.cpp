@@ -26,11 +26,8 @@ void ServerTCP::handleConnections()
             std::cout << "New Connection (ID: " + std::to_string(idCounter_) + ")" << std::endl;
             std::shared_ptr<InstanceClientTCP> newClient = std::make_shared<InstanceClientTCP>(
                     std::move(socket_), idCounter_);
-            printf("0\n");
             newClient->start();
-            printf("1\n");
             ServerTCP::clients_.push_back(newClient);
-            printf("2\n");
         }
         handleConnections();
     };
