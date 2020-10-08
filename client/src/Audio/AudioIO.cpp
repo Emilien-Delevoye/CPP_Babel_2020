@@ -30,10 +30,12 @@ void AudioIO::init()
     this->_portAudioParameters[OUTPUT].device = Pa_GetDefaultOutputDevice();
     std::cout << "Device INPUT nb " << this->_portAudioParameters[INPUT].device << std::endl;
     std::cout << "Device OUTPUT nb " << this->_portAudioParameters[OUTPUT].device << std::endl;
+    if (this->_portAudioParameters[INPUT].device < 0 or this->_portAudioParameters[OUTPUT].device < 0)
+        throw FatalError("PortAudio", "Get default device");
     this->_deviceInfo[INPUT] = Pa_GetDeviceInfo(this->_portAudioParameters[INPUT].device);
     this->_deviceInfo[OUTPUT] = Pa_GetDeviceInfo(this->_portAudioParameters[OUTPUT].device);
     if (this->_deviceInfo[INPUT] == nullptr or this->_deviceInfo[OUTPUT] == nullptr)
-        exit(82);
+        throw FatalError("PortAudio", "Get device info");
 }
 
 int AudioIO::getInputChannelNb() const
