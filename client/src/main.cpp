@@ -49,7 +49,7 @@
 */
 
 #include "CustomMainWindow.hpp"
-/*
+
 int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
@@ -60,20 +60,4 @@ int main(int argc, char **argv)
     auto *babel = new CustomMainWindow(nullptr, "Babel");
     babel->show();
     return a.exec();
-}*/
-
-#include "Call.hpp"
-
-int main()
-{
-    try {
-        Call call("127.0.0.1", 4242, 4242);
-        return (0);
-    } catch (FatalError &e) {
-        std::cerr << e.getComponent() << e.what() << std::endl;
-        return (84);
-    } catch (std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        return (84);
-    }
 }
