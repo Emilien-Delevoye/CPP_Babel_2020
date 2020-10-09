@@ -48,12 +48,20 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     connect(_userPage->getHangUpButton(), &QPushButton::clicked, [=]() {
         _serverTCP.async_write(
                 Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId, 4241)));
+        if (_call && _q) {
+            _call->stopCall();
+            delete _call;
+            _q->join();
+        }
         _callInProgress = false;
         _userPage->endcomingCall(_otherId);
     });
     connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() {
         _serverTCP.async_write(
                 Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
+        this->_call = new (std::nothrow) Call(_otherIP, 4241, 4242);
+        if (this->_call)
+            _q = new (std::nothrow) std::thread([&] { this->_call->run(); } );
         _callInProgress = true;
         _userPage->showTimer();
         _userPage->getPickUpButton()->hide();
@@ -113,7 +121,7 @@ void CustomMainWindow::startServerBackCall()
                 qDebug() << "PICK UP RCV" << endl;
                 std::cout << "CALL ACCEPTED" << msg.id_ << std::endl;
                 _userPage->showTimer();
-                this->_call = new (std::nothrow) Call(_otherIP, 4242, 4242);
+                this->_call = new (std::nothrow) Call(_otherIP, 4242, 4241);
                 if (this->_call)
                     _q = new (std::nothrow) std::thread([&] { this->_call->run(); } );
                 _callInProgress = true;
