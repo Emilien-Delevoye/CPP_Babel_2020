@@ -13,23 +13,28 @@
 #include <exception>
 #include "Audio/AudioIO.hpp"
 
+/*!
+* \brief Constructor for AudioIO, it calls the init override from IAudio interface
+*/
+
 AudioIO::AudioIO() : _captured(this->FRAME_SIZE * this->CHANNEL_NB),
                          _decoded(this->FRAME_SIZE * this->CHANNEL_NB)
 {
     this->init();
 }
 
+/*!
+* \brief AudioIO::init() init PortAudio and the 2 default devices (Input and Output)
+*/
+
 void AudioIO::init()
 {
     this->_init = true;
-    std::cout << "Hello !" << std::endl;
     PaError err = Pa_Initialize();
     if (err != paNoError)
         throw std::exception();
     this->_portAudioParameters[INPUT].device = Pa_GetDefaultInputDevice();
     this->_portAudioParameters[OUTPUT].device = Pa_GetDefaultOutputDevice();
-    std::cout << "Device INPUT nb " << this->_portAudioParameters[INPUT].device << std::endl;
-    std::cout << "Device OUTPUT nb " << this->_portAudioParameters[OUTPUT].device << std::endl;
     if (this->_portAudioParameters[INPUT].device < 0 || this->_portAudioParameters[OUTPUT].device < 0)
         throw FatalError("PortAudio", "Get default device");
     this->_deviceInfo[INPUT] = Pa_GetDeviceInfo(this->_portAudioParameters[INPUT].device);
@@ -39,6 +44,10 @@ void AudioIO::init()
 
 }
 
+/*!
+* \brief AudioIO::getInputChannelNb is a getter for the maxInputChannels
+*/
+
 int AudioIO::getInputChannelNb() const
 {
     if (this->_init)
@@ -47,6 +56,10 @@ int AudioIO::getInputChannelNb() const
         return 0;
 }
 
+/*!
+* \brief AudioIO::getOutputChannelNb is a getter for the maxOutputChannels
+*/
+
 int AudioIO::getOutputChannelNb() const
 {
     if (this->_init)
@@ -54,6 +67,12 @@ int AudioIO::getOutputChannelNb() const
     else
         return 0;
 }
+
+/*!
+* \brief AudioIO::startStream opens the streams and starts it, the microphone and the speakers are active after it
+* \param channelInputClient is the number of input channel(s) from the destination client
+* \param channelOutputClient is the number of output channel(s) from the destination client
+*/
 
 void AudioIO::startStream(int channelInputClient, int channelOutputClient)
 {
@@ -67,28 +86,24 @@ void AudioIO::startStream(int channelInputClient, int channelOutputClient)
     this->_portAudioParameters[OUTPUT].sampleFormat = paInt16;
     this->_portAudioParameters[OUTPUT].suggestedLatency = this->_deviceInfo[OUTPUT]->defaultHighOutputLatency;
     this->_portAudioParameters[OUTPUT].hostApiSpecificStreamInfo = nullptr;
-    std::cout << "Name Output Device : " << this->_deviceInfo[OUTPUT]->name << std::endl;
-    std::cout << "Name Input Device : " << this->_deviceInfo[INPUT]->name << std::endl;
     //Open Stream
     PaError err = Pa_OpenStream(&this->_streamInput, &this->_portAudioParameters[INPUT], nullptr,
         this->SAMPLE_RATE, 512, paClipOff, nullptr, nullptr);
-    if (err != paNoError) {
-        std::cout << err << std::endl;
-        std::cout << "Error unavailable -> " << paDeviceUnavailable << std::endl;
+    if (err != paNoError)
         throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
-    }
     err = Pa_OpenStream(&this->_streamOutput, nullptr, &this->_portAudioParameters[OUTPUT],
         this->SAMPLE_RATE, 512, paClipOff, nullptr, nullptr);
-    if (err != paNoError) {
-        std::cout << err << std::endl;
-        std::cout << "Error unavailable -> " << paDeviceUnavailable << std::endl;
+    if (err != paNoError)
         throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
-    }
     if (Pa_StartStream(_streamInput) != paNoError)
-        throw AudioIOError("Portaudio: ", " An error occurred while starting stream.");
+        throw AudioIOError("Portaudio: ", " An error occurred while starting input stream.");
     if (Pa_StartStream(_streamOutput) != paNoError)
-        throw AudioIOError("Portaudio: ", " An error occurred while starting stream.");
+        throw AudioIOError("Portaudio: ", " An error occurred while starting output stream.");
 }
+
+/*!
+* \brief AudioIO::readStream reads a frame from the microphone and set it to a private vector which can be get by getCaptured().
+*/
 
 void AudioIO::readStream()
 {
@@ -97,19 +112,21 @@ void AudioIO::readStream()
         throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
 }
 
+/*!
+* \brief AudioIO::writeStream write the decoded stream from setDecoded to the speakers
+*/
+
 void AudioIO::writeStream()
 {
     PaError err = Pa_WriteStream(_streamOutput, _decoded.data(), this->FRAME_SIZE);
-    if (err != paNoError) {
-        if (err == paOutputUnderflowed)
-            throw AudioIOError("Portaudio: ",
-                " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
-        else {
-            std::cerr << "Bonjour, je suis un petit fils de flute" << std::endl;
-            throw FatalError("PortAudio: ", static_cast<std::string>(Pa_GetErrorText(err)));
-        }
-    }
+    if (err != paNoError)
+        throw AudioIOError("Portaudio: ",
+            " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
 }
+
+/*!
+* \brief AudioIO::stopStream stops the input and output streams
+*/
 
 void AudioIO::stopStream()
 {
@@ -121,10 +138,19 @@ void AudioIO::stopStream()
         throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
 }
 
+/*!
+* \brief AudioIO::getCaptured returns the captured data from AudioIO::readStream
+*/
+
 std::vector<unsigned short> AudioIO::getCaptured()
 {
     return this->_captured;
 }
+
+/*!
+* \brief AudioIO::setDecoded set the decoded stream from the Encode class, this needs to be set before AudioIO::writeStream
+* \param newDecoded is the decoded vector from the Encode class
+*/
 
 void AudioIO::setDecoded(std::vector<unsigned short> newDecoded)
 {
@@ -135,6 +161,10 @@ void AudioIO::stop()
 {
     Pa_Terminate();
 }
+
+/*!
+* \brief AudioIO::~AudioIO stops the AudioIO class
+*/
 
 AudioIO::~AudioIO()
 {
