@@ -7,11 +7,6 @@
 
 #include "Server.hpp"
 
-//TODO correctement gérer les ports
-//TODO Quand on est sur un client et qu'il se déconnecte il faut retirer la possibilité de le call
-//TODO vérifier que les clients déconnecté n'ont plus d'id instance et qu'ils ne recoivent pas les messages
-
-
 Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
 {
 }
