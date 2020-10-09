@@ -20,6 +20,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/archive_exception.hpp>
 #include <boost/serialization/vector.hpp>
 #include <iostream>
 #include <sstream>
@@ -72,7 +73,7 @@ public:
     }
     std::string serialize() const {
         std::ostringstream ss;
-        boost::archive::binary_oarchive oa(ss);
+        boost::archive::text_oarchive oa(ss);
         oa & *this;
 
         return ss.str();
@@ -81,7 +82,7 @@ public:
     static Communication unSerializeObj(std::string obj) {
         Communication c(Communication::PRESENTATION);
         std::istringstream ss(obj);
-        boost::archive::binary_iarchive ia(ss);
+        boost::archive::text_iarchive ia(ss);
         ia & c;
 
         return c;

@@ -14,8 +14,7 @@
 #include <sqlite_orm/sqlite_orm.h>
 #include <iostream>
 #include <utility>
-
-//#include "../../../../../.conan/data/sqlite_orm/1.5/bincrafters/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include/sqlite_orm/sqlite_orm.h" // FIXME
+#include "ADatabase.hpp"
 
 #define QUERY make_storage("select.sqlite", \
     make_table("Users", \
@@ -40,6 +39,7 @@ auto make_storage_query() {
     return QUERY;
 }
 
+//template<typename T>
 class DataBase {
 public:
     DataBase();
