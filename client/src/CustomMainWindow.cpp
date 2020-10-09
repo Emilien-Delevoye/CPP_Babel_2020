@@ -96,7 +96,7 @@ void CustomMainWindow::startServerBackCall()
     _serverTCP.clear();
     _serverTCP.startAsyncRead();
     _timer = new QTimer(this);
-    _timer->setInterval(1000);
+    _timer->setInterval(500);
     connect(_timer, &QTimer::timeout, [&]() {
         if (!_serverTCP.getData().empty()) {
             std::cout << "Message received !" << std::endl;

@@ -7,9 +7,7 @@
 
 #include "Server.hpp"
 
-//TODO vérifier que 2 clients ne se log pas avec le même login en même temps
 //TODO correctement gérer les ports
-//TODO gérer les clients offline
 //TODO Quand on est sur un client et qu'il se déconnecte il faut retirer la possibilité de le call
 //TODO vérifier que les clients déconnecté n'ont plus d'id instance et qu'ils ne recoivent pas les messages
 
