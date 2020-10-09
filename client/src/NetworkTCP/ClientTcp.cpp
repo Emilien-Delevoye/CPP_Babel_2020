@@ -9,6 +9,8 @@
 #include <memory>
 #include <iostream>
 
+using namespace std;
+
 ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_)
 {}
 
@@ -74,7 +76,12 @@ void ClientTCP::async_write(std::string msg)
 
 void ClientTCP::disconnect()
 {
-    std::cout << "disconnect socket 1" << std::endl;
+    std::cout << "stop io context" << std::endl;
+    io_context_.stop();
+    cout << "join thread" << endl;
+    thread_->join();
+    cout << "thread joined" << endl;
+
     socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
     socket_.close();
     std::cout << "disconnect socket 2" << std::endl;
