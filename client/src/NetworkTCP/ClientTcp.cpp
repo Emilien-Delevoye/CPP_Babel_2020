@@ -40,9 +40,6 @@ void ClientTCP::async_read()
             std::cout << "Disconnected !" << std::endl;
         } else {
             dataLength_ = length;
-            // If not disconnected, we print the received message
-            std::cout.write(buffer_, length);
-            std::cout << std::endl;
             async_read();
         }
     };

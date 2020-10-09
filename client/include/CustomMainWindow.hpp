@@ -61,7 +61,6 @@ private:
     Communication _com;
 
     QTimer *_timer;
-    bool _incomingCall = false;
 
     void startServerBackCall();
 

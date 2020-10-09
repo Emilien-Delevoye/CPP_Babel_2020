@@ -13,6 +13,8 @@
 #include <sqlite3.h>
 #include <sqlite_orm/sqlite_orm.h>
 #include <iostream>
+#include <utility>
+
 //#include "../../../../../.conan/data/sqlite_orm/1.5/bincrafters/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include/sqlite_orm/sqlite_orm.h" // FIXME
 
 #define QUERY make_storage("select.sqlite", \
@@ -21,8 +23,7 @@
     make_column("LOGIN", &User::login), \
     make_column("PASSWORD", &User::password), \
     make_column("IP", &User::ip), \
-    make_column("PORT", &User::port),\
-    make_column("CONNECTED", &User::connected)))
+    make_column("PORT", &User::port)))
 
 using namespace sqlite_orm;
 
@@ -32,7 +33,6 @@ struct User {
     std::string password;
     std::string ip;
     short port;
-    bool connected;
 };
 
 template <typename... Args>
@@ -43,7 +43,7 @@ auto make_storage_query() {
 class DataBase {
 public:
     DataBase();
-    int addRow(std::string name, std::string password, std::string ip, short port, bool connected);
+    int addRow(std::string name, std::string password, std::string ip, short port);
     void removeRow(int id);
 
     std::string getPassword(int id) {return storage.get<User>(id).password;}
@@ -57,9 +57,6 @@ public:
 
     std::string getPasswordFromLogin(std::string login);
     void removeRowFromLogin(std::string login);
-
-    void disconnectClient(const int id);
-    void connectClient(const int id);
 
     int getIdFromLogin(std::string login);
 private:

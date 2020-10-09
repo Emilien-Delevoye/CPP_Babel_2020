@@ -8,7 +8,6 @@
 
 #include "Users.hpp"
 
-#include <utility>
 using namespace std;
 
 // TODO abstract
@@ -27,9 +26,9 @@ DataBase::DataBase() : storage(QUERY)
     std::cout << "=======" << std::endl;
 }
 
-int DataBase::addRow(std::string name, std::string password, std::string ip, short port, bool connected)
+int DataBase::addRow(std::string name, std::string password, std::string ip, short port)
 {
-    return storage.insert(User{-1, std::move(name), std::move(password), std::move(ip), port, connected});
+    return storage.insert(User{-1, std::move(name), std::move(password), std::move(ip), port});
 }
 
 void DataBase::removeRow(int id)
@@ -39,26 +38,18 @@ void DataBase::removeRow(int id)
 
 std::string DataBase::getPasswordFromLogin(std::string login)
 {
-
-    //auto connected = storage.get_all<User>(group_by(&User::id), having(equal_to(&User::connected), true)));
-
-    vector<tuple<int, std::string>> all_users = storage.select(columns(&User::id, &User::login));
-
-    for (auto &tpl: all_users) {
-        if (std::get<1>(tpl) == login)
-            return getPassword(std::get<0>(tpl));
+    if (getIdFromLogin(login) != -1) {
+        std::cout << "get password" << std::endl;
+        return getPassword(getIdFromLogin(login));
     }
+    std::cout << "invalid login" << std::endl;
     return ("");
 }
 
 void DataBase::removeRowFromLogin(std::string login)
 {
-    vector<tuple<int, std::string>> all_users = storage.select(columns(&User::id, &User::login));
-
-    for (auto &tpl: all_users) {
-        if (std::get<1>(tpl) == login)
-            removeRow(std::get<0>(tpl));
-    }
+    if (getIdFromLogin(login) != -1)
+        removeRow(getIdFromLogin(login));
 }
 
 int DataBase::getIdFromLogin(std::string login)
@@ -66,22 +57,11 @@ int DataBase::getIdFromLogin(std::string login)
     vector<tuple<int, std::string>> all_users = storage.select(columns(&User::id, &User::login));
 
     for (auto &tpl: all_users) {
-        if (std::get<1>(tpl) == login)
+        std::cout << "over " << std::get<1>(tpl) << " with " << login << std::endl;
+        if (std::get<1>(tpl) == login) {
+            std::cout << "ok " << std::get<0>(tpl) << std::endl;
             return std::get<0>(tpl);
+        }
     }
     return -1;
-}
-
-void DataBase::disconnectClient(const int id)
-{
-    auto client = storage.get<User>(id);
-    client.connected = false;
-    storage.update(client);
-}
-
-void DataBase::connectClient(const int id)
-{
-    auto client = storage.get<User>(id);
-    client.connected = true;
-    storage.update(client);
 }

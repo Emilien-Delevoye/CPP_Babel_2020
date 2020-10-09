@@ -39,6 +39,5 @@ void InstanceClientTCP::write(std::string msg)
         read(); // FIXME ? On retire l'asynchrone ici non ?
     };
 
-    std::cout << msg << std::endl;
     boost::asio::async_write(socket_, boost::asio::buffer(msg, msg.length()), Hwt);
 }

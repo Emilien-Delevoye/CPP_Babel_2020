@@ -26,6 +26,14 @@ private:
     std::map<int, int> idLInkInstanceDb_;
 
     void manageNewClients(const Communication &msg);
+
+    void handleDisconnections();
+
+    void handleCall(const Communication &msg);
+
+    void handlePickUp(const Communication &msg);
+
+    void handleHangUp(const Communication &msg);
 };
 
 

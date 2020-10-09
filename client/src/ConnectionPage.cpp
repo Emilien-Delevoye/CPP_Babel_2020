@@ -19,9 +19,9 @@ ConnectionPage::ConnectionPage(QWidget *parent) : CustomWidget(parent)
 {
     _connectButton = new CustomButton(this, "Connect");
     _lineEdits[HOME_IP_LINE_EDIT] = new CustomLineEdit(this);
+    _lineEdits[HOME_PORT_LINE_EDIT] = new CustomLineEdit(this);
     _lineEdits[HOME_LOGIN_LINE_EDIT] = new CustomLineEdit(this);
     _lineEdits[HOME_PASSWORD_LINE_EDIT] = new CustomLineEdit(this);
-    _lineEdits[HOME_PORT_LINE_EDIT] = new CustomLineEdit(this);
     _vLayout = new QVBoxLayout(this);
     _formLayout = new QFormLayout(this);
     _formWidget = new CustomWidget(this);
