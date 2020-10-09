@@ -12,16 +12,16 @@
 #ifndef BABEL_USER_HPP
 #define BABEL_USER_HPP
 
-#include "CustomButton.hpp"
+#include "AUser.hpp"
 
-class User : public CustomButton {
+class User : public AUser {
     Q_OBJECT
     public:
-        explicit User(QWidget *parent = nullptr, const std::string &login = "login", const std::string &ip = "ip", short port = -1, int id = -1);
-        std::string getLogin() const;
-        std::string getIP() const;
-        short getPort() const;
-        int getID() const;
+        User(QWidget *parent, const std::string &login, const std::string &ip, short port, int id);
+        std::string getLogin() const override;
+        std::string getIP() const override;
+        short getPort() const override;
+        int getID() const override;
     private:
         std::string _login;
         std::string _ip;
