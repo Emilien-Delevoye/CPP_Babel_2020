@@ -39,6 +39,9 @@ void DataBase::removeRow(int id)
 
 std::string DataBase::getPasswordFromLogin(std::string login)
 {
+
+    //auto connected = storage.get_all<User>(group_by(&User::id), having(equal_to(&User::connected), true)));
+
     vector<tuple<int, std::string>> all_users = storage.select(columns(&User::id, &User::login));
 
     for (auto &tpl: all_users) {
@@ -56,6 +59,17 @@ void DataBase::removeRowFromLogin(std::string login)
         if (std::get<1>(tpl) == login)
             removeRow(std::get<0>(tpl));
     }
+}
+
+int DataBase::getIdFromLogin(std::string login)
+{
+    vector<tuple<int, std::string>> all_users = storage.select(columns(&User::id, &User::login));
+
+    for (auto &tpl: all_users) {
+        if (std::get<1>(tpl) == login)
+            return std::get<0>(tpl);
+    }
+    return -1;
 }
 
 void DataBase::disconnectClient(const int id)

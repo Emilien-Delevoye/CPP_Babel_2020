@@ -32,6 +32,8 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
             ConnectLogToServer();
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
+        if (_incomingCall)
+            _serverTCP.async_write(Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId, 4241)));
         if (!_callInProgress) {
             _connectionPage->emptyPassword();
             navToConnectionPage();
@@ -78,6 +80,7 @@ void CustomMainWindow::ConnectLogToServer()
                      << qPrintable(_userPassword.c_str()) << endl;
         } else {
             _connectionPage->setError("Invalid password");
+            _serverTCP.disconnect();
         }
     } else {
         _connectionPage->setError("Error while connecting to the server.");
@@ -107,6 +110,7 @@ void CustomMainWindow::startServerBackCall()
 
             } else if (msg.t_ == Communication::CALL) {
                 std::cout << "CALL RECEIVED " << msg.id_ << std::endl;
+                _incomingCall = true;
                 _otherId = _userPage->findUser(msg.id_)->getID();
                 _otherLogin = _userPage->findUser(msg.id_)->getLogin();
                 _otherIP = _userPage->findUser(msg.id_)->getIP();

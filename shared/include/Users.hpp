@@ -46,7 +46,6 @@ public:
     int addRow(std::string name, std::string password, std::string ip, short port, bool connected);
     void removeRow(int id);
 
-    std::string getLogin(int id) {return storage.get<User>(id).login;}
     std::string getPassword(int id) {return storage.get<User>(id).password;}
     std::string getIP(int id) {return storage.get<User>(id).ip;}
     short getPort(int id) {return storage.get<User>(id).port;}
@@ -62,6 +61,7 @@ public:
     void disconnectClient(const int id);
     void connectClient(const int id);
 
+    int getIdFromLogin(std::string login);
 private:
     decltype(make_storage_query()) storage;
 

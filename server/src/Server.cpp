@@ -11,6 +11,8 @@
 //TODO correctement gérer les ports
 //TODO gérer les clients offline
 //TODO Quand on est sur un client et qu'il se déconnecte il faut retirer la possibilité de le call
+//TODO vérifier que les clients déconnecté n'ont plus d'id instance et qu'ils ne recoivent pas les messages
+
 
 Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
 {
@@ -22,9 +24,14 @@ Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
         if (serverTCP_.isDisconnectedClients()) {
             auto disconnectedClients = serverTCP_.getDisconnectedClientsIds();
             for (int c : disconnectedClients) {
-                serverTCP_.sendMessageToAllClientsConnected(
-                        Communication(Communication::DISCONNECTED_USER, idLInkInstanceDb_[c]).serialize());
-                db_.disconnectClient(idLInkInstanceDb_[c]);
+                if (idLInkInstanceDb_.find(c) != idLInkInstanceDb_.end()) {
+                    serverTCP_.sendMessageToAllClientsConnected(
+                            Communication(Communication::DISCONNECTED_USER, idLInkInstanceDb_[c]).serialize());
+                    db_.disconnectClient(idLInkInstanceDb_[c]);
+                    std::cout << "disconncted" << std::endl;
+                    idLInkDbInstance_.erase(idLInkInstanceDb_[c]);
+                    idLInkInstanceDb_.erase(c);
+                }
             }
         }
         if (serverTCP_.newMessageReceived()) {
@@ -51,11 +58,20 @@ Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
     }
 }
 
+std::ostream& operator<<(std::ostream& os, std::vector<int> v)
+{
+    for (auto i : v)
+        os << i << " ";
+    os << std::endl;
+    return os;
+}
+
 void Server::manageNewClients(const Communication &msg)
 {
     auto setup = Communication(Communication::SETUP);
 
-    if (db_.getPasswordFromLogin(msg.login_).empty() or db_.getPasswordFromLogin(msg.login_) == msg.password_) {
+    if (db_.getPasswordFromLogin(msg.login_).empty() or (db_.getPasswordFromLogin(msg.login_) == msg.password_
+        and idLInkDbInstance_.find(db_.getIdFromLogin(msg.login_)) == idLInkDbInstance_.end())) {
         auto login = msg.login_;
         auto password = msg.password_;
         auto ip = serverTCP_.getIpId(serverTCP_.getIdClientLastMsg());
@@ -76,13 +92,28 @@ void Server::manageNewClients(const Communication &msg)
         setup.logins_ = db_.getLogins();
         setup.ips_ = db_.getIPs();
         setup.ports_ = db_.getPorts();
-
+/*
+        printf("yes\n");
+        for (int i = 0; i < setup.ids_.size(); ++i) {
+            if (idLInkDbInstance_.find(setup.ids_.at(i)) == idLInkDbInstance_.end()) {
+                std::cout << setup.ids_ << std::endl;
+                setup.ids_.erase(setup.ids_.begin() + i);
+                setup.logins_.erase(setup.logins_.begin() + i);
+                setup.ips_.erase(setup.ips_.begin() + i);
+                setup.ports_.erase(setup.ports_.begin() + i);
+                std::cout << setup.ids_ << std::endl;
+                --i;
+            }
+        }
+        printf("yes end\n");
+*/
         printf("CONNECTION ACCEPTED\n");
         serverTCP_.sendMessageToAllClientsConnected(Communication::serializeObj(setup));
 
     } else {
-        printf("CONNECTION REFUSED\n");
+        int idInstance = serverTCP_.getIdClientLastMsg();
+        printf("CONNECTION REFUSED %d\n", idInstance);
         setup.connectionAccepted = false;
-        serverTCP_.sendMessageToAllClientsConnected(setup.serialize());
+        serverTCP_.sendMessageToClient(idInstance, setup.serialize());
     }
 }
