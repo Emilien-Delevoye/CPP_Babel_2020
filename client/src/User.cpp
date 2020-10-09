@@ -17,9 +17,8 @@
  *
 */
 
-User::User(QWidget *parent, const std::string &login, const std::string &ip, short port, int id) : AUser(parent, login, login, port, id)
+User::User(QWidget *parent, const std::string &login, const std::string &ip, short port, int id) : AUser(parent, login, ip, port, id)
 {
-
 }
 
 /*!
@@ -29,7 +28,6 @@ User::User(QWidget *parent, const std::string &login, const std::string &ip, sho
 std::string User::getLogin() const
 {
     return _login;
-    //return "";
 }
 
 /*!

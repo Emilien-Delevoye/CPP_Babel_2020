@@ -23,7 +23,8 @@ class AUser : public CustomButton {
     virtual std::string getIP() const = 0;
     virtual short getPort() const = 0;
     virtual int getID() const = 0;
-    private:
+
+protected:
     std::string _login;
     std::string _ip;
     short _port;

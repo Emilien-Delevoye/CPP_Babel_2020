@@ -13,6 +13,7 @@
 #define BABEL_USER_HPP
 
 #include "AUser.hpp"
+#include <iostream>
 
 class User : public AUser {
     Q_OBJECT
@@ -22,11 +23,7 @@ class User : public AUser {
         std::string getIP() const override;
         short getPort() const override;
         int getID() const override;
-    private:
-        std::string _login;
-        std::string _ip;
-        short _port;
-        int _id;
+
 
 };
 
