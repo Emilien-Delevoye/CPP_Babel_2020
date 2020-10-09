@@ -131,7 +131,7 @@ void CustomMainWindow::setupClients(const Communication &msg)
 {
     if (msg.t_ == Communication::SETUP) {
         for (int i = 0; i < msg.ids_.size(); ++i)
-            if (!_userPage->userExists(msg.ids_.at(i)) and msg.ids_.at(i) != _userId)
+            if ((!_userPage->userExists(msg.ids_.at(i))) && (msg.ids_.at(i) != _userId))
                 newUser(new User(_userPage, msg.logins_.at(i), msg.ips_.at(i), msg.ports_.at(i),
                                  msg.ids_.at(i)));
         auto users = _userPage->getUsers();
