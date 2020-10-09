@@ -39,10 +39,8 @@ void DataBase::removeRow(int id)
 std::string DataBase::getPasswordFromLogin(std::string login)
 {
     if (getIdFromLogin(login) != -1) {
-        std::cout << "get password" << std::endl;
         return getPassword(getIdFromLogin(login));
     }
-    std::cout << "invalid login" << std::endl;
     return ("");
 }
 
@@ -57,9 +55,7 @@ int DataBase::getIdFromLogin(std::string login)
     vector<tuple<int, std::string>> all_users = storage.select(columns(&User::id, &User::login));
 
     for (auto &tpl: all_users) {
-        std::cout << "over " << std::get<1>(tpl) << " with " << login << std::endl;
         if (std::get<1>(tpl) == login) {
-            std::cout << "ok " << std::get<0>(tpl) << std::endl;
             return std::get<0>(tpl);
         }
     }

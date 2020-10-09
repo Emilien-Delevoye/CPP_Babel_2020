@@ -99,18 +99,21 @@ void CustomMainWindow::startServerBackCall()
         if (!_serverTCP.getData().empty()) {
             std::cout << "Message received !" << std::endl;
             std::string dt = _serverTCP.getDataClear();
-            std::cout << dt << std::endl;
             auto msg = Communication::unSerializeObj(dt);
 
-            if (msg.t_ == Communication::NEW_USER)
+            if (msg.t_ == Communication::NEW_USER) {
+                qDebug() << "NEW USER RCV" << endl;
                 newUser(msg);
-            else if (msg.t_ == Communication::DISCONNECTED_USER)
+            } else if (msg.t_ == Communication::DISCONNECTED_USER) {
+                qDebug() << "DISCONNECTED USER RCV" << endl;
                 _userPage->deleteUser(msg.id_);
-            else if (msg.t_ == Communication::PICK_UP) {
+            } else if (msg.t_ == Communication::PICK_UP) {
+                qDebug() << "PICK UP RCV" << endl;
                 std::cout << "CALL ACCEPTED" << msg.id_ << std::endl;
                 _userPage->showTimer();
                 _callInProgress = true;
             } else if (msg.t_ == Communication::CALL) {
+                qDebug() << "CALL RCV" << endl;
                 std::cout << "CALL RECEIVED " << msg.id_ << std::endl;
                 _callInProgress = true;
                 _otherId = _userPage->findUser(msg.id_)->getID();
@@ -119,10 +122,15 @@ void CustomMainWindow::startServerBackCall()
                 _otherPort = msg.port_;
                 _userPage->incomingCall(msg.id_);
             } else if (msg.t_ == Communication::HANG_UP) {
+                qDebug() << "HANG UP RCV" << endl;
                 _callInProgress = false;
                 _userPage->endcomingCall(msg.id_);
+            } else if (msg.t_ == Communication::SETUP) {
+                qDebug() << "SETUP RCV" << endl;
+                setupClients(msg);
+            } else {
+                qDebug() << "UNKNOWN MESSAGE TYPE" << endl;
             }
-            setupClients(msg);
         }
     });
     _timer->start();
@@ -131,21 +139,20 @@ void CustomMainWindow::startServerBackCall()
 
 void CustomMainWindow::setupClients(const Communication &msg)
 {
-    if (msg.t_ == Communication::SETUP) {
-        for (int i = 0; i < msg.ids_.size(); ++i)
-            if ((!_userPage->userExists(msg.ids_.at(i))) && (msg.ids_.at(i) != _userId))
-                newUser(new User(_userPage, msg.logins_.at(i), msg.ips_.at(i), msg.ports_.at(i),
-                                 msg.ids_.at(i)));
-        auto users = _userPage->getUsers();
-        for (auto &u : users)
-            if (std::find(msg.ids_.begin(), msg.ids_.end(), u->getID()) == msg.ids_.end())
-                _userPage->deleteUser(u->getID());
-    }
+    for (int i = 0; i < msg.ids_.size(); ++i)
+        if ((!_userPage->userExists(msg.ids_.at(i))) && (msg.ids_.at(i) != _userId))
+            newUser(new User(_userPage, msg.logins_.at(i), msg.ips_.at(i), msg.ports_.at(i),
+                             msg.ids_.at(i)));
+    auto users = _userPage->getUsers();
+    for (auto &u : users)
+        if (std::find(msg.ids_.begin(), msg.ids_.end(), u->getID()) == msg.ids_.end())
+            _userPage->deleteUser(u->getID());
 }
 
 void CustomMainWindow::newUser(const Communication &msg)
 {
     newUser(new User(_userPage, msg.login_, msg.ip_, msg.port_, msg.id_));
+    std::cout << "new User" << std::endl;
 }
 
 void CustomMainWindow::newUser(User *user)

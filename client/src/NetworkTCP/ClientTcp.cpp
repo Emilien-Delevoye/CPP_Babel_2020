@@ -41,6 +41,7 @@ void ClientTCP::async_read()
             std::terminate();
         } else {
             dataLength_ = length;
+            async_read();
         }
     };
     socket_.async_read_some(boost::asio::buffer(buffer_, max_length), Hrd);

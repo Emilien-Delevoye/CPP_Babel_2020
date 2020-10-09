@@ -28,7 +28,8 @@ User::User(QWidget *parent, const std::string &login, const std::string &ip, sho
 
 std::string User::getLogin() const
 {
-    return _login;
+    //return _login;FIXME
+    return "";
 }
 
 /*!

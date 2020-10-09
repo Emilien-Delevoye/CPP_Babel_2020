@@ -226,7 +226,7 @@ void UserPage::deleteUser(int id)
         pos++;
     }
     _userVLayout->removeWidget(userToDelete);
-    delete userToDelete;
+    //delete userToDelete;
     _users.erase(_users.begin() + savePos);
 }
 

@@ -26,6 +26,7 @@ void InstanceClientTCP::read()
             disconnected_ = true;
         } else {
             dataLength_ = length;
+            read();
         }
     };
     socket_.async_read_some(boost::asio::buffer(data_, max_length), Hrd);
