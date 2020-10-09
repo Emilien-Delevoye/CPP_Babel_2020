@@ -66,7 +66,7 @@ public:
 
     static std::string serializeObj(Communication obj) {
         std::ostringstream ss;
-        boost::archive::binary_oarchive oa(ss);
+        boost::archive::text_oarchive oa(ss);
         oa & obj;
 
         return ss.str();
