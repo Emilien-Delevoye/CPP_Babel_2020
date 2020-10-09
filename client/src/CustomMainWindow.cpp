@@ -166,7 +166,6 @@ void CustomMainWindow::setupClients(const Communication &msg)
 {
     for (int i = 0; i < msg.ids_.size(); ++i) {
         if ((!_userPage->userExists(msg.ids_.at(i))) && (msg.ids_.at(i) != _userId)) {
-            printf("id %d %s\n", msg.ids_.at(i), msg.logins_.at(i).c_str());
             newUser(new User(_userPage, msg.logins_.at(i), msg.ips_.at(i), msg.ports_.at(i),
                              msg.ids_.at(i)));
         }
@@ -174,8 +173,6 @@ void CustomMainWindow::setupClients(const Communication &msg)
     auto users = _userPage->getUsers();
     for (auto &u : users)
         if (std::find(msg.ids_.begin(), msg.ids_.end(), u->getID()) == msg.ids_.end()) {
-            printf("ici id %d %s\n", u->getID(), u->getLogin().c_str());
-            std::cout << msg.ids_ << std::endl;
             _userPage->deleteUser(u->getID(), _otherId);
         }
 }
