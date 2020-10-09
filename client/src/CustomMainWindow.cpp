@@ -46,12 +46,14 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         _userPage->getHangUpButton()->show();
     });
     connect(_userPage->getHangUpButton(), &QPushButton::clicked, [=]() {
-        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId, 4241)));
+        _serverTCP.async_write(
+                Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId, 4241)));
         _callInProgress = false;
         _userPage->endcomingCall(_otherId);
     });
     connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() {
-        _serverTCP.async_write(Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
+        _serverTCP.async_write(
+                Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
         _callInProgress = true;
         _userPage->showTimer();
         _userPage->getPickUpButton()->hide();
@@ -106,7 +108,7 @@ void CustomMainWindow::startServerBackCall()
                 newUser(msg);
             } else if (msg.t_ == Communication::DISCONNECTED_USER) {
                 qDebug() << "DISCONNECTED USER RCV" << endl;
-                _userPage->deleteUser(msg.id_);
+                _userPage->deleteUser(msg.id_, _otherId);
             } else if (msg.t_ == Communication::PICK_UP) {
                 qDebug() << "PICK UP RCV" << endl;
                 std::cout << "CALL ACCEPTED" << msg.id_ << std::endl;
@@ -115,12 +117,17 @@ void CustomMainWindow::startServerBackCall()
             } else if (msg.t_ == Communication::CALL) {
                 qDebug() << "CALL RCV" << endl;
                 std::cout << "CALL RECEIVED " << msg.id_ << std::endl;
-                _callInProgress = true;
-                _otherId = _userPage->findUser(msg.id_)->getID();
-                _otherLogin = _userPage->findUser(msg.id_)->getLogin();
-                _otherIP = _userPage->findUser(msg.id_)->getIP();
-                _otherPort = msg.port_;
-                _userPage->incomingCall(msg.id_);
+                if (_callInProgress) {
+                    _serverTCP.async_write(Communication::serializeObj(
+                            Communication(Communication::HANG_UP, _userId, msg.id_, 4241)));
+                } else {
+                    _callInProgress = true;
+                    _otherId = _userPage->findUser(msg.id_)->getID();
+                    _otherLogin = _userPage->findUser(msg.id_)->getLogin();
+                    _otherIP = _userPage->findUser(msg.id_)->getIP();
+                    _otherPort = msg.port_;
+                    _userPage->incomingCall(msg.id_);
+                }
             } else if (msg.t_ == Communication::HANG_UP) {
                 qDebug() << "HANG UP RCV" << endl;
                 _callInProgress = false;
@@ -146,7 +153,7 @@ void CustomMainWindow::setupClients(const Communication &msg)
     auto users = _userPage->getUsers();
     for (auto &u : users)
         if (std::find(msg.ids_.begin(), msg.ids_.end(), u->getID()) == msg.ids_.end())
-            _userPage->deleteUser(u->getID());
+            _userPage->deleteUser(u->getID(), _otherId);
 }
 
 void CustomMainWindow::newUser(const Communication &msg)

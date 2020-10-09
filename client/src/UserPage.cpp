@@ -212,7 +212,7 @@ void UserPage::addUser(User *user)
     _users.push_back(user);
 }
 
-void UserPage::deleteUser(int id)
+void UserPage::deleteUser(int id, int otherUserId)
 {
     int pos = 0;
     int savePos = -1;
@@ -224,6 +224,13 @@ void UserPage::deleteUser(int id)
             userToDelete = user;
         }
         pos++;
+    }
+    if (userToDelete->getID() == otherUserId) {
+        _callButton->hide();
+        _pickUpButton->hide();
+        _hangUpButton->hide();
+        _userLoginToCall->hide();
+        _userIPToCall->hide();
     }
     _userVLayout->removeWidget(userToDelete);
     delete userToDelete;

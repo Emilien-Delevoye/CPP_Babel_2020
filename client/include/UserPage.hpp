@@ -42,7 +42,7 @@ class UserPage : public CustomWidget {
         void showTimer();
         void hideTimer();
         void addUser(User *user);
-        void deleteUser(int id);
+        void deleteUser(int id, int otherUserId);
         void deleteAllUser();
         bool userExists(int id);
         std::vector<User *> getUsers() {return _users;}
