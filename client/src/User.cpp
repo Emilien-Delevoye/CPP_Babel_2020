@@ -17,7 +17,7 @@
  *
 */
 
-User::User(QWidget *parent, const std::string &login, const std::string &ip, short port, int id) : CustomButton(parent, QString(login.c_str())), _login(login), _ip(ip), _port(port), _id(id)
+User::User(QWidget *parent, const std::string &login, const std::string &ip, short port, int id) : AUser(parent, login, login, port, id)
 {
 
 }

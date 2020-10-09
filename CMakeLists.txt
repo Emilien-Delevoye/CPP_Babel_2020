@@ -23,6 +23,7 @@ QT5_WRAP_CPP(MOC_Files
         client/include/CustomMainWindow.hpp
         client/include/CustomButton.hpp
         client/include/User.hpp
+        client/include/AUser.hpp
         client/include/UserPage.hpp
         client/include/ConnectionPage.hpp
         client/include/CustomLineEdit.hpp
@@ -103,7 +104,7 @@ set(SERVER_SOURCES
         server/src/NetworkTCP/ServerTCP.cpp
         server/src/Server.cpp
         shared/src/Users.cpp
-)
+        client/include/AUser.hpp)
 
 set(SERVER_INCLUDES
         server/include/NetworkTCP/InstanceClientTCP.hpp
