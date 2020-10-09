@@ -35,12 +35,18 @@ void AudioIO::init()
         throw std::exception();
     this->_portAudioParameters[INPUT].device = Pa_GetDefaultInputDevice();
     this->_portAudioParameters[OUTPUT].device = Pa_GetDefaultOutputDevice();
-    if (this->_portAudioParameters[INPUT].device < 0 || this->_portAudioParameters[OUTPUT].device < 0)
-        throw FatalError("PortAudio", "Get default device");
+    if (this->_portAudioParameters[INPUT].device < 0 || this->_portAudioParameters[OUTPUT].device < 0) {
+        std::cerr << "PortAudio (Error) : Get default device" << std::endl;
+        this->_fatalError = true;
+        return;
+    }
     this->_deviceInfo[INPUT] = Pa_GetDeviceInfo(this->_portAudioParameters[INPUT].device);
     this->_deviceInfo[OUTPUT] = Pa_GetDeviceInfo(this->_portAudioParameters[OUTPUT].device);
-    if (this->_deviceInfo[INPUT] == nullptr || this->_deviceInfo[OUTPUT] == nullptr)
-        throw FatalError("PortAudio", "Get device info");
+    if (this->_deviceInfo[INPUT] == nullptr || this->_deviceInfo[OUTPUT] == nullptr) {
+        std::cerr << "PortAudio (Error) : Get default info" << std::endl;
+        this->_fatalError = true;
+        return;
+    }
 }
 
 /*!
@@ -49,7 +55,7 @@ void AudioIO::init()
 
 int AudioIO::getInputChannelNb() const
 {
-    if (this->_init)
+    if (this->_init && !this->_fatalError)
         return this->_deviceInfo[INPUT]->maxInputChannels;
     else
         return 0;
@@ -61,7 +67,7 @@ int AudioIO::getInputChannelNb() const
 
 int AudioIO::getOutputChannelNb() const
 {
-    if (this->_init)
+    if (this->_init && !this->_fatalError)
         return this->_deviceInfo[OUTPUT]->maxOutputChannels;
     else
         return 0;
@@ -75,6 +81,8 @@ int AudioIO::getOutputChannelNb() const
 
 void AudioIO::startStream(int channelInputClient, int channelOutputClient)
 {
+    if (this->_fatalError)
+        return;
     this->_numChannels[INPUT] = (this->_deviceInfo[INPUT]->maxInputChannels < channelOutputClient ? this->_deviceInfo[INPUT]->maxInputChannels : channelOutputClient);
     this->_numChannels[OUTPUT] = (this->_deviceInfo[OUTPUT]->maxOutputChannels < channelInputClient ? this->_deviceInfo[OUTPUT]->maxOutputChannels : channelInputClient);
     this->_portAudioParameters[INPUT].channelCount = this->_numChannels[INPUT];
@@ -106,6 +114,8 @@ void AudioIO::startStream(int channelInputClient, int channelOutputClient)
 
 void AudioIO::readStream()
 {
+    if (this->_fatalError)
+        return;
     PaError err = Pa_ReadStream(_streamInput, this->_captured.data(), this->FRAME_SIZE);
     if (err != paNoError)
         throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
@@ -117,6 +127,8 @@ void AudioIO::readStream()
 
 void AudioIO::writeStream()
 {
+    if (this->_fatalError)
+        return;
     PaError err = Pa_WriteStream(_streamOutput, _decoded.data(), this->FRAME_SIZE);
     if (err != paNoError)
         throw AudioIOError("Portaudio: ",
@@ -129,12 +141,16 @@ void AudioIO::writeStream()
 
 void AudioIO::stopStream()
 {
-    PaError err = Pa_StopStream(_streamInput);
-    if (err)
-        throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
-    err = Pa_StopStream(_streamOutput);
-    if (err)
-        throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
+    if (_streamInput) {
+        PaError err = Pa_StopStream(_streamInput);
+        if (err)
+            throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
+    }
+    if (_streamOutput) {
+        PaError err = Pa_StopStream(_streamOutput);
+        if (err)
+            throw AudioIOError("Portaudio: ", " Error: " + static_cast<std::string>(Pa_GetErrorText(err)));
+    }
 }
 
 /*!

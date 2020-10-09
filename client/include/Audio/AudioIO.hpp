@@ -48,6 +48,7 @@ private:
     std::vector<unsigned short> _decoded;
     int _numChannels[2];
     bool _init = false;
+    bool _fatalError = false;
 };
 
 #endif //BABEL_AUDIOIO_HPP
