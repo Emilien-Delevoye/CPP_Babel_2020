@@ -58,7 +58,7 @@ private:
     std::string _userPassword;
     bool _callInProgress;
 
-    ClientTCP _serverTCP;
+    ClientTCP *_serverTCP = nullptr;
     Communication _com;
 
     QTimer *_timer;

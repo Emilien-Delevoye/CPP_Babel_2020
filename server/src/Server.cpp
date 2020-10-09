@@ -62,7 +62,6 @@ void Server::handlePickUp(const Communication &msg)
 void Server::handleCall(const Communication &msg)
 {
     printf("%d is calling %d :\n", msg.myId_, msg.id_);
-    std::cout << idLInkDbInstance_[msg.id_] << std::endl;
     serverTCP_.sendMessageToClient(idLInkDbInstance_[msg.id_],
                                    Communication(Communication::CALL, msg.myId_).serialize());
 }
@@ -83,18 +82,13 @@ void Server::handleDisconnections()
 void Server::manageNewClients(const Communication &msg)
 {
     auto setup = Communication(Communication::SETUP);
-    std::cout << "try" << std::endl;
-    std::cout << msg.login_ << std::endl;
-    std::cout << db_.getPasswordFromLogin(msg.login_) << std::endl;
-    std::cout << msg.password_ << std::endl;
-    std::cout << (idLInkDbInstance_.find(db_.getIdFromLogin(msg.login_)) == idLInkDbInstance_.end()) << std::endl;
 
     if (db_.getPasswordFromLogin(msg.login_).empty() or (db_.getPasswordFromLogin(msg.login_) == msg.password_
         and idLInkDbInstance_.find(db_.getIdFromLogin(msg.login_)) == idLInkDbInstance_.end())) {
         auto login = msg.login_;
         auto password = msg.password_;
         auto ip = serverTCP_.getIpId(serverTCP_.getIdClientLastMsg());
-        std::cout << ip << std::endl;
+        //std::cout << ip << std::endl;
         auto port = msg.port_;
 
         db_.removeRowFromLogin(msg.login_);
@@ -112,19 +106,18 @@ void Server::manageNewClients(const Communication &msg)
         setup.ips_ = db_.getIPs();
         setup.ports_ = db_.getPorts();
 
-        printf("yes\n");
         for (int i = 0; i < setup.ids_.size(); ++i) {
             if (idLInkDbInstance_.find(setup.ids_.at(i)) == idLInkDbInstance_.end()) {
-                std::cout << setup.ids_ << std::endl;
+                //std::cout << setup.ids_ << std::endl;
                 setup.ids_.erase(setup.ids_.begin() + i);
                 setup.logins_.erase(setup.logins_.begin() + i);
                 setup.ips_.erase(setup.ips_.begin() + i);
                 setup.ports_.erase(setup.ports_.begin() + i);
-                std::cout << setup.ids_ << std::endl;
+                //std::cout << setup.ids_ << std::endl;
                 --i;
             }
         }
-        printf("yes end\n");
+        //printf("yes end\n");
 
         printf("CONNECTION ACCEPTED\n");
         serverTCP_.sendMessageToAllClientsConnected(Communication::serializeObj(setup));

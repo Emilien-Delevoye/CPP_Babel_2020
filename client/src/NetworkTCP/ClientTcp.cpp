@@ -29,6 +29,7 @@ void ClientTCP::startAsyncRead()
 {
     async_read();
     thread_ = new std::thread([&] { io_context_.run(); });
+    printf("START READING\n");
 }
 
 void ClientTCP::async_read()
@@ -58,7 +59,6 @@ std::string ClientTCP::read()
 
 void ClientTCP::write(std::string msg)
 {
-    std::cout << "send " << msg << std::endl;
     socket_.write_some(boost::asio::buffer(msg, msg.length()));
 }
 

@@ -33,20 +33,20 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
         if (!_callInProgress) {
-            _serverTCP.disconnect();
+            _serverTCP->disconnect();
             _connectionPage->emptyPassword();
             navToConnectionPage();
         }
     });
     connect(_userPage->getCallButton(), &QPushButton::clicked, [=]() {
         std::cout << "CALL PASSED " << _otherId << std::endl;
-        _serverTCP.async_write(Communication(Communication::CALL, _userId, _otherId, 4242).serialize());
+        _serverTCP->async_write(Communication(Communication::CALL, _userId, _otherId, 4242).serialize());
         _callInProgress = true;
         _userPage->getCallButton()->hide();
         _userPage->getHangUpButton()->show();
     });
     connect(_userPage->getHangUpButton(), &QPushButton::clicked, [=]() {
-        _serverTCP.async_write(
+        _serverTCP->async_write(
                 Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId, 4241)));
         if (_call && _q) {
             _call->stopCall();
@@ -57,7 +57,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         _userPage->endcomingCall(_otherId);
     });
     connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() {
-        _serverTCP.async_write(
+        _serverTCP->async_write(
                 Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
         this->_call = new (std::nothrow) Call(_otherIP, 4241, 4242);
         if (this->_call)
@@ -76,10 +76,11 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
 
 void CustomMainWindow::ConnectLogToServer()
 {
-    if (_serverTCP.connect(_serverIP, _serverPort)) {
-        _serverTCP.write(Communication(Communication::PRESENTATION, _userLogin, _userPassword).serialize());
+    _serverTCP = new ClientTCP;
+    if (_serverTCP->connect(_serverIP, _serverPort)) {
+        _serverTCP->write(Communication(Communication::PRESENTATION, _userLogin, _userPassword).serialize());
         printf("connect : wait for answer\n");
-        auto msg = Communication::unSerializeObj(std::string(_serverTCP.read()));
+        auto msg = Communication::unSerializeObj(std::string(_serverTCP->read()));
         printf("connect : answer received\n");
         if (msg.connectionAccepted) {
             printf("go to page\n");
@@ -92,23 +93,25 @@ void CustomMainWindow::ConnectLogToServer()
         } else {
             std::cout << "Connection refused by server" << std::endl;
             _connectionPage->setError("Invalid password");
-            _serverTCP.disconnect();
+            _serverTCP->disconnect();
+            delete _serverTCP;
         }
     } else {
         _connectionPage->setError("Error while connecting to the server.");
+        delete _serverTCP;
     }
 }
 
 void CustomMainWindow::startServerBackCall()
 {
-    _serverTCP.clear();
-    _serverTCP.startAsyncRead();
+    _serverTCP->clear();
+    _serverTCP->startAsyncRead();
     _timer = new QTimer(this);
     _timer->setInterval(500);
     connect(_timer, &QTimer::timeout, [&]() {
-        if (!_serverTCP.getData().empty()) {
+        if (!_serverTCP->getData().empty()) {
             std::cout << "Message received !" << std::endl;
-            std::string dt = _serverTCP.getDataClear();
+            std::string dt = _serverTCP->getDataClear();
             auto msg = Communication::unSerializeObj(dt);
 
             if (msg.t_ == Communication::NEW_USER) {
@@ -129,7 +132,7 @@ void CustomMainWindow::startServerBackCall()
                 qDebug() << "CALL RCV" << endl;
                 std::cout << "CALL RECEIVED " << msg.id_ << std::endl;
                 if (_callInProgress) {
-                    _serverTCP.async_write(Communication::serializeObj(
+                    _serverTCP->async_write(Communication::serializeObj(
                             Communication(Communication::HANG_UP, _userId, msg.id_, 4241)));
                 } else {
                     _callInProgress = true;

@@ -195,6 +195,7 @@ void AudioIO::setDecoded(std::vector<unsigned short> newDecoded)
 
 void AudioIO::stop()
 {
+    stopStream();
     Pa_Terminate();
 }
 
