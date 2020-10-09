@@ -68,8 +68,11 @@ void CustomMainWindow::ConnectLogToServer()
 {
     if (_serverTCP.connect(_serverIP, _serverPort)) {
         _serverTCP.write(Communication(Communication::PRESENTATION, _userLogin, _userPassword).serialize());
+        printf("connect : wait for answer\n");
         auto msg = Communication::unSerializeObj(std::string(_serverTCP.read()));
+        printf("connect : answer received\n");
         if (msg.connectionAccepted) {
+            printf("go to page\n");
             _userId = msg.id_;
             setupClients(msg);
             startServerBackCall();

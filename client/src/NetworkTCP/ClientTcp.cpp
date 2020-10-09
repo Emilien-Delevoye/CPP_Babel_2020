@@ -37,10 +37,10 @@ void ClientTCP::async_read()
 
         // If the client is disconnected
         if ((boost::asio::error::eof == ec) || (boost::asio::error::connection_reset == ec)) {
-            std::cout << "Disconnected !" << std::endl;
+            std::cout << "Disconnected Client !" << std::endl;
+            std::terminate();
         } else {
             dataLength_ = length;
-            async_read();
         }
     };
     socket_.async_read_some(boost::asio::buffer(buffer_, max_length), Hrd);
@@ -50,7 +50,6 @@ std::string ClientTCP::read()
 {
     char reply[max_length];
     size_t reply_length = socket_.read_some(boost::asio::buffer(reply, max_length));
-    std::cout << std::string(reply, reply_length) << std::endl;
     return std::string(reply, reply_length);
 }
 
@@ -74,6 +73,8 @@ void ClientTCP::async_write(std::string msg)
 
 void ClientTCP::disconnect()
 {
+    std::cout << "disconnect socket 1" << std::endl;
     socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
     socket_.close();
+    std::cout << "disconnect socket 2" << std::endl;
 }

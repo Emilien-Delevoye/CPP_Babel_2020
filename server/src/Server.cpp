@@ -73,16 +73,14 @@ void Server::handleDisconnections()
 {
     auto disconnectedClients = serverTCP_.getDisconnectedClientsIds();
     for (int c : disconnectedClients) {
-        if (idLInkInstanceDb_.find(c) != idLInkInstanceDb_.end()) {
-            serverTCP_.sendMessageToAllClientsConnected(
-                    Communication(Communication::DISCONNECTED_USER, idLInkInstanceDb_[c]).serialize());
-
-            idLInkDbInstance_.erase(idLInkInstanceDb_[c]);
-            idLInkInstanceDb_.erase(c);
-        }
+        if (idLInkInstanceDb_.find(c) == idLInkInstanceDb_.end())
+            continue;
+        serverTCP_.sendMessageToAllClientsConnected(
+                Communication(Communication::DISCONNECTED_USER, idLInkInstanceDb_[c]).serialize());
+        idLInkDbInstance_.erase(idLInkInstanceDb_[c]);
+        idLInkInstanceDb_.erase(c);
     }
 }
-
 
 void Server::manageNewClients(const Communication &msg)
 {
