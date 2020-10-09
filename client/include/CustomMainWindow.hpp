@@ -27,6 +27,7 @@
 #include "UserPage.hpp"
 #include "enum.hpp"
 #include "ClientTcp.hpp"
+#include "Call.hpp"
 
 class CustomMainWindow : public QMainWindow {
 Q_OBJECT
@@ -67,6 +68,9 @@ private:
     void ConnectLogToServer();
 
     void setupClients(const Communication &msg);
+
+    Call *_call = nullptr;
+    std::thread *_q = nullptr;
 };
 
 #endif //B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H

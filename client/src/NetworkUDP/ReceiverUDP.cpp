@@ -54,3 +54,12 @@ size_t ReceiverUDP::getEncBytesFromUDP() const
 {
     return this->encBytesFromUDP;
 }
+
+void ReceiverUDP::stopReceiver()
+{
+    std::cout << "Arrêt du thread" << std::endl;
+    this->io_service.stop();
+    this->socket.close();
+    this->q->join();
+    std::cout << "Thread arrêté" << std::endl;
+}

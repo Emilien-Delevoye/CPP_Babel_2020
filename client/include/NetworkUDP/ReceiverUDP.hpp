@@ -27,10 +27,11 @@ public:
     explicit ReceiverUDP(const std::string &IpAddr, int port, Audio *audio);
     void openServer() override;
     std::vector<unsigned char> getFromUDP() override;
+    void stopReceiver();
     [[nodiscard]] size_t getEncBytesFromUDP() const;
 private:
-    void handleReceive(const boost::system::error_code &error, size_t bytes_transferred);
     boost::asio::io_service io_service;
+    void handleReceive(const boost::system::error_code &error, size_t bytes_transferred);
     udp::socket socket{io_service};
     std::vector<unsigned char> recv_buffer;
     udp::endpoint remote_endpoint;

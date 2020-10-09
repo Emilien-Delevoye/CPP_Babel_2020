@@ -113,6 +113,9 @@ void CustomMainWindow::startServerBackCall()
                 qDebug() << "PICK UP RCV" << endl;
                 std::cout << "CALL ACCEPTED" << msg.id_ << std::endl;
                 _userPage->showTimer();
+                this->_call = new (std::nothrow) Call(_otherIP, 4242, 4242);
+                if (this->_call)
+                    _q = new (std::nothrow) std::thread([&] { this->_call->run(); } );
                 _callInProgress = true;
             } else if (msg.t_ == Communication::CALL) {
                 qDebug() << "CALL RCV" << endl;
@@ -132,6 +135,11 @@ void CustomMainWindow::startServerBackCall()
                 qDebug() << "HANG UP RCV" << endl;
                 _callInProgress = false;
                 _userPage->endcomingCall(msg.id_);
+                if (_call && _q) {
+                    _call->stopCall();
+                    delete _call;
+                    _q->join();
+                }
             } else if (msg.t_ == Communication::SETUP) {
                 qDebug() << "SETUP RCV" << endl;
                 setupClients(msg);
@@ -141,7 +149,6 @@ void CustomMainWindow::startServerBackCall()
         }
     });
     _timer->start();
-
 }
 
 void CustomMainWindow::setupClients(const Communication &msg)

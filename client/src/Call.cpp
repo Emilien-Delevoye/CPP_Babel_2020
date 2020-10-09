@@ -7,7 +7,9 @@
 
 #include "Call.hpp"
 
-Call::Call(const std::string &IpAddressIn, int PortReceiver, int PortSender) : _audio(), _networkUDP(IpAddressIn, PortReceiver, PortSender, &_audio)
+Call::Call(const std::string &IpAddressIn, int PortReceiver, int PortSender) : _audio(), _networkUDP(IpAddressIn, PortReceiver, PortSender, &_audio) {}
+
+void Call::run()
 {
     while (this->_callActive) {
         try {
@@ -32,17 +34,8 @@ Call::Call(const std::string &IpAddressIn, int PortReceiver, int PortSender) : _
     }
 }
 
-void Call::setMicState(bool state)
-{
-    this->_micState = state;
-}
-
-void Call::setSoundState(bool state)
-{
-    this->_soundState = state;
-}
-
 void Call::stopCall()
 {
     this->_callActive = false;
+    this->_networkUDP.stopReceiver();
 }

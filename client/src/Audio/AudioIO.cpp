@@ -41,7 +41,6 @@ void AudioIO::init()
     this->_deviceInfo[OUTPUT] = Pa_GetDeviceInfo(this->_portAudioParameters[OUTPUT].device);
     if (this->_deviceInfo[INPUT] == nullptr || this->_deviceInfo[OUTPUT] == nullptr)
         throw FatalError("PortAudio", "Get device info");
-
 }
 
 /*!
