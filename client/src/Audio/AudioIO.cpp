@@ -33,6 +33,27 @@ void AudioIO::init()
     PaError err = Pa_Initialize();
     if (err != paNoError)
         throw std::exception();
+
+
+
+
+
+    int numDevices = Pa_GetDeviceCount();
+
+    printf( "Number of devices = %d\n", numDevices );
+    for(int i=0; i<numDevices; i++ ) {
+        const PaDeviceInfo *deviceInfo = Pa_GetDeviceInfo(i);
+        printf("--------------------------------------- device #%d\n", i);
+        printf("%s\n", deviceInfo->name);
+    }
+
+
+
+
+
+
+
+
     this->_portAudioParameters[INPUT].device = Pa_GetDefaultInputDevice();
     this->_portAudioParameters[OUTPUT].device = Pa_GetDefaultOutputDevice();
     if (this->_portAudioParameters[INPUT].device < 0 || this->_portAudioParameters[OUTPUT].device < 0) {
