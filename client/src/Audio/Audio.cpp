@@ -13,6 +13,10 @@
 #include "Audio/Audio.hpp"
 #include <iostream>
 
+/*!
+* \brief Audio constructor init Encode and AudioIO objects and init encoder, decoder and streams
+*/
+
 Audio::Audio() : Encode(), AudioIO()
 {
     std::cout << "Start Audio()" << std::endl;
