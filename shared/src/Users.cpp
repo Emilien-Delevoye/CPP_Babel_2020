@@ -1,10 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file Users.cpp
+ * @brief Database containing Users implementation
+ * @author Cyprien.R
+ * @version 1.0
+ * @date 05/10/2020
+ *
 */
-
 
 #include "Users.hpp"
 
@@ -15,7 +16,6 @@ using namespace std;
 DataBase::DataBase() : storage(QUERY)
 {
     storage.sync_schema();
-    storage.remove_all<User>(); // FIXME
 
     std::cout << "DUMP DB" << std::endl;
     vector<tuple<int, std::string, std::string, short>> all_users = storage.select(columns(&User::id, &User::login, &User::ip, &User::port));
