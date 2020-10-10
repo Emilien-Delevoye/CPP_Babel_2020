@@ -39,6 +39,9 @@ Server::Server(std::string ip, int port) : serverTCP_(ip, port) {}
             } catch (boost::archive::archive_exception &e) {
                 EP "Invalid message" EL;
                 continue;
+            } catch (std::length_error &e) {
+                EP "Invalid message" EL;
+                continue;
             }
             if (msg.t_ == Communication::PRESENTATION)
                 manageNewClients(msg);

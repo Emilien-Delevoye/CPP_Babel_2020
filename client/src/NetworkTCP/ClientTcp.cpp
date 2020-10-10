@@ -17,6 +17,7 @@ ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_)
 bool ClientTCP::connect(std::string &ip, std::string &port)
 {
     try {
+        auto test = resolver.resolve(ip, port);
         boost::asio::connect(socket_, resolver.resolve(ip, port));
     } catch (boost::wrapexcept<boost::system::system_error> &e) {
         std::cerr << e.what() << std::endl;

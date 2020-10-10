@@ -25,7 +25,7 @@ void ServerTCP::handleConnections()
     [this](boost::system::error_code ec) {
         if (!ec) {
             ++idCounter_;
-            std::cout << "New Connection (ID: " + std::to_string(idCounter_) + ")" << std::endl;
+            std::cout << "\033[32;1mNew Connection\033[0m (ID: " + std::to_string(idCounter_) + ")" << std::endl;
             std::shared_ptr<InstanceClientTCP> newClient = std::make_shared<InstanceClientTCP>(
                     std::move(socket_), idCounter_);
             newClient->start();
