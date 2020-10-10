@@ -64,7 +64,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() {
         _serverTCP->async_write(
                 Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
-        this->_call = new (std::nothrow) Call(_otherIP, 4241, 4242);
+        this->_call = new(std::nothrow) Call(_otherIP, 4241, 4242);
         std::cout << "start Call" << std::endl;
         if (this->_call) {
             _q = new(std::nothrow) std::thread([&] { this->_call->run(); });
@@ -117,62 +117,61 @@ void CustomMainWindow::startServerBackCall()
     _timer = new QTimer(this);
     _timer->setInterval(500);
     connect(_timer, &QTimer::timeout, [&]() {
-        if (!_serverTCP->getData().empty()) {
-            std::cout << "Message received !" << std::endl;
-            std::string dt = _serverTCP->getDataClear();
-            auto msg = Communication::unSerializeObj(dt);
+        if (_serverTCP->getData().empty())
+            return;
+        std::cout << "Message received !" << std::endl; // DEBUG
+        auto msg = Communication::unSerializeObj(_serverTCP->getDataClear());
 
-            if (msg.t_ == Communication::NEW_USER) {
-                qDebug() << "NEW USER RCV" << endl;
-                newUser(msg);
-            } else if (msg.t_ == Communication::DISCONNECTED_USER) {
-                qDebug() << "DISCONNECTED USER RCV" << endl;
-                _userPage->deleteUser(msg.id_, _otherId);
-            } else if (msg.t_ == Communication::PICK_UP) {
-                qDebug() << "PICK UP RCV" << endl;
-                std::cout << "CALL ACCEPTED" << msg.id_ << std::endl;
-                _userPage->showTimer();
-                this->_call = new (std::nothrow) Call(_otherIP, 4242, 4241);
-                std::cout << "start Call" << std::endl;
-                if (this->_call) {
-                    _q = new(std::nothrow) std::thread([&] { this->_call->run(); });
-                    std::cout << "start Call ok" << std::endl;
-                }
-                _callInProgress = true;
-            } else if (msg.t_ == Communication::CALL) {
-                qDebug() << "CALL RCV" << endl;
-                std::cout << "CALL RECEIVED " << msg.id_ << std::endl;
-                if (_callInProgress) {
-                    _serverTCP->async_write(Communication::serializeObj(
-                            Communication(Communication::HANG_UP, _userId, msg.id_, 4241)));
-                } else {
-                    _callInProgress = true;
-                    _otherId = _userPage->findUser(msg.id_)->getID();
-                    _otherLogin = _userPage->findUser(msg.id_)->getLogin();
-                    _otherIP = _userPage->findUser(msg.id_)->getIP();
-                    _otherPort = msg.port_;
-                    _userPage->incomingCall(msg.id_);
-                }
-            } else if (msg.t_ == Communication::HANG_UP) {
-                qDebug() << "HANG UP RCV" << endl;
-                if (msg.id_ == _otherId) {
-                    _callInProgress = false;
-                    _userPage->endcomingCall(msg.id_);
-                    if (_call && _q) {
-                        std::cout << "stop Call (button)" << std::endl;
-                        _call->stopCall();
-                        delete _call;
-                        _call = nullptr;
-                        _q->join();
-                        std::cout << "stop Call (button) ok" << std::endl;
-                    }
-                }
-            } else if (msg.t_ == Communication::SETUP) {
-                qDebug() << "SETUP RCV" << endl;
-                setupClients(msg);
-            } else {
-                qDebug() << "UNKNOWN MESSAGE TYPE" << endl;
+        if (msg.t_ == Communication::NEW_USER) {
+            qDebug() << "NEW USER RCV" << endl;
+            newUser(msg);
+        } else if (msg.t_ == Communication::DISCONNECTED_USER) {
+            qDebug() << "DISCONNECTED USER RCV" << endl;
+            _userPage->deleteUser(msg.id_, _otherId);
+        } else if (msg.t_ == Communication::PICK_UP) {
+            qDebug() << "PICK UP RCV" << endl;
+            std::cout << "CALL ACCEPTED" << msg.id_ << std::endl;
+            _userPage->showTimer();
+            this->_call = new(std::nothrow) Call(_otherIP, 4242, 4241);
+            std::cout << "start Call" << std::endl;
+            if (this->_call) {
+                _q = new(std::nothrow) std::thread([&] { this->_call->run(); });
+                std::cout << "start Call ok" << std::endl;
             }
+            _callInProgress = true;
+        } else if (msg.t_ == Communication::CALL) {
+            qDebug() << "CALL RCV" << endl;
+            std::cout << "CALL RECEIVED " << msg.id_ << std::endl;
+            if (_callInProgress) {
+                _serverTCP->async_write(Communication::serializeObj(
+                        Communication(Communication::HANG_UP, _userId, msg.id_, 4241)));
+            } else {
+                _callInProgress = true;
+                _otherId = _userPage->findUser(msg.id_)->getID();
+                _otherLogin = _userPage->findUser(msg.id_)->getLogin();
+                _otherIP = _userPage->findUser(msg.id_)->getIP();
+                _otherPort = msg.port_;
+                _userPage->incomingCall(msg.id_);
+            }
+        } else if (msg.t_ == Communication::HANG_UP) {
+            qDebug() << "HANG UP RCV" << endl;
+            if (msg.id_ == _otherId) {
+                _callInProgress = false;
+                _userPage->endcomingCall(msg.id_);
+                if (_call && _q) {
+                    std::cout << "stop Call (button)" << std::endl;
+                    _call->stopCall();
+                    delete _call;
+                    _call = nullptr;
+                    _q->join();
+                    std::cout << "stop Call (button) ok" << std::endl;
+                }
+            }
+        } else if (msg.t_ == Communication::SETUP) {
+            qDebug() << "SETUP RCV" << endl;
+            setupClients(msg);
+        } else {
+            qDebug() << "UNKNOWN MESSAGE TYPE" << endl;
         }
     });
     _timer->start();
