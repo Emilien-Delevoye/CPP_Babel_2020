@@ -27,13 +27,19 @@ Server::Server(std::string ip, int port) : serverTCP_(ip, port) {}
 
 [[noreturn]] void Server::run()
 {
+    Communication msg;
+
     while (true) {
         if (serverTCP_.isDisconnectedClients())
             handleDisconnections();
 
         if (serverTCP_.newMessageReceived()) {
-            auto msg = Communication::unSerializeObj(serverTCP_.getNewMessageReceivedClientId());
-
+            try {
+                msg = Communication::unSerializeObj(serverTCP_.getNewMessageReceivedClientId());
+            } catch (boost::archive::archive_exception &e) {
+                EP "Invalid message" EL;
+                continue;
+            }
             if (msg.t_ == Communication::PRESENTATION)
                 manageNewClients(msg);
             else if (msg.t_ == Communication::CALL)

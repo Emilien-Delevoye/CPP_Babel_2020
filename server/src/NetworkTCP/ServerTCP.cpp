@@ -62,7 +62,7 @@ std::vector<int> ServerTCP::getDisconnectedClientsIds()
 void ServerTCP::sendMessageToAllClientsConnected(std::string msg)
 {
     for (auto &c : clients_) {
-        std::cout << "send msg to " << c->getId() << std::endl;
+        std::cout << "\033[30;2mSend message to\033[0m " << c->getId() << std::endl;
         c->write(msg);
     }
 }
