@@ -37,10 +37,10 @@ Server::Server(std::string ip, int port) : serverTCP_(ip, port) {}
             try {
                 msg = Communication::unSerializeObj(serverTCP_.getNewMessageReceivedClientId());
             } catch (boost::archive::archive_exception &e) {
-                EP "Invalid message" EL;
+                EP "Invalid message " << e.what() EL;
                 continue;
             } catch (std::length_error &e) {
-                EP "Invalid message" EL;
+                EP "Invalid message " << e.what() EL;
                 continue;
             }
             if (msg.t_ == Communication::PRESENTATION)
