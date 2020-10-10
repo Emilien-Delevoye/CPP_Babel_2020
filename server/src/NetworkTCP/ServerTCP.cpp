@@ -8,7 +8,7 @@
 
 #include "ServerTCP.hpp"
 
-ServerTCP::ServerTCP(std::string &ip, int port) :
+ServerTCP::ServerTCP(std::string ip, int port) : IServerTCP(ip, port),
         acceptor_(io_service_, tcp::endpoint(address::from_string(ip), port)), socket_(io_service_)
 {
     if ((port < 1024) || (port > 60000))
@@ -67,7 +67,7 @@ void ServerTCP::sendMessageToAllClientsConnected(std::string msg)
     }
 }
 
-bool ServerTCP::newMessageReceived()
+bool ServerTCP::newMessageReceived() const
 {
     return std::any_of(clients_.begin(), clients_.end(), [](const std::shared_ptr<InstanceClientTCP> &o) {return !o->getData().empty();});;
 }
@@ -86,7 +86,6 @@ std::string ServerTCP::getNewMessageReceivedClientId()
 void ServerTCP::sendMessageToClient(int id, std::string msg)
 {
     for (auto &c : clients_)
-        if (c->getId() == id) {
+        if (c->getId() == id)
             c->write(msg);
-        }
 }

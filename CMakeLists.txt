@@ -113,7 +113,7 @@ set(SERVER_INCLUDES
         shared/include/Communication.hpp
         shared/include/BabelException.hpp
         shared/include/Users.hpp
-        )
+        server/include/NetworkTCP/IServerTcp.hpp)
 
 add_executable(babel_client ${MOC_Files} ${CLIENT_SOURCES} ${CLIENT_INCLUDES})
 

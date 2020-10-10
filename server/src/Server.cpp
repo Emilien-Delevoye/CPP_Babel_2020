@@ -16,7 +16,7 @@
  * Construct the class that manage connections between clients.
 */
 
-Server::Server(std::string ip, int port) : serverTCP_(ip, port) {}
+Server::Server(std::string ip, int port) : serverTCP_(std::move(ip), port) {}
 
 /*!
  * \brief run method
@@ -84,6 +84,7 @@ void Server::handleHangUp(const Communication &msg)
 void Server::handlePickUp(const Communication &msg)
 {
     int idWhoCallDb = idLInkInstanceDb_[serverTCP_.getIdClientLastMsg()];
+
     serverTCP_.sendMessageToClient(idLInkDbInstance_[msg.id_],
                                    Communication(Communication::PICK_UP, idWhoCallDb).serialize());
 }

@@ -34,15 +34,5 @@ void InstanceClientTCP::read()
 
 void InstanceClientTCP::write(std::string msg)
 {
-    auto self(shared_from_this());
-    auto Hwt =
-    [this, self](boost::system::error_code ec, std::size_t) {
-    if (!ec) {
-        std::cerr << "\033[31;1mERROR CLIENT DISCONNECTED\033[0m" << std::endl;
-        read(); // FIXME ? On retire l'asynchrone ici non ?
-    }
-    };
-
     boost::asio::write(socket_, boost::asio::buffer(msg, msg.length()));
-//    boost::asio::async_write(socket_, boost::asio::buffer(msg, msg.length()), Hwt);
 }

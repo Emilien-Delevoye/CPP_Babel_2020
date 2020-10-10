@@ -50,6 +50,9 @@ To use the client you have to open your udp ports. Used port are 4241 and 4242.
    
 Please do not run the program in an application integrated terminal. Audio devices are not always available from there.
 
+**Warning** : if use the client on the same pc as the server, you should use the real pc ip instead of '127.0.0.1'
+              otherwise you'll get issue with your sound transmission. 
+
 ## OS
 
 The project MUST be OS independent. It has to compile and run in a similar manner on Unix system and Windows systems.

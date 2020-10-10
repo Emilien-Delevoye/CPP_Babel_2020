@@ -41,7 +41,7 @@ public:
 
     void start();
     void write(std::string);
-    std::string getData() {return std::string(data_, dataLength_); dataLength_ = 0;}
+    std::string getData() const {return std::string(data_, dataLength_);}
     std::string getDataClear() {
         std::string tmp = getData();
         clear();
@@ -51,7 +51,7 @@ public:
     int getId() {return id_;}
     bool isDisconnected() {return disconnected_;}
     bool isNew = true;
-    std::string getIp() {return ip_;}
+    std::string getIp() const {return ip_;}
 private:
     void read();
 
