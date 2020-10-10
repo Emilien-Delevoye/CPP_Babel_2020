@@ -54,6 +54,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
             std::cout << "stop Call" << std::endl;
             _call->stopCall();
             delete _call;
+            _call = nullptr;
             _q->join();
             std::cout << "stop Call ok" << std::endl;
         }
@@ -154,14 +155,17 @@ void CustomMainWindow::startServerBackCall()
                 }
             } else if (msg.t_ == Communication::HANG_UP) {
                 qDebug() << "HANG UP RCV" << endl;
-                _callInProgress = false;
-                _userPage->endcomingCall(msg.id_);
-                if (_call && _q) {
-                    std::cout << "stop Call (button)" << std::endl;
-                    _call->stopCall();
-                    delete _call;
-                    _q->join();
-                    std::cout << "stop Call (button) ok" << std::endl;
+                if (msg.id_ == _otherId) {
+                    _callInProgress = false;
+                    _userPage->endcomingCall(msg.id_);
+                    if (_call && _q) {
+                        std::cout << "stop Call (button)" << std::endl;
+                        _call->stopCall();
+                        delete _call;
+                        _call = nullptr;
+                        _q->join();
+                        std::cout << "stop Call (button) ok" << std::endl;
+                    }
                 }
             } else if (msg.t_ == Communication::SETUP) {
                 qDebug() << "SETUP RCV" << endl;

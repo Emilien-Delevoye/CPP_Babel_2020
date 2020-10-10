@@ -61,7 +61,7 @@ void ReceiverUDP::stopReceiver()
     this->io_service.stop();
     std::cout << "socket close" << std::endl;
     this->socket.close();
-    std::cout << "join thread" << std::endl;
+    std::cout << "join thread//" << std::endl;
     this->q->join();
     std::cout << "Thread arrêté" << std::endl;
 }
