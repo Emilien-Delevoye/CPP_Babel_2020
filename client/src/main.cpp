@@ -38,12 +38,12 @@
 
 /*!
  * @file main.cpp
- * @brief Babel initial file
+ * @brief Babel client initial file
  * @author Paul.S
  * @version 1.0
  * @date 05/10/2020
  *
- * The main file of the Babel contain the main function.
+ * The main file of the Babel client contains the main function.
  * It creates Babel application and set the relation with the styles.qss file to customise our application.
  * Moreover, it creates the main window and run exec() method from QApplication
 */

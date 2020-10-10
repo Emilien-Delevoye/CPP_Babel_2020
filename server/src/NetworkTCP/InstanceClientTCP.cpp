@@ -22,7 +22,7 @@ void InstanceClientTCP::read()
     auto Hrd =
     [this, self](boost::system::error_code ec, std::size_t length) {
         if ((boost::asio::error::eof == ec) || (boost::asio::error::connection_reset == ec)) {
-            std::cout << "Disconnected ID: " + std::to_string(id_) << std::endl;
+            std::cout << "\033[31;1mDisconnected ID:\033[0m " + std::to_string(id_) << std::endl;
             disconnected_ = true;
         } else {
             dataLength_ = length;

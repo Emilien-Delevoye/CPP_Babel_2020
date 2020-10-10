@@ -1,8 +1,9 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file ServerTCP.cpp
+ * @brief boost asio TCP communication server part encapsulation
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
 */
 
 #include "ServerTCP.hpp"
@@ -61,7 +62,7 @@ std::vector<int> ServerTCP::getDisconnectedClientsIds()
 void ServerTCP::sendMessageToAllClientsConnected(std::string msg)
 {
     for (auto &c : clients_) {
-        std::cout << "send msg to " << c->getId() << std::endl;
+        std::cout << "\033[30;2mSend message to\033[0m " << c->getId() << std::endl;
         c->write(msg);
     }
 }
