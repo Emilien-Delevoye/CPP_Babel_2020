@@ -31,15 +31,12 @@ protected:
 
 class IReceiverUDP {
 public:
-    explicit IReceiverUDP(const std::string &ipAddr, int port, Audio *audio) {
-        this->_ipAddress = ipAddr;
+    explicit IReceiverUDP(int port, Audio *audio) {
         this->_port = port;
         this->_audio = audio;
     }
     virtual void openServer() = 0;
-    virtual std::vector<unsigned char> getFromUDP() = 0;
 protected:
-    std::string _ipAddress;
     int _port;
     Audio *_audio;
 };

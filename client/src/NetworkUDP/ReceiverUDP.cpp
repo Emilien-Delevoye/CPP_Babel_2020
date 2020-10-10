@@ -1,14 +1,28 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Emilien
+/*!
+ * @file NetworkUDP/ReceiverUDP.cpp
+ * @brief ReceiverUDP class
+ * @author Emilien.D
+ * @version 1.0
+ * @date 10/10/2020
+ *
+ * Methods implementation for the ReceiverUDP class
 */
 
 #include "ReceiverUDP.hpp"
 #include <thread>
 
-ReceiverUDP::ReceiverUDP(const std::string &IpAddr, int port, Audio *audio) : IReceiverUDP(IpAddr, port, audio) {}
+/*!
+* \brief Constructor for Receiver UDP
+* \param IpAddr -> The remote_endpoint Ip Address
+* \param port -> The remote_endpoint port
+* \param audio -> A pointer to the Audio class
+*/
+
+ReceiverUDP::ReceiverUDP(int port, Audio *audio) : IReceiverUDP(port, audio) {}
+
+/*!
+* \brief This functions starts the UDP server
+*/
 
 void ReceiverUDP::openServer()
 {
@@ -23,7 +37,6 @@ void ReceiverUDP::openServer()
 
 void ReceiverUDP::handleReceive(const boost::system::error_code &error, size_t bytes_transferred)
 {
-    this->encBytesFromUDP = bytes_transferred;
     if (error) {
         std::cout << "Receive failed: " << error.message() << std::endl;
         return;
@@ -45,15 +58,9 @@ void ReceiverUDP::handleReceive(const boost::system::error_code &error, size_t b
         boost::bind(&ReceiverUDP::handleReceive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
-std::vector<unsigned char> ReceiverUDP::getFromUDP()
-{
-    return this->recv_buffer;
-}
-
-size_t ReceiverUDP::getEncBytesFromUDP() const
-{
-    return this->encBytesFromUDP;
-}
+/*!
+* \brief This function stops the server, closes the socket, and waits for the thread
+*/
 
 void ReceiverUDP::stopReceiver()
 {

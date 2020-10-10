@@ -1,11 +1,20 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Emilien
+/*!
+ * @file NetworkUDP/SenderUDP.cpp
+ * @brief SenderUDP class
+ * @author Emilien.D
+ * @version 1.0
+ * @date 10/10/2020
+ *
+ * Methods implementation for the SenderUDP class
 */
 
 #include "NetworkUDP/SenderUDP.hpp"
+
+/*!
+* \brief Constructor for SenderUDP, it inits the socket and connect it to the remote_endpoint
+* \param IpAddr -> The remote_endpoint Ip Address
+* \param port -> The remote_endpoint port
+*/
 
 SenderUDP::SenderUDP(const std::string &IpAddr, int port) : ISenderUDP(IpAddr, port)
 {
@@ -15,6 +24,12 @@ SenderUDP::SenderUDP(const std::string &IpAddr, int port) : ISenderUDP(IpAddr, p
     this->_socket->connect((*this->_remote_endpoint));
 }
 
+/*!
+* \brief This function sends a vector to the remote endpoint
+* \param in -> is the vector to send to the remote endpoint
+* \param frameSize -> is the size to send
+*/
+
 void SenderUDP::sendToServer(std::vector<unsigned char> in, size_t frameSize)
 {
     boost::system::error_code err;
@@ -22,6 +37,10 @@ void SenderUDP::sendToServer(std::vector<unsigned char> in, size_t frameSize)
     if (err)
         std::cerr << err << std::endl;
 }
+
+/*!
+* \brief Destructor for AudioIO, it closes the UDP socket
+*/
 
 SenderUDP::~SenderUDP()
 {

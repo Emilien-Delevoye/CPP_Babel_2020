@@ -24,11 +24,9 @@ using boost::asio::ip::address;
 
 class ReceiverUDP : IReceiverUDP {
 public:
-    explicit ReceiverUDP(const std::string &IpAddr, int port, Audio *audio);
+    explicit ReceiverUDP(int port, Audio *audio);
     void openServer() override;
-    std::vector<unsigned char> getFromUDP() override;
     void stopReceiver();
-    [[nodiscard]] size_t getEncBytesFromUDP() const;
 private:
     boost::asio::io_service io_service;
     void handleReceive(const boost::system::error_code &error, size_t bytes_transferred);
@@ -36,7 +34,6 @@ private:
     std::vector<unsigned char> recv_buffer;
     udp::endpoint remote_endpoint;
     std::thread *q = nullptr;
-    size_t encBytesFromUDP;
 };
 
 #endif //BABEL_RECEIVERUDP_HPP
