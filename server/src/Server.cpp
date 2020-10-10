@@ -55,7 +55,7 @@ void Server::handlePickUp(const Communication &msg)
 
 void Server::handleCall(const Communication &msg)
 {
-    printf("%d is calling %d :\n", msg.myId_, msg.id_);
+    printf("%d is calling %d\n", msg.myId_, msg.id_);
     serverTCP_.sendMessageToClient(idLInkDbInstance_[msg.id_],
                                    Communication(Communication::CALL, msg.myId_).serialize());
 }

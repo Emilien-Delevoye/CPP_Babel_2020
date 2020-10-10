@@ -24,6 +24,8 @@ class ClientTCP {
 public:
     ClientTCP(std::string& ip, std::string& port);
     ClientTCP() : resolver(io_context_) {}
+    ~ClientTCP() = default;
+
     bool connect(std::string& ip, std::string& port);
     std::string read();
     void async_read();

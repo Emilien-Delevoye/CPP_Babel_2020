@@ -46,18 +46,9 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         _userPage->getHangUpButton()->show();
     });
     connect(_userPage->getHangUpButton(), &QPushButton::clicked, [=]() {
-        _serverTCP->async_write(
-                Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId, 4241)));
-        if (_call && _q) {
-            std::cout << "stop Call" << std::endl;
-            _call->stopCall();
-            delete _call;
-            _call = nullptr;
-            _q->join();
-            std::cout << "stop Call ok" << std::endl;
-        }
-        _callInProgress = false;
-        _userPage->endcomingCall(_otherId);
+        _serverTCP->async_write(Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId, 4241)));
+        if (_callInProgress)
+            hangUp();
     });
     connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() {
         _serverTCP->async_write(
@@ -80,12 +71,30 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     navToConnectionPage();
 }
 
+void CustomMainWindow::hangUp()
+{
+    if (_call && _q) {
+        std::cout << "stop Call" << std::endl;
+        _call->stopCall();
+        delete _call;
+        _call = nullptr;
+        _q->join();
+        std::cout << "stop Call ok" << std::endl;
+    }
+    _callInProgress = false;
+    _userPage->endcomingCall(_otherId);
+}
+
 void CustomMainWindow::logout()
 {
     _serverTCP->isNotJustDisconnected();
-    _callInProgress = false;
     _serverTCP->disconnectThread();
     _connectionPage->emptyPassword();
+    if (_callInProgress) {
+        std::cout << "Automatic call in progress" << std::endl;
+        hangUp();
+    }
+    _callInProgress = false;
     navToConnectionPage();
     _timer->stop();
 }
@@ -108,7 +117,7 @@ void CustomMainWindow::ConnectLogToServer()
                      << qPrintable(_userPassword.c_str()) << endl;
         } else {
             std::cout << "Connection refused by server" << std::endl;
-            _connectionPage->setError("Invalid password");
+            _connectionPage->setError("Invalid password or User already connected");
             _serverTCP->disconnect();
             delete _serverTCP;
             _serverTCP = nullptr;

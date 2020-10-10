@@ -19,7 +19,7 @@ enum QtFormTextValues {
     HOME_PASSWORD_TEXT
 };
 
-const std::vector<QString> formValue = {"IP server :", "Port server", "Login :", "Password :"};
+const std::vector<QString> formValue = {"Server IP :", "Server port :", "Login :", "Password :"};
 
 enum QtLineEditID {
     HOME_IP_LINE_EDIT,
