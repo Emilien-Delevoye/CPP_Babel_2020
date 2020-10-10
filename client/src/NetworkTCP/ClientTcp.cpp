@@ -74,7 +74,7 @@ void ClientTCP::async_write(std::string msg)
     boost::asio::async_write(socket_, boost::asio::buffer(msg, msg.length()), Hwt);
 }
 
-void ClientTCP::disconnect()
+void ClientTCP::disconnectThread()
 {
     std::cout << "stop io context" << std::endl;
     io_context_.stop();
@@ -85,4 +85,12 @@ void ClientTCP::disconnect()
     socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
     socket_.close();
     std::cout << "disconnect socket 2" << std::endl;
+}
+
+void ClientTCP::disconnect()
+{
+    std::cout << "close & shutdown socket" << std::endl;
+    socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+    socket_.close();
+    std::cout << "disconnect socket OK" << std::endl;
 }

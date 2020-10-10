@@ -211,7 +211,6 @@ void UserPage::addUser(User *user)
 {
     _userVLayout->addWidget(user);
     _users.push_back(user);
-    std::cout << "added user id " << user->getID() << std::endl;
 }
 
 void UserPage::deleteUser(int id, int otherUserId)

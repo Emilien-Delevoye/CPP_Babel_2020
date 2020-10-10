@@ -16,6 +16,8 @@
  * This constructor inherit from QMainWindow and permit to create the pages and establish some button's connection thanks to Qt "connect" method.
 */
 
+//TODO les clients ne doivent pas crash quand le server est coupé
+
 CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMainWindow(parent)
 {
     setWindowTitle(title);
@@ -33,7 +35,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
         if (!_callInProgress) {
-            _serverTCP->disconnect();
+            _serverTCP->disconnectThread();
             _connectionPage->emptyPassword();
             navToConnectionPage();
         }
@@ -49,9 +51,11 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         _serverTCP->async_write(
                 Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId, 4241)));
         if (_call && _q) {
+            std::cout << "stop Call" << std::endl;
             _call->stopCall();
             delete _call;
             _q->join();
+            std::cout << "stop Call ok" << std::endl;
         }
         _callInProgress = false;
         _userPage->endcomingCall(_otherId);
@@ -60,8 +64,11 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
         _serverTCP->async_write(
                 Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
         this->_call = new (std::nothrow) Call(_otherIP, 4241, 4242);
-        if (this->_call)
-            _q = new (std::nothrow) std::thread([&] { this->_call->run(); } );
+        std::cout << "start Call" << std::endl;
+        if (this->_call) {
+            _q = new(std::nothrow) std::thread([&] { this->_call->run(); });
+            std::cout << "start Call Ok" << std::endl;
+        }
         _callInProgress = true;
         _userPage->showTimer();
         _userPage->getPickUpButton()->hide();
@@ -125,8 +132,11 @@ void CustomMainWindow::startServerBackCall()
                 std::cout << "CALL ACCEPTED" << msg.id_ << std::endl;
                 _userPage->showTimer();
                 this->_call = new (std::nothrow) Call(_otherIP, 4242, 4241);
-                if (this->_call)
-                    _q = new (std::nothrow) std::thread([&] { this->_call->run(); } );
+                std::cout << "start Call" << std::endl;
+                if (this->_call) {
+                    _q = new(std::nothrow) std::thread([&] { this->_call->run(); });
+                    std::cout << "start Call ok" << std::endl;
+                }
                 _callInProgress = true;
             } else if (msg.t_ == Communication::CALL) {
                 qDebug() << "CALL RCV" << endl;
@@ -147,9 +157,11 @@ void CustomMainWindow::startServerBackCall()
                 _callInProgress = false;
                 _userPage->endcomingCall(msg.id_);
                 if (_call && _q) {
+                    std::cout << "stop Call (button)" << std::endl;
                     _call->stopCall();
                     delete _call;
                     _q->join();
+                    std::cout << "stop Call (button) ok" << std::endl;
                 }
             } else if (msg.t_ == Communication::SETUP) {
                 qDebug() << "SETUP RCV" << endl;
@@ -180,12 +192,10 @@ void CustomMainWindow::setupClients(const Communication &msg)
 void CustomMainWindow::newUser(const Communication &msg)
 {
     newUser(new User(_userPage, msg.login_, msg.ip_, msg.port_, msg.id_));
-    std::cout << "new User" << std::endl;
 }
 
 void CustomMainWindow::newUser(User *user)
 {
-    std::cout << "added user id " << user->getID() << std::endl;
     user->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     std::string tooltip = std::string("Display information about ") + std::string(user->getLogin());
     user->setToolTip(tooltip.c_str());
@@ -198,7 +208,6 @@ void CustomMainWindow::newUser(User *user)
             _userPage->setUserInfo(_otherLogin, _otherIP);
         }
     });
-    std::cout << "added user id " << user->getID() << std::endl;
     _userPage->addUser(user);
 }
 
