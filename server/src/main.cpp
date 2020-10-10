@@ -38,17 +38,24 @@
 
 /*!
  * @file main.cpp
- * @brief Babel initial file
+ * @brief Babel Server initial file
  * @author Paul.S
  * @version 1.0
  * @date 05/10/2020
  *
- * The main file of the Babel contain the main function.
- * It creates Babel application and set the relation with the styles.qss file to customise our application.
- * Moreover, it creates the main window and run exec() method from QApplication
+ * The main file of the Babel server contains the main function.
+ * It creates Babel server and start it.
+ * This server allows you to choose the port on which to open the server.
 */
 
 #include "Server.hpp"
+
+/*!
+ * \brief Help function
+ * \param argc (number of arguments)
+ *
+ * This function will display the usage if number of parameters passed to the program is incorrect
+*/
 
 int help(int argc)
 {
@@ -61,6 +68,14 @@ int help(int argc)
     }
     return (0);
 }
+
+/*!
+ * \brief main function
+ * \param argc (number of arguments)
+ * \param argv (arguments)
+ *
+ * The main function will start the server with the port passed as parameter and the ip 0.0.0.0
+*/
 
 int main(int argc, char **argv)
 {

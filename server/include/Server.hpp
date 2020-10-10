@@ -1,10 +1,14 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file Server.hpp
+ * @brief Server class prototype
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
+ *
+ * This class represent the whole server.<br>
+ * Once you started it with the run function you cannot stop it anymore.
+ * This class handle different clients and allow them to communicate.
 */
-
 
 #ifndef BABEL_SERVER_HPP
 #define BABEL_SERVER_HPP
@@ -30,6 +34,10 @@ private:
     void handleCall(const Communication &msg);
     void handlePickUp(const Communication &msg);
     void handleHangUp(const Communication &msg);
+
+    bool canConnect(const Communication &msg);
+    void connectionAccepted(const Communication &msg);
+    void connectionRefused();
 };
 
 

@@ -1,8 +1,9 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file ServerTCP.cpp
+ * @brief boost asio TCP communication server part encapsulation
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
 */
 
 #include "ServerTCP.hpp"
