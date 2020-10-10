@@ -41,7 +41,7 @@ void ClientTCP::async_read()
         // If the client is disconnected
         if ((boost::asio::error::eof == ec) || (boost::asio::error::connection_reset == ec)) {
             std::cout << "Disconnected Client !" << std::endl;
-            std::terminate();
+            justDisconnected_ = true;
         } else {
             dataLength_ = length;
             async_read();

@@ -35,9 +35,7 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
         if (!_callInProgress) {
-            _serverTCP->disconnectThread();
-            _connectionPage->emptyPassword();
-            navToConnectionPage();
+            logout();
         }
     });
     connect(_userPage->getCallButton(), &QPushButton::clicked, [=]() {
@@ -82,6 +80,16 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     navToConnectionPage();
 }
 
+void CustomMainWindow::logout()
+{
+    _serverTCP->isNotJustDisconnected();
+    _callInProgress = false;
+    _serverTCP->disconnectThread();
+    _connectionPage->emptyPassword();
+    navToConnectionPage();
+    _timer->stop();
+}
+
 void CustomMainWindow::ConnectLogToServer()
 {
     _serverTCP = new ClientTCP;
@@ -103,10 +111,12 @@ void CustomMainWindow::ConnectLogToServer()
             _connectionPage->setError("Invalid password");
             _serverTCP->disconnect();
             delete _serverTCP;
+            _serverTCP = nullptr;
         }
     } else {
         _connectionPage->setError("Error while connecting to the server.");
         delete _serverTCP;
+        _serverTCP = nullptr;
     }
 }
 
@@ -115,8 +125,10 @@ void CustomMainWindow::startServerBackCall()
     _serverTCP->clear();
     _serverTCP->startAsyncRead();
     _timer = new QTimer(this);
-    _timer->setInterval(500);
+    _timer->setInterval(300);
     connect(_timer, &QTimer::timeout, [&]() {
+        if (_serverTCP && _serverTCP->isDisconnected())
+            logout();
         if (_serverTCP->getData().empty())
             return;
         std::cout << "Message received !" << std::endl; // DEBUG

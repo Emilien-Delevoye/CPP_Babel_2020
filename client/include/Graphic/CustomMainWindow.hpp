@@ -71,6 +71,8 @@ private:
 
     Call *_call = nullptr;
     std::thread *_q = nullptr;
+
+    void logout();
 };
 
 #endif //B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H

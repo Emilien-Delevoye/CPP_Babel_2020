@@ -43,8 +43,10 @@ public:
         memset(buffer_, 0, max_length);
         dataLength_ = 0;
     }
-
+    bool isDisconnected() const {return justDisconnected_;}
+    void isNotJustDisconnected() {justDisconnected_ = false;}
 private:
+    bool justDisconnected_ = false;
     enum {
         max_length = 2048
     };
