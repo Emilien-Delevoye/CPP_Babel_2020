@@ -7,9 +7,8 @@
 
 #include "Server.hpp"
 
-Server::Server(std::string &ip, short port) : serverTCP_(ip, port)
-{
-}
+Server::Server(std::string ip, int port) : serverTCP_(ip, port)
+{}
 
 std::ostream& operator<<(std::ostream& os, std::vector<int> v)
 {

@@ -22,6 +22,8 @@
 using boost::asio::ip::tcp;
 using boost::asio::ip::address;
 
+#include "Communication.hpp"
+
 #include <cstdlib>
 #include <iostream>
 #include <memory>

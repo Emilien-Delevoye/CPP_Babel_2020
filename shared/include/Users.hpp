@@ -31,7 +31,7 @@ struct User {
     std::string login;
     std::string password;
     std::string ip;
-    short port;
+    int port;
 };
 
 template <typename... Args>
@@ -43,17 +43,17 @@ auto make_storage_query() {
 class DataBase {
 public:
     DataBase();
-    int addRow(std::string name, std::string password, std::string ip, short port);
+    int addRow(std::string name, std::string password, std::string ip, int port);
     void removeRow(int id);
 
     std::string getPassword(int id) {return storage.get<User>(id).password;}
     std::string getIP(int id) {return storage.get<User>(id).ip;}
-    short getPort(int id) {return storage.get<User>(id).port;}
+    int getPort(int id) {return storage.get<User>(id).port;}
 
     std::vector<int> getIds() {return storage.select(&User::id);}
     std::vector<std::string> getLogins() {return storage.select(&User::login);}
     std::vector<std::string> getIPs() {return storage.select(&User::ip);}
-    std::vector<short> getPorts() {return storage.select(&User::port);}
+    std::vector<int> getPorts() {return storage.select(&User::port);}
 
     std::string getPasswordFromLogin(std::string login);
     void removeRowFromLogin(std::string login);

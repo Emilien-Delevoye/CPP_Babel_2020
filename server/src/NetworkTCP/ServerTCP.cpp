@@ -6,11 +6,12 @@
 */
 
 #include "ServerTCP.hpp"
-#include <thread>
 
-ServerTCP::ServerTCP(std::string &ip, short port) :
+ServerTCP::ServerTCP(std::string &ip, int port) :
         acceptor_(io_service_, tcp::endpoint(address::from_string(ip), port)), socket_(io_service_)
 {
+    if (port < 1024 or port > 60000)
+        throw ServerError("Invalid Port", "Port have to be in range 1024-60000");
     handleConnections();
 
     thread_ = new std::thread([&] { io_service_.run(); });

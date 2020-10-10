@@ -13,20 +13,21 @@
 #endif
 
 #include "InstanceClientTCP.hpp"
+
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/array.hpp>
 #include <string>
 #include <iostream>
 #include <deque>
-#include "Communication.hpp"
+#include <thread>
 
 using boost::asio::ip::tcp;
 using boost::asio::ip::address;
 
 class ServerTCP {
 public:
-    ServerTCP(std::string& ip, short port);
+    ServerTCP(std::string& ip, int port);
     bool isDisconnectedClients();
     void sendMessageToAllClientsConnected(std::string msg);
     bool newMessageReceived();

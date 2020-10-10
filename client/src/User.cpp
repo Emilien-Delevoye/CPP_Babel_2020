@@ -17,7 +17,7 @@
  *
 */
 
-User::User(QWidget *parent, const std::string &login, const std::string &ip, short port, int id) : AUser(parent, login, ip, port, id)
+User::User(QWidget *parent, const std::string &login, const std::string &ip, int port, int id) : AUser(parent, login, ip, port, id)
 {
 }
 
@@ -43,7 +43,7 @@ std::string User::getIP() const
 * \brief This method return the _port member variable of User class.
 */
 
-short User::getPort() const
+int User::getPort() const
 {
     return _port;
 }

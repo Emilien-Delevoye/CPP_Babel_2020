@@ -50,16 +50,32 @@
 
 #include "Server.hpp"
 
-int main(int argc, char **argv)
+int help(int argc)
 {
-    if (argc != 3) {
+    if (argc != 2) {
         std::cout << "Usage:" << std::endl;
-        std::cout << "./babel_server ip port" << std::endl << std::endl;
+        std::cout << "./babel_server \033[32mport\033[0m" << std::endl << std::endl;
         std::cout << "Then open your port with :" << std::endl;
-        std::cout << "firewall-cmd --zone=public --add-port=server_port/tcp" << std::endl;
+        std::cout << "firewall-cmd --zone=public --add-port=\033[32mport\033[0m/tcp" << std::endl;
         return (84);
     }
-    std::string ip(argv[1]);
-    Server server(ip, std::atoi(argv[2]));
-    server.run();
+    return (0);
+}
+
+int main(int argc, char **argv)
+{
+    if (help(argc) == 84)
+        return (84);
+    Server *server;
+
+    try {
+        server = new Server("0.0.0.0", std::atoi(argv[1]));
+    } catch (boost::wrapexcept<boost::system::system_error> &e) {
+        EP e.what() EL;
+        return (84);
+    } catch (ServerError &e) {
+        EP e.what() EL;
+        return (84);
+    }
+    server->run();
 }

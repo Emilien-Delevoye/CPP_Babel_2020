@@ -18,7 +18,7 @@ DataBase::DataBase() : storage(QUERY)
     storage.sync_schema();
 
     std::cout << "DUMP DB" << std::endl;
-    vector<tuple<int, std::string, std::string, short>> all_users = storage.select(columns(&User::id, &User::login, &User::ip, &User::port));
+    vector<tuple<int, std::string, std::string, int>> all_users = storage.select(columns(&User::id, &User::login, &User::ip, &User::port));
     for (auto &tpl: all_users) {
         std::cout << "id = " << std::get<0>(tpl) << ", name = " << std::get<1>(tpl) << ", ip = " << std::get<2>(tpl);
         cout << endl;
@@ -26,7 +26,7 @@ DataBase::DataBase() : storage(QUERY)
     std::cout << "=======" << std::endl;
 }
 
-int DataBase::addRow(std::string name, std::string password, std::string ip, short port)
+int DataBase::addRow(std::string name, std::string password, std::string ip, int port)
 {
     return storage.insert(User{-1, std::move(name), std::move(password), std::move(ip), port});
 }

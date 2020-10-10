@@ -12,6 +12,8 @@
     #define _WIN32_WINNT  0x0601
 #endif
 
+#include "BabelException.hpp"
+
 #include <string>
 #include <utility>
 #include <vector>
@@ -27,6 +29,9 @@
 #include <iostream>
 #include <sstream>
 
+#define EP std::cerr << "\033[31;1mError: \033[0m" <<
+#define EL << std::endl
+
 class Communication {
 public:
     enum type {
@@ -41,12 +46,12 @@ public:
         DISCONNECTED_USER
     };
     Communication(Communication::type t=INIT) : t_(t) {}
-    Communication(Communication::type t, int myId, int id, short port) : t_(t), myId_(myId), id_(id), port_(port) {}
+    Communication(Communication::type t, int myId, int id, int port) : t_(t), myId_(myId), id_(id), port_(port) {}
     Communication(Communication::type t, int myId, int id) : t_(t), myId_(myId), id_(id) {}
     Communication(Communication::type t, int id) : t_(t), id_(id) {}
     Communication(Communication::type t, std::string login, std::string password) : t_(t), login_(login), password_(password) {}
-    Communication(Communication::type t, int id, std::string login, std::string ip, short port) : t_(t), id_(id), login_(login), ip_(ip), port_(port) {}
-    Communication(Communication::type t, int id, std::string ip, short port) : t_(t), id_(id), ip_(ip), port_(port) {}
+    Communication(Communication::type t, int id, std::string login, std::string ip, int port) : t_(t), id_(id), login_(login), ip_(ip), port_(port) {}
+    Communication(Communication::type t, int id, std::string ip, int port) : t_(t), id_(id), ip_(ip), port_(port) {}
 
     type t_;
 
@@ -58,13 +63,13 @@ public:
     std::string login_;
     std::string password_;
     std::string ip_;
-    short port_;
+    int port_;
 
     // Update clients
     std::vector<int> ids_;
     std::vector<std::string> logins_;
     std::vector<std::string> ips_;
-    std::vector<short> ports_;
+    std::vector<int> ports_;
 
     static std::string serializeObj(Communication obj) {
         std::ostringstream ss;

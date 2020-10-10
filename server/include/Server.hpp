@@ -15,7 +15,7 @@
 
 class Server {
 public:
-    Server(std::string& ip, short port);
+    Server(std::string ip, int port);
     [[noreturn]] void run();
 
 private:
@@ -26,13 +26,9 @@ private:
     std::map<int, int> idLInkInstanceDb_;
 
     void manageNewClients(const Communication &msg);
-
     void handleDisconnections();
-
     void handleCall(const Communication &msg);
-
     void handlePickUp(const Communication &msg);
-
     void handleHangUp(const Communication &msg);
 };
 

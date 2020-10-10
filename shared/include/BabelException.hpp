@@ -56,4 +56,12 @@ public:
                             std::string const &message = "An error occurred.") : BabelException(component, message) {};
 };
 
+class ServerError : public BabelException
+{
+public:
+    explicit ServerError(std::string const &component = "Server: ",
+            std::string const &message = "An error occurred.") : BabelException(component, message) {};
+
+};
+
 #endif //BABEL_BABELEXCEPTION_HPP

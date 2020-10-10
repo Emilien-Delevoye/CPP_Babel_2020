@@ -18,13 +18,11 @@
 class User : public AUser {
     Q_OBJECT
     public:
-        User(QWidget *parent, const std::string &login, const std::string &ip, short port, int id);
+        User(QWidget *parent, const std::string &login, const std::string &ip, int port, int id);
         std::string getLogin() const override;
         std::string getIP() const override;
-        short getPort() const override;
+        int getPort() const override;
         int getID() const override;
-
-
 };
 
 #endif //BABEL_USER_HPP
