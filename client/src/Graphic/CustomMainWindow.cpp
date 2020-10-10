@@ -7,7 +7,7 @@
  *
 */
 
-#include "CustomMainWindow.hpp"
+#include "Graphic/CustomMainWindow.hpp"
 
 /*!
  * \brief CustomMainWindow constructor

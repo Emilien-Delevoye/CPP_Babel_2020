@@ -14,7 +14,7 @@
 
 #include "Audio/Audio.hpp"
 #include "NetworkUDP/NetworkUDP.hpp"
-#include "../../shared/include/BabelException.hpp"
+#include "BabelException.hpp"
 
 class Call
 {

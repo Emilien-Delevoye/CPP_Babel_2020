@@ -7,7 +7,7 @@
  *
 */
 
-#include "CustomText.hpp"
+#include "Graphic/CustomText.hpp"
 
 /*!
  * \brief The constructor of CustomText inherit of the QLabel class.

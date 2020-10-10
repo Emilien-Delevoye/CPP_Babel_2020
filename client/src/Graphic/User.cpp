@@ -7,7 +7,7 @@
  *
 */
 
-#include "User.hpp"
+#include "Graphic/User.hpp"
 
 /*!
  * \brief The constructor of User inherit of the CustomButton class because we consider it as a button (to call some functions).

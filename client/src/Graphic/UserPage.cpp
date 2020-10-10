@@ -8,7 +8,7 @@
 */
 
 #include <iostream>
-#include "UserPage.hpp"
+#include "Graphic/UserPage.hpp"
 
 /*!
  * \brief The constructor of UserPage inherit of the CustomWidget class.

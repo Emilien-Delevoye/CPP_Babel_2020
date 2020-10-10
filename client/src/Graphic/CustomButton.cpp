@@ -6,7 +6,7 @@
  * @date 05/10/2020
 */
 
-#include "CustomButton.hpp"
+#include "Graphic/CustomButton.hpp"
 
 /*!
  * \brief CustomButton constructor

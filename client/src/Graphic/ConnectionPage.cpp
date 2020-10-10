@@ -6,7 +6,7 @@
  * @date 05/10/2020
 */
 
-#include "ConnectionPage.hpp"
+#include "Graphic/ConnectionPage.hpp"
 
 /*!
  * \brief The constructor of ConnectionPage inherit of the CustomWidget class (in order to be customisable).

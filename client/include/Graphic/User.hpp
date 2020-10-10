@@ -12,7 +12,7 @@
 #ifndef BABEL_USER_HPP
 #define BABEL_USER_HPP
 
-#include "AUser.hpp"
+#include "Graphic/AUser.hpp"
 #include <iostream>
 
 class User : public AUser {

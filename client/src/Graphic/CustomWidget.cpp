@@ -7,7 +7,7 @@
  *
 */
 
-#include "CustomWidget.hpp"
+#include "Graphic/CustomWidget.hpp"
 
 /*!
  * \brief The constructor of CustomWidget inherit of the QWidget class.

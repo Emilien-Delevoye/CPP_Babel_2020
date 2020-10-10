@@ -48,7 +48,7 @@
  * Moreover, it creates the main window and run exec() method from QApplication
 */
 
-#include "CustomMainWindow.hpp"
+#include "Graphic/CustomMainWindow.hpp"
 
 int main(int argc, char **argv)
 {

@@ -19,15 +19,15 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 
 QT5_WRAP_CPP(MOC_Files
-        client/include/CustomMainWindow.hpp
-        client/include/CustomButton.hpp
-        client/include/User.hpp
-        client/include/AUser.hpp
-        client/include/UserPage.hpp
-        client/include/ConnectionPage.hpp
-        client/include/CustomLineEdit.hpp
-        client/include/CustomWidget.hpp
-        client/include/CustomText.hpp
+        client/include/Graphic/CustomMainWindow.hpp
+        client/include/Graphic/CustomButton.hpp
+        client/include/Graphic/User.hpp
+        client/include/Graphic/AUser.hpp
+        client/include/Graphic/UserPage.hpp
+        client/include/Graphic/ConnectionPage.hpp
+        client/include/Graphic/CustomLineEdit.hpp
+        client/include/Graphic/CustomWidget.hpp
+        client/include/Graphic/CustomText.hpp
 )
 
 include_directories(
@@ -55,19 +55,19 @@ set(CLIENT_SOURCES
         client/src/main.cpp
         client/src/Audio/AudioIO.cpp
         client/src/Audio/Encode.cpp
-        client/src/CustomMainWindow.cpp
-        client/src/CustomButton.cpp
-        client/src/CustomText.cpp
-        client/src/CustomLineEdit.cpp
-        client/src/ConnectionPage.cpp
-        client/src/UserPage.cpp
-        client/src/User.cpp
-        client/src/CustomWidget.cpp
+        client/src/Graphic/CustomMainWindow.cpp
+        client/src/Graphic/CustomButton.cpp
+        client/src/Graphic/CustomText.cpp
+        client/src/Graphic/CustomLineEdit.cpp
+        client/src/Graphic/ConnectionPage.cpp
+        client/src/Graphic/UserPage.cpp
+        client/src/Graphic/User.cpp
+        client/src/Graphic/CustomWidget.cpp
         client/src/Audio/Audio.cpp
         client/src/NetworkUDP/NetworkUDP.cpp
         client/src/NetworkUDP/ReceiverUDP.cpp
         client/src/NetworkUDP/SenderUDP.cpp
-        client/src/Call.cpp
+        client/src/Audio/Call.cpp
         client/src/NetworkTCP/ClientTcp.cpp
 )
 
@@ -76,21 +76,21 @@ set(CLIENT_INCLUDES
         client/include/Audio/IAudio.hpp
         client/include/Audio/Encode.hpp
         client/include/Audio/IEncode.hpp
-        client/include/CustomMainWindow.hpp
-        client/include/CustomButton.hpp
-        client/include/enum.hpp
-        client/include/CustomText.hpp
-        client/include/CustomLineEdit.hpp
-        client/include/ConnectionPage.hpp
-        client/include/UserPage.hpp
-        client/include/User.hpp
-        client/include/CustomWidget.hpp
+        client/include/Graphic/CustomMainWindow.hpp
+        client/include/Graphic/CustomButton.hpp
+        client/include/Graphic/enum.hpp
+        client/include/Graphic/CustomText.hpp
+        client/include/Graphic/CustomLineEdit.hpp
+        client/include/Graphic/ConnectionPage.hpp
+        client/include/Graphic/UserPage.hpp
+        client/include/Graphic/User.hpp
+        client/include/Graphic/CustomWidget.hpp
         client/include/Audio/Audio.hpp
         client/include/NetworkUDP/INetworkUDP.hpp
         client/include/NetworkUDP/NetworkUDP.hpp
         client/include/NetworkUDP/ReceiverUDP.hpp
         client/include/NetworkUDP/SenderUDP.hpp
-        client/include/Call.hpp
+        client/include/Audio/Call.hpp
         client/include/NetworkTCP/ClientTcp.hpp
         shared/include/Communication.hpp
         shared/include/BabelException.hpp
@@ -103,7 +103,7 @@ set(SERVER_SOURCES
         server/src/NetworkTCP/ServerTCP.cpp
         server/src/Server.cpp
         shared/src/Users.cpp
-        client/include/AUser.hpp)
+        client/include/Graphic/AUser.hpp)
 
 set(SERVER_INCLUDES
         server/include/NetworkTCP/InstanceClientTCP.hpp

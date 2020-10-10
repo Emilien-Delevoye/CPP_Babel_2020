@@ -23,7 +23,7 @@
 #include "CustomButton.hpp"
 #include "CustomText.hpp"
 #include "CustomLineEdit.hpp"
-#include "ConnectionPage.hpp"
+#include "Graphic/ConnectionPage.hpp"
 #include "UserPage.hpp"
 #include "enum.hpp"
 #include "ClientTcp.hpp"

@@ -6,7 +6,7 @@
  * @date 05/10/2020
 */
 
-#include "CustomLineEdit.hpp"
+#include "Graphic/CustomLineEdit.hpp"
 
 /*!
  * \brief CustomLineEdit constructor
