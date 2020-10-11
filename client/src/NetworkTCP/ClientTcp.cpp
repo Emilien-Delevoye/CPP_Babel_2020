@@ -8,6 +8,7 @@
 #include "ClientTcp.hpp"
 #include <memory>
 #include <iostream>
+#include <regex>
 
 using namespace std;
 
@@ -16,8 +17,9 @@ ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_)
 
 bool ClientTCP::connect(std::string &ip, std::string &port)
 {
+    if (!std::regex_match(ip, std::regex("\\d+.\\d+.\\d+.\\d+")))
+        return false;
     try {
-        auto test = resolver.resolve(ip, port);
         boost::asio::connect(socket_, resolver.resolve(ip, port));
     } catch (boost::wrapexcept<boost::system::system_error> &e) {
         std::cerr << e.what() << std::endl;
