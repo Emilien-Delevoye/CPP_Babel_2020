@@ -1,8 +1,12 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file Communication.hpp
+ * @brief Communication class prototype
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
+ *
+ * This class is used to communicate client to client / server to client / client to server.
+ * The variables inside this class are serialized with boost serialization to be able to send the class in TCP communication
 */
 
 #ifndef BABEL_COMMUNICATION_HPP
@@ -45,13 +49,11 @@ public:
         NEW_USER,
         DISCONNECTED_USER
     };
-    Communication(Communication::type t=INIT) : t_(t) {}
-    Communication(Communication::type t, int myId, int id, int port) : t_(t), myId_(myId), id_(id), port_(port) {}
-    Communication(Communication::type t, int myId, int id) : t_(t), myId_(myId), id_(id) {}
+    explicit Communication(Communication::type t=INIT) : t_(t) {}
     Communication(Communication::type t, int id) : t_(t), id_(id) {}
-    Communication(Communication::type t, std::string login, std::string password) : t_(t), login_(login), password_(password) {}
-    Communication(Communication::type t, int id, std::string login, std::string ip, int port) : t_(t), id_(id), login_(login), ip_(ip), port_(port) {}
-    Communication(Communication::type t, int id, std::string ip, int port) : t_(t), id_(id), ip_(ip), port_(port) {}
+    Communication(Communication::type t, int myId, int id) : t_(t), myId_(myId), id_(id) {}
+    Communication(Communication::type t, int myId, int id, int port) : t_(t), myId_(myId), id_(id), port_(port) {}
+    Communication(Communication::type t, std::string& login, std::string& password, int port) : t_(t), login_(login), password_(password), port_(port) {}
 
     type t_;
 
@@ -63,7 +65,7 @@ public:
     std::string login_;
     std::string password_;
     std::string ip_;
-    int port_;
+    int port_ = 4242;
 
     // Update clients
     std::vector<int> ids_;

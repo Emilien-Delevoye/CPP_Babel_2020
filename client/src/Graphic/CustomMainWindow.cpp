@@ -16,8 +16,6 @@
  * This constructor inherit from QMainWindow and permit to create the pages and establish some button's connection thanks to Qt "connect" method.
 */
 
-//TODO les clients ne doivent pas crash quand le server est coupé
-
 CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMainWindow(parent)
 {
     setWindowTitle(title);
@@ -103,7 +101,7 @@ void CustomMainWindow::ConnectLogToServer()
 {
     _serverTCP = new ClientTCP;
     if (_serverTCP->connect(_serverIP, _serverPort)) {
-        _serverTCP->write(Communication(Communication::PRESENTATION, _userLogin, _userPassword).serialize());
+        _serverTCP->write(Communication(Communication::PRESENTATION, _userLogin, _userPassword, 4242).serialize());
         printf("connect : wait for answer\n");
         auto msg = Communication::unSerializeObj(std::string(_serverTCP->read()));
         printf("connect : answer received\n");

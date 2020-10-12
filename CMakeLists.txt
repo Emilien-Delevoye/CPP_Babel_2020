@@ -108,7 +108,6 @@ set(SERVER_SOURCES
 set(SERVER_INCLUDES
         server/include/NetworkTCP/InstanceClientTCP.hpp
         server/include/NetworkTCP/ServerTCP.hpp
-        server/include/Logger.hpp
         server/include/Server.hpp
         shared/include/Communication.hpp
         shared/include/BabelException.hpp
