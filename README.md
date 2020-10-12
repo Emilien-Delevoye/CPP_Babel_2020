@@ -24,10 +24,10 @@ mkdir build ; cd build ; conan install .. ; cmake .. ; cmake –build .
 - cmake=3.17
 - make=4.2.1
 
-Add needed remotes 
-conan remote add conan https://api.bintray.com/conan/conan/conan-center
-conan remote add epitech https://api.bintray.com/conan/epitech/public-conan 
-conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+Add needed remotes <br>
+conan remote add conan https://api.bintray.com/conan/conan/conan-center <br>
+conan remote add epitech https://api.bintray.com/conan/epitech/public-conan <br>
+conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan <br>
 
 
 ## Use the server
