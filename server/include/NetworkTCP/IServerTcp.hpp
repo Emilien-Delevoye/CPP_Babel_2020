@@ -1,10 +1,12 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file ServerTCP.hpp
+ * @brief ServerTCP class prototype
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
+ *
+ * The IServerTCP class is the abstraction of ServerTCP
 */
-
 
 #ifndef BABEL_ISERVERTCP_HPP
 #define BABEL_ISERVERTCP_HPP
@@ -26,7 +28,7 @@ public:
     virtual bool isDisconnectedClients() = 0;
     virtual void sendMessageToAllClientsConnected(std::string msg) = 0;
     virtual bool newMessageReceived() const = 0;
-    virtual std::string getNewMessageReceivedClientId() = 0;
+    virtual std::string getNewMessageReceived() = 0;
     virtual int getIdClientLastMsg() const = 0;
     virtual std::vector<int> getDisconnectedClientsIds() = 0;
 

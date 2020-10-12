@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file ServerTCP.hpp
+ * @brief ServerTCP class prototype
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
+ *
+ * The ServerTCP class encapsulate the usage of boost asio TCP socket to manage clients
 */
 
 #ifndef BABEL_SERVERTCP_HPP
@@ -20,7 +23,7 @@ public:
     ServerTCP(std::string ip, int port);
 
     bool newMessageReceived() const override;
-    std::string getNewMessageReceivedClientId() override;
+    std::string getNewMessageReceived() override;
     int getIdClientLastMsg() const override {return clientIdLastMessage_;}
 
     void sendMessageToClient(int id, std::string msg) override;

@@ -1,8 +1,12 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file InstanceClientTCP.hpp
+ * @brief InstanceClientTCP class prototype
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
+ *
+ * Each instance of this class is one client connected to server.
+ * Thanks to this class we can connect with each client individually.
 */
 
 #ifndef BABEL_INSTANCECLIENTTCP_HPP
@@ -34,10 +38,8 @@ using boost::asio::ip::tcp;
 
 class InstanceClientTCP : public std::enable_shared_from_this<InstanceClientTCP> {
 public:
-    InstanceClientTCP(tcp::socket socket, int id) : socket_(std::move(socket)), id_(id) {
-        clear();
-        ip_ = socket_.remote_endpoint().address().to_string();
-    }
+    InstanceClientTCP(tcp::socket socket, int id);
+    ~InstanceClientTCP() = default;
 
     void start();
     void write(std::string);
