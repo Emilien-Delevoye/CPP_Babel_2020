@@ -102,7 +102,7 @@ set(SERVER_SOURCES
         server/src/NetworkTCP/InstanceClientTCP.cpp
         server/src/NetworkTCP/ServerTCP.cpp
         server/src/Server.cpp
-        shared/src/Users.cpp
+        shared/src/Database.cpp
         client/include/Graphic/AUser.hpp)
 
 set(SERVER_INCLUDES
@@ -111,7 +111,7 @@ set(SERVER_INCLUDES
         server/include/Server.hpp
         shared/include/Communication.hpp
         shared/include/BabelException.hpp
-        shared/include/Users.hpp
+        shared/include/Database.hpp
         server/include/NetworkTCP/IServerTcp.hpp)
 
 add_executable(babel_client ${MOC_Files} ${CLIENT_SOURCES} ${CLIENT_INCLUDES})

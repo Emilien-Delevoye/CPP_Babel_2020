@@ -16,7 +16,8 @@
  * Construct the class that manage connections between clients.
 */
 
-Server::Server(std::string ip, int port) : serverTCP_(std::move(ip), port) {}
+Server::Server(std::string ip, int port) : serverTCP_(std::move(ip), port), db_()
+{}
 
 /*!
  * \brief run method
@@ -134,9 +135,10 @@ void Server::handleDisconnections()
 
 bool Server::canConnect(const Communication &msg)
 {
-    return db_.getPasswordFromLogin(msg.login_).empty() or
-           (db_.getPasswordFromLogin(msg.login_) == msg.password_
-            and idLInkDbInstance_.find(db_.getIdFromLogin(msg.login_)) == idLInkDbInstance_.end());
+    auto password = db_.getVarFromId(&User::password, msg.login_, &User::login, std::string(""));
+    auto id = db_.getVarFromId(&User::id, msg.login_, &User::login, -1);
+
+    return (password.empty() || (password == msg.password_ && idLInkDbInstance_.find(id) == idLInkDbInstance_.end()));
 }
 
 /*!
@@ -181,13 +183,14 @@ void Server::connectionAccepted(const Communication &msg)
 {
     auto setup = Communication(Communication::SETUP);
 
-    db_.removeRowFromLogin(msg.login_);
+    if (auto oldIdDb = db_.getVarFromId(&User::id, msg.login_, &User::login, -1) != -1)
+        db_.removeRow(oldIdDb);
 
     auto login = msg.login_;
     auto password = msg.password_;
     auto ip = serverTCP_.getIpId(serverTCP_.getIdClientLastMsg());
     auto port = msg.port_;
-    int idDb = db_.addRow(login, password, ip, port);
+    int idDb = db_.addRow<int>(new User{-1, login, password, ip, port});
     int idInstance = serverTCP_.getIdClientLastMsg();
 
     idLInkDbInstance_[idDb] = idInstance;
@@ -196,10 +199,10 @@ void Server::connectionAccepted(const Communication &msg)
     setup.connectionAccepted = true;
     setup.id_ = idDb;
 
-    setup.ids_ = db_.getIds();
-    setup.logins_ = db_.getLogins();
-    setup.ips_ = db_.getIPs();
-    setup.ports_ = db_.getPorts();
+    setup.ids_ = db_.getColumn<int>(&User::id);
+    setup.logins_ = db_.getColumn<std::string>(&User::login);
+    setup.ips_ = db_.getColumn<std::string>(&User::ip);
+    setup.ports_ = db_.getColumn<int>(&User::port);
 
     for (int i = 0; i < setup.ids_.size(); ++i) {
         if (!(idLInkDbInstance_.find(setup.ids_.at(i)) == idLInkDbInstance_.end()))
@@ -210,7 +213,6 @@ void Server::connectionAccepted(const Communication &msg)
         setup.ports_.erase(setup.ports_.begin() + i);
         --i;
     }
-
     printf("\033[34mCONNECTION ACCEPTED [ID instance %d]\033[0m\n", idInstance);
     serverTCP_.sendMessageToAllClientsConnected(Communication::serializeObj(setup));
 }

@@ -15,7 +15,7 @@
 
 #include "Communication.hpp"
 #include "ServerTCP.hpp"
-#include "Users.hpp"
+#include "Database.hpp"
 
 class Server {
 public:
@@ -24,7 +24,7 @@ public:
 
 private:
     ServerTCP serverTCP_;
-    DataBase db_;
+    DataBase<User> db_;
 
     std::map<int, int> idLInkDbInstance_;
     std::map<int, int> idLInkInstanceDb_;

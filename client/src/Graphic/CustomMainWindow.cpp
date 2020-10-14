@@ -111,7 +111,13 @@ void CustomMainWindow::ConnectLogToServer()
     if (_serverTCP->connect(_serverIP, _serverPort)) {
         _serverTCP->write(Communication(Communication::PRESENTATION, _userLogin, _userPassword, 4242).serialize());
         printf("connect : wait for answer\n");
-        auto msg = Communication::unSerializeObj(std::string(_serverTCP->read()));
+        Communication msg;
+        try {
+            msg = Communication::unSerializeObj(std::string(_serverTCP->read()));
+        } catch (boost::wrapexcept<boost::system::system_error> &e) {
+            std::cerr << "Get answer Error " << e.what() << std::endl;
+            msg.connectionAccepted = false;
+        }
         printf("connect : answer received\n");
         if (msg.connectionAccepted) {
             printf("go to page\n");

@@ -35,7 +35,7 @@
  *
  * \authors Cyprien Ricques <br> Emilien Delevoye <br> Paul Surrans
 */
-
+// TODO to complete
 /*!
  * @file main.cpp
  * @brief Babel client initial file
