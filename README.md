@@ -24,10 +24,10 @@ mkdir build ; cd build ; conan install .. ; cmake .. ; cmake –build .
 - cmake=3.17
 - make=4.2.1
 
-Add needed remotes 
-conan remote add conan https://api.bintray.com/conan/conan/conan-center
-conan remote add epitech https://api.bintray.com/conan/epitech/public-conan 
-conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+Add needed remotes <br>
+conan remote add conan https://api.bintray.com/conan/conan/conan-center <br>
+conan remote add epitech https://api.bintray.com/conan/epitech/public-conan <br>
+conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan <br>
 
 
 ## Use the server
@@ -49,6 +49,9 @@ To use the client you have to open your udp ports. Used port are 4241 and 4242.
 - Windows : When needed, you'll get a popup that allow you to easily open your ports.
    
 Please do not run the program in an application integrated terminal. Audio devices are not always available from there.
+
+**Warning** : if use the client on the same pc as the server, you should use the real pc ip instead of '127.0.0.1'
+              otherwise you'll get issue with your sound transmission. 
 
 ## OS
 

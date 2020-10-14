@@ -1,8 +1,12 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file InstanceClientTCP.hpp
+ * @brief InstanceClientTCP class prototype
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
+ *
+ * Each instance of this class is one client connected to server.
+ * Thanks to this class we can connect with each client individually.
 */
 
 #ifndef BABEL_INSTANCECLIENTTCP_HPP
@@ -34,14 +38,12 @@ using boost::asio::ip::tcp;
 
 class InstanceClientTCP : public std::enable_shared_from_this<InstanceClientTCP> {
 public:
-    InstanceClientTCP(tcp::socket socket, int id) : socket_(std::move(socket)), id_(id) {
-        clear();
-        ip_ = socket_.remote_endpoint().address().to_string();
-    }
+    InstanceClientTCP(tcp::socket socket, int id);
+    ~InstanceClientTCP() = default;
 
     void start();
     void write(std::string);
-    std::string getData() {return std::string(data_, dataLength_); dataLength_ = 0;}
+    std::string getData() const {return std::string(data_, dataLength_);}
     std::string getDataClear() {
         std::string tmp = getData();
         clear();
@@ -51,7 +53,7 @@ public:
     int getId() {return id_;}
     bool isDisconnected() {return disconnected_;}
     bool isNew = true;
-    std::string getIp() {return ip_;}
+    std::string getIp() const {return ip_;}
 private:
     void read();
 

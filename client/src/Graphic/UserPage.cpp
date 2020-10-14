@@ -51,14 +51,15 @@ UserPage::UserPage(QWidget *parent) : CustomWidget(parent)
         int hours;
         int minutes;
         int seconds;
+        int save_elapsed;
 
         hours = _elapsedSeconds / 3600;
-        _elapsedSeconds %= 3600;
+        save_elapsed = _elapsedSeconds % 3600;
 
-        minutes = _elapsedSeconds / 60;
-        minutes %= 60;
+        minutes = save_elapsed / 60;
+        save_elapsed = save_elapsed % 60;
 
-        seconds = _elapsedSeconds;
+        seconds = save_elapsed;
         std::string concat = std::string((hours < 10 ? "0" : "") + std::to_string(hours)
             + ":" + std::string((minutes < 10 ? "0" : "") + std::to_string(minutes) +
             ":" + std::string((seconds < 10 ? "0" : "") + std::to_string(seconds))));

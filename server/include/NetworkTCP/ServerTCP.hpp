@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file ServerTCP.hpp
+ * @brief ServerTCP class prototype
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
+ *
+ * The ServerTCP class encapsulate the usage of boost asio TCP socket to manage clients
 */
 
 #ifndef BABEL_SERVERTCP_HPP
@@ -13,30 +16,23 @@
 #endif
 
 #include "InstanceClientTCP.hpp"
+#include "IServerTcp.hpp"
 
-#include <boost/asio.hpp>
-#include <boost/bind.hpp>
-#include <boost/array.hpp>
-#include <string>
-#include <iostream>
-#include <deque>
-#include <thread>
-
-using boost::asio::ip::tcp;
-using boost::asio::ip::address;
-
-class ServerTCP {
+class ServerTCP : IServerTCP {
 public:
-    ServerTCP(std::string& ip, int port);
-    bool isDisconnectedClients();
-    void sendMessageToAllClientsConnected(std::string msg);
-    bool newMessageReceived();
-    std::string getNewMessageReceivedClientId();
-    int getIdClientLastMsg() {return clientIdLastMessage_;}
-    std::vector<int> getDisconnectedClientsIds();
+    ServerTCP(std::string ip, int port);
 
-    void sendMessageToClient(int id, std::string msg);
-    std::string getIpId(int id) {
+    bool newMessageReceived() const override;
+    std::string getNewMessageReceived() override;
+    int getIdClientLastMsg() const override {return clientIdLastMessage_;}
+
+    void sendMessageToClient(int id, std::string msg) override;
+    void sendMessageToAllClientsConnected(std::string msg) override;
+
+    bool isDisconnectedClients() override;
+    std::vector<int> getDisconnectedClientsIds() override;
+
+    std::string getIpId(int id) const override {
         for (auto & c : clients_)
             if (c->getId() == id)
                 return c->getIp();

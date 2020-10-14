@@ -1,20 +1,46 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file InstanceClientTCP.cpp
+ * @brief Client manager
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
 */
 
 #include "InstanceClientTCP.hpp"
-#include "ServerTCP.hpp"
 
 using namespace std;
+
+/*!
+ * \brief InstanceClientTCP constructor
+ * \param tcp::socket socket
+ * \param int id
+ *
+ * Construct the class which is one connected client.
+*/
+
+InstanceClientTCP::InstanceClientTCP(tcp::socket socket, int id) : socket_(std::move(socket)), id_(id)
+{
+    clear();
+    ip_ = socket_.remote_endpoint().address().to_string();
+}
+
+/*!
+ * \brief start method
+ *
+ * This method start the asynchronous socket reading.
+*/
 
 void InstanceClientTCP::start()
 {
     std::cout << socket_.remote_endpoint().address().to_string() << std::endl;
     read();
 }
+
+/*!
+ * \brief read method
+ *
+ * This method setup the function that will be used to read newly received messages.
+*/
 
 void InstanceClientTCP::read()
 {
@@ -32,17 +58,13 @@ void InstanceClientTCP::read()
     socket_.async_read_some(boost::asio::buffer(data_, max_length), Hrd);
 }
 
+/*!
+ * \brief write method
+ *
+ * This method allow the server to send message to connected clients.
+*/
+
 void InstanceClientTCP::write(std::string msg)
 {
-    auto self(shared_from_this());
-    auto Hwt =
-    [this, self](boost::system::error_code ec, std::size_t) {
-    if (!ec) {
-        std::cerr << "\033[31;1mERROR CLIENT DISCONNECTED\033[0m" << std::endl;
-        read(); // FIXME ? On retire l'asynchrone ici non ?
-    }
-    };
-
     boost::asio::write(socket_, boost::asio::buffer(msg, msg.length()));
-//    boost::asio::async_write(socket_, boost::asio::buffer(msg, msg.length()), Hwt);
 }
