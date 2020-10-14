@@ -1,8 +1,8 @@
 /*!
  * @file ClientTCP.hpp
  * @brief ClientTCP class prototype
- * @author Cyprien R
- * @version 1.0
+ * @author Cyprien.R
+* @version 1.0
  * @date 10/10/2020
  *
  * This class permit the client to easily connect to the server and communicate with him.

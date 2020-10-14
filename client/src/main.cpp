@@ -16,9 +16,9 @@
  * \section c Install dependencies
  * To how to compile Babel, see the Readme.md (related pages -> babel)
  *
- * \authors Cyprien Ricques <br> Emilien Delevoye <br> Paul Surrans
+ * \authors Cyprien Ricque <br> Emilien Delevoye <br> Paul Surrans
 */
-// TODO to complete
+
 /*!
  * @file main.cpp
  * @brief Babel client initial file

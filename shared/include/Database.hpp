@@ -1,8 +1,8 @@
 /*!
  * @file Database.hpp
  * @brief Database class
- * @author Cyprien R
- * @version 1.0
+ * @author Cyprien.R
+* @version 1.0
  * @date 10/10/2020
  *
  * This class permit to interact with the sqlite database.

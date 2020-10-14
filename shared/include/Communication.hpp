@@ -1,8 +1,8 @@
 /*!
  * @file Communication.hpp
  * @brief Communication class prototype
- * @author Cyprien R
- * @version 1.0
+ * @author Cyprien.R
+* @version 1.0
  * @date 10/10/2020
  *
  * This class is used to communicate client to client / server to client / client to server.

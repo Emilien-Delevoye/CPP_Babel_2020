@@ -1,8 +1,8 @@
 /*!
  * @file InstanceClientTCP.hpp
  * @brief InstanceClientTCP class prototype
- * @author Cyprien R
- * @version 1.0
+ * @author Cyprien.R
+* @version 1.0
  * @date 10/10/2020
  *
  * Each instance of this class is one client connected to server.

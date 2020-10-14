@@ -1,8 +1,8 @@
 /*!
  * @file Server.hpp
  * @brief Server class prototype
- * @author Cyprien R
- * @version 1.0
+ * @author Cyprien.R
+* @version 1.0
  * @date 10/10/2020
  *
  * This class represent the whole server.<br>

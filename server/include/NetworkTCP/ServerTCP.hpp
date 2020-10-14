@@ -1,8 +1,8 @@
 /*!
  * @file ServerTCP.hpp
  * @brief ServerTCP class prototype
- * @author Cyprien R
- * @version 1.0
+ * @author Cyprien.R
+* @version 1.0
  * @date 10/10/2020
  *
  * The ServerTCP class encapsulate the usage of boost asio TCP socket to manage clients

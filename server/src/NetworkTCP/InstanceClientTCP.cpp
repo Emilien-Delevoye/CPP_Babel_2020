@@ -1,8 +1,8 @@
 /*!
  * @file InstanceClientTCP.cpp
  * @brief Client manager
- * @author Cyprien R
- * @version 1.0
+ * @author Cyprien.R
+* @version 1.0
  * @date 10/10/2020
 */
 

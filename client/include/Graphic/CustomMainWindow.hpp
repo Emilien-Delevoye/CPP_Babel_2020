@@ -1,7 +1,7 @@
 /*!
  * @file CustomMainWindow.hpp
  * @brief CustomMainWindow class prototype
- * @author Paul.S
+ * @authors Paul.S Cyprien.R
  * @version 1.0
  * @date 05/10/2020
  * This class permit to create the main window of your application.<br>
