@@ -17,14 +17,6 @@
 #include "ADatabase.hpp"
 #include <type_traits>
 
-#define QUERY make_storage("select.sqlite", \
-    make_table("Users", \
-    make_column("ID", &User::id, primary_key()), \
-    make_column("LOGIN", &User::login), \
-    make_column("PASSWORD", &User::password), \
-    make_column("IP", &User::ip), \
-    make_column("PORT", &User::port)))
-
 using namespace sqlite_orm;
 
 struct User {
@@ -34,6 +26,14 @@ struct User {
     std::string ip;
     int port;
 };
+
+#define QUERY make_storage("select.sqlite", \
+    make_table("Users", \
+    make_column("ID", &User::id, primary_key()), \
+    make_column("LOGIN", &User::login), \
+    make_column("PASSWORD", &User::password), \
+    make_column("IP", &User::ip), \
+    make_column("PORT", &User::port)))
 
 template <typename... Args>
 auto make_storage_query() {
