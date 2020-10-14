@@ -14,16 +14,32 @@
 #endif
 
 #include <boost/asio.hpp>
+#include <boost/asio/connect.hpp>
+#include <boost/asio/deadline_timer.hpp>
+#include <boost/asio/io_service.hpp>
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/read_until.hpp>
+#include <boost/asio/streambuf.hpp>
+#include <boost/system/system_error.hpp>
+#include <boost/asio/write.hpp>
+#include <cstdlib>
 #include <iostream>
 #include <string>
+#include <boost/lambda/bind.hpp>
+#include <boost/lambda/lambda.hpp>
 #include "Communication.hpp"
 
 using boost::asio::ip::tcp;
+using boost::asio::deadline_timer;
+using boost::asio::ip::tcp;
+using boost::lambda::bind;
+using boost::lambda::var;
+using boost::lambda::_1;
 
 class ClientTCP {
 public:
     ClientTCP(std::string& ip, std::string& port);
-    ClientTCP() : resolver(io_context_) {}
+    ClientTCP() : resolver(io_context_), deadline_(io_context_) {}
     ~ClientTCP() = default;
 
     bool connect(std::string& ip, std::string& port);
@@ -35,6 +51,8 @@ public:
     void disconnectThread();
     void disconnect();
 
+    void connectTimeOut(const std::string& host, const std::string& service, boost::posix_time::time_duration timeout);
+    void check_deadline();
     std::string getData() {return std::string(buffer_, dataLength_);}
     std::string getDataClear() {
         std::string tmp = getData();
@@ -59,6 +77,7 @@ private:
     tcp::resolver resolver;
     std::thread *thread_ = nullptr;
     size_t dataLength_ = 0;
+    deadline_timer deadline_;
 };
 
 #endif //BABEL_CLIENTTCP_HPP

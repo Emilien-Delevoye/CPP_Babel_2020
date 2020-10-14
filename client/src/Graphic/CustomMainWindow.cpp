@@ -127,7 +127,9 @@ void CustomMainWindow::logout()
 void CustomMainWindow::ConnectLogToServer()
 {
     _serverTCP = new ClientTCP;
+    std::cout << "Connect" << std::endl;
     if (_serverTCP->connect(_serverIP, _serverPort)) {
+        std::cout << "Send message" << std::endl;
         _serverTCP->write(Communication(Communication::PRESENTATION, _userLogin, _userPassword, 4242).serialize());
         printf("connect : wait for answer\n");
         Communication msg;
@@ -154,6 +156,7 @@ void CustomMainWindow::ConnectLogToServer()
             _serverTCP = nullptr;
         }
     } else {
+        std::cout << "unable to connect" << std::endl;
         _connectionPage->setError("Error while connecting to the server.");
         delete _serverTCP;
         _serverTCP = nullptr;
