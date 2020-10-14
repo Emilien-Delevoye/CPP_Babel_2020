@@ -187,6 +187,7 @@ CustomButton *UserPage::getCallButton() const
 
 /*!
  * \brief This method reset the _timer value which represent call duration and then show it to the user.
+ *
  * This method is call just before a call start.
 */
 
@@ -200,6 +201,7 @@ void UserPage::showTimer()
 
 /*!
  * \brief This method hide the call timer
+ *
  * This method is call just after the user hang up the call
 */
 
@@ -208,11 +210,21 @@ void UserPage::hideTimer()
     _timerText->hide();
 }
 
+/*!
+ * \brief This method add a user to the vertical layout  _userVLayout of UserPage
+ * \param user user button to be add to the layout
+*/
+
 void UserPage::addUser(User *user)
 {
     _userVLayout->addWidget(user);
     _users.push_back(user);
 }
+
+/*!
+ * \brief This method remove a user to the vertical layout  _userVLayout of UserPage
+ * \param id id of the user to be deleted
+*/
 
 void UserPage::deleteUser(int id, int otherUserId)
 {
@@ -239,6 +251,11 @@ void UserPage::deleteUser(int id, int otherUserId)
     _users.erase(_users.begin() + savePos);
 }
 
+/*!
+ * \brief This method return true if the user corresponding to the given id exist, false otherwise.
+ * \param id id of the user to be corresponded
+*/
+
 bool UserPage::userExists(int id)
 {
     for (auto & u : _users) {
@@ -248,6 +265,10 @@ bool UserPage::userExists(int id)
     return false;
 }
 
+/*!
+ * \brief This method remove all user
+*/
+
 void UserPage::deleteAllUser()
 {
     for (auto user : _users) {
@@ -256,10 +277,19 @@ void UserPage::deleteAllUser()
     _users.clear();
 }
 
+/*!
+ * \brief This method return the _pickUpButton of the UserPage
+*/
+
 CustomButton *UserPage::getPickUpButton() const
 {
     return _pickUpButton;
 }
+
+/*!
+ * \brief This method return the user corresponding to the given id
+ * \param id id of the user to be found
+*/
 
 User *UserPage::findUser(const int id)
 {
@@ -271,6 +301,11 @@ User *UserPage::findUser(const int id)
     }
     return user;
 }
+
+/*!
+ * \brief This method set all appropriate text and button when a call is coming.
+ * \param id id of the user who called
+*/
 
 void UserPage::incomingCall(const int id)
 {
@@ -285,6 +320,11 @@ void UserPage::incomingCall(const int id)
     _userIPToCall->show();
     _callButton->setText(qPrintable(std::string("Call " + user->getLogin()).c_str()));
 }
+
+/*!
+ * \brief This method set all appropriate text and button when a call is ending.
+ * \param id id of the user who hand up
+*/
 
 void UserPage::endcomingCall(const int id)
 {

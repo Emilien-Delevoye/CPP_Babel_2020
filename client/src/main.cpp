@@ -14,24 +14,7 @@
  * Internet (no multicast or anything LAN specific).
  *
  * \section c Install dependencies
- * Before doing anything please install the following dependencies :
- * - [...]
- * - [...]
- * \subsection d Compile the Babel !
- * Once the dependencies are installed, you have to use the "make" command to compile the Babel.
- * <br>
- * Our project works with a CMakeLists.txt (do not remove it or you won't be able to compile anymore).
- * <br>
- * If you make any changes to our code, you may want to use "make re" to recompile all project's files.
- *
- * \subsection e How to launch Babel
- * Now that you have compiled all the files needed to run the Babel, you should find the "babel" binary by going in the "build" directory and then in the "bin" directory.
- * <br>
- * Once found, you can do "./babel", and the magic will come.
- * <br>
- * \warning Be sure that all the dependencies are correctly installed before compiling our project.
- * If it's not case you will have some error during the compilation.
- *
+ * To how to compile Babel, see the Readme.md (related pages -> babel)
  *
  * \authors Cyprien Ricques <br> Emilien Delevoye <br> Paul Surrans
 */

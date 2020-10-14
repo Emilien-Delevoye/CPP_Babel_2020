@@ -12,7 +12,7 @@ mkdir build && cd build && conan install .. && cmake .. -G "Unix Makefiles" && c
 mkdir build ; cd build ; conan install .. ; cmake .. ; cmake –build .
 ```
 
-## Requiered
+## Required
 
 **Windows**
 - conan=1.29.0
