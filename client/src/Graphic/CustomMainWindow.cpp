@@ -51,7 +51,15 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() {
         _serverTCP->async_write(
                 Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
-        this->_call = new(std::nothrow) Call(_otherIP, 4241, 4242);
+        try {
+            this->_call = new(std::nothrow) Call(_otherIP, 4241, 4242);
+        } catch (EncodeError &e) {
+            std::cerr << e.getComponent() << e.what() << std::endl;
+        } catch (AudioIOError &e) {
+            std::cerr << e.getComponent() << e.what() << std::endl;
+        } catch (FatalError &e) {
+            std::cerr << e.getComponent() << e.what() << std::endl;
+        }
         std::cout << "start Call" << std::endl;
         if (this->_call) {
             _q = new(std::nothrow) std::thread([&] { this->_call->run(); });
@@ -151,7 +159,15 @@ void CustomMainWindow::startServerBackCall()
             qDebug() << "PICK UP RCV" << endl;
             std::cout << "CALL ACCEPTED" << msg.id_ << std::endl;
             _userPage->showTimer();
-            this->_call = new(std::nothrow) Call(_otherIP, 4242, 4241);
+            try {
+                this->_call = new(std::nothrow) Call(_otherIP, 4242, 4241);
+            } catch (EncodeError &e) {
+                std::cerr << e.getComponent() << e.what() << std::endl;
+            } catch (AudioIOError &e) {
+                std::cerr << e.getComponent() << e.what() << std::endl;
+            } catch (FatalError &e) {
+                std::cerr << e.getComponent() << e.what() << std::endl;
+            }
             std::cout << "start Call" << std::endl;
             if (this->_call) {
                 _q = new(std::nothrow) std::thread([&] { this->_call->run(); });
