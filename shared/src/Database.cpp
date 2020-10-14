@@ -5,6 +5,7 @@
  * @version 1.0
  * @date 05/10/2020
  *
+ * This class permit to interact with the sqlite database.
 */
 
 #include "Database.hpp"
@@ -12,6 +13,13 @@
 using namespace std;
 
 template class DataBase<User>;
+
+/*!
+ * \brief DataBase constructor
+ *
+ * Construct the class.
+ * Dump the database
+*/
 
 template<class T>
 DataBase<T>::DataBase() : ADatabase<T>(), storage(QUERY)
