@@ -1,8 +1,9 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file ClientTCP.cpp
+ * @brief Client manager
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
 */
 
 #include "ClientTcp.hpp"
@@ -12,8 +13,22 @@
 
 using namespace std;
 
+/*!
+ * \brief ClientTCP constructor
+ * \param std::string ip
+ * \param std::string port
+ *
+ * Construct the class
+*/
+
 ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_), deadline_(io_context_)
 {}
+
+/*!
+ * \brief check_deadline method
+ *
+ * This method is here to check if the connection time is not over the imposed time.
+*/
 
 void ClientTCP::check_deadline()
 {
@@ -25,9 +40,18 @@ void ClientTCP::check_deadline()
     deadline_.async_wait(bind(&ClientTCP::check_deadline, this));
 }
 
-void ClientTCP::connectTimeOut(const std::string &host, const std::string &service, boost::posix_time::time_duration timeout)
+/*!
+ * \brief connectTimeOut method
+ * \param std::string ip
+ * \param std::string port
+ * \param time max
+ *
+ * This method connect the client with connection time out which equals "time max"
+*/
+
+void ClientTCP::connectTimeOut(const std::string &ip, const std::string &port, boost::posix_time::time_duration timeout)
 {
-    tcp::resolver::query query(host, service);
+    tcp::resolver::query query(ip, port);
     tcp::resolver::iterator iter = tcp::resolver(io_context_).resolve(query);
 
     deadline_.expires_from_now(timeout);
@@ -40,14 +64,20 @@ void ClientTCP::connectTimeOut(const std::string &host, const std::string &servi
 
     if (ec || !socket_.is_open())
         throw boost::system::system_error(ec ? ec : boost::asio::error::operation_aborted);
-    std::cout << "ok ?" << std::endl;
     deadline_.expires_at(boost::posix_time::max_date_time);
-    std::cout << "wow" << std::endl;
 }
+
+/*!
+ * \brief connect method
+ * \param std::string ip
+ * \param std::string port
+ * \return true if the client is connect, false otherwise
+ *
+ * This method connect the client to the server.
+*/
 
 bool ClientTCP::connect(std::string &ip, std::string &port)
 {
-    bool error = false;
     if (!std::regex_match(ip, std::regex("\\d+.\\d+.\\d+.\\d+")))
         return false;
     try {
@@ -56,8 +86,14 @@ bool ClientTCP::connect(std::string &ip, std::string &port)
         std::cerr << e.what() << std::endl;
         return false;
     }
-    return !error;
+    return true;
 }
+
+/*!
+ * \brief startAsyncRead method
+ *
+ * This method start the asynchrone read to get server messages'.
+*/
 
 void ClientTCP::startAsyncRead()
 {
@@ -65,6 +101,12 @@ void ClientTCP::startAsyncRead()
     thread_ = new std::thread([&] { io_context_.run(); });
     printf("START READING\n");
 }
+
+/*!
+ * \brief async_read method
+ *
+ * This method setup the function used in asynchrone read.
+*/
 
 void ClientTCP::async_read()
 {
@@ -84,6 +126,12 @@ void ClientTCP::async_read()
     socket_.async_read_some(boost::asio::buffer(buffer_, max_length), Hrd);
 }
 
+/*!
+ * \brief read method
+ *
+ * This method read and wait a message from the server.
+*/
+
 std::string ClientTCP::read()
 {
     char reply[max_length];
@@ -91,10 +139,22 @@ std::string ClientTCP::read()
     return std::string(reply, reply_length);
 }
 
+/*!
+ * \brief write method
+ *
+ * This method send a message to the server.
+*/
+
 void ClientTCP::write(std::string msg)
 {
     socket_.write_some(boost::asio::buffer(msg, msg.length()));
 }
+
+/*!
+ * \brief async_write method
+ *
+ * This method send an asynchrone message to the server.
+*/
 
 void ClientTCP::async_write(std::string msg)
 {
@@ -108,6 +168,12 @@ void ClientTCP::async_write(std::string msg)
     boost::asio::async_write(socket_, boost::asio::buffer(msg, msg.length()), Hwt);
 }
 
+/*!
+ * \brief disconnectThread method
+ *
+ * This method disconnected the client from the server and stop the thread.
+*/
+
 void ClientTCP::disconnectThread()
 {
     std::cout << "stop io context" << std::endl;
@@ -118,12 +184,18 @@ void ClientTCP::disconnectThread()
 
     try {
         socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+        socket_.close();
     } catch (boost::system::system_error &e) {
         std::cerr << e.what() << std::endl;
     }
-    socket_.close();
     std::cout << "disconnect socket 2" << std::endl;
 }
+
+/*!
+ * \brief disconnect method
+ *
+ * This method disconnected the client from the server.
+*/
 
 void ClientTCP::disconnect()
 {

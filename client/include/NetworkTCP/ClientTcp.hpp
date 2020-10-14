@@ -1,10 +1,12 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file ClientTCP.hpp
+ * @brief ClientTCP class prototype
+ * @author Cyprien R
+ * @version 1.0
+ * @date 10/10/2020
+ *
+ * This class permit the client to easily connect to the server and communicate with him.
 */
-
 
 #ifndef BABEL_CLIENTTCP_HPP
 #define BABEL_CLIENTTCP_HPP
@@ -51,7 +53,7 @@ public:
     void disconnectThread();
     void disconnect();
 
-    void connectTimeOut(const std::string& host, const std::string& service, boost::posix_time::time_duration timeout);
+    void connectTimeOut(const std::string& ip, const std::string& port, boost::posix_time::time_duration timeout);
     void check_deadline();
     std::string getData() {return std::string(buffer_, dataLength_);}
     std::string getDataClear() {
