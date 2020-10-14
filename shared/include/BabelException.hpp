@@ -5,7 +5,7 @@
  * @version 1.0
  * @date 05/10/2020
  *
- * This class permit to deal with Babel error.
+ * This class permit to deal with Babel errors.
  *
 */
 

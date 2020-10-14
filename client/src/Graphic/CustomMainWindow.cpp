@@ -77,6 +77,12 @@ CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMai
     navToConnectionPage();
 }
 
+/*!
+ * \brief hangUp method
+ *
+ * this method hang up the client when the button is pressed or the message is received.
+*/
+
 void CustomMainWindow::hangUp()
 {
     if (_call && _q) {
@@ -91,6 +97,12 @@ void CustomMainWindow::hangUp()
     _userPage->endcomingCall(_otherId);
 }
 
+/*!
+ * \brief logout method
+ *
+ * this method logout the client from the server.
+*/
+
 void CustomMainWindow::logout()
 {
     _serverTCP->isNotJustDisconnected();
@@ -104,6 +116,13 @@ void CustomMainWindow::logout()
     navToConnectionPage();
     _timer->stop();
 }
+
+/*!
+ * \brief connectLogToServer method
+ *
+ * This method allow the client to connect himself and log to the server.
+ * The client is logged with the password and login entered in the window.
+*/
 
 void CustomMainWindow::ConnectLogToServer()
 {
@@ -140,6 +159,12 @@ void CustomMainWindow::ConnectLogToServer()
         _serverTCP = nullptr;
     }
 }
+
+/*!
+ * \brief startServerBackCall method
+ *
+ * this method start the regular call back to the server.
+*/
 
 void CustomMainWindow::startServerBackCall()
 {
@@ -218,25 +243,43 @@ void CustomMainWindow::startServerBackCall()
     _timer->start();
 }
 
+/*!
+ * \brief setupClients method
+ * \param Communication message (message received from server)
+ *
+ * This method add connected clients to the UI when "SETUP" message is received.
+*/
+
 void CustomMainWindow::setupClients(const Communication &msg)
 {
-    for (int i = 0; i < msg.ids_.size(); ++i) {
-        if ((!_userPage->userExists(msg.ids_.at(i))) && (msg.ids_.at(i) != _userId)) {
+    for (int i = 0; i < msg.ids_.size(); ++i)
+        if ((!_userPage->userExists(msg.ids_.at(i))) && (msg.ids_.at(i) != _userId))
             newUser(new User(_userPage, msg.logins_.at(i), msg.ips_.at(i), msg.ports_.at(i),
                              msg.ids_.at(i)));
-        }
-    }
     auto users = _userPage->getUsers();
     for (auto &u : users)
-        if (std::find(msg.ids_.begin(), msg.ids_.end(), u->getID()) == msg.ids_.end()) {
+        if (std::find(msg.ids_.begin(), msg.ids_.end(), u->getID()) == msg.ids_.end())
             _userPage->deleteUser(u->getID(), _otherId);
-        }
 }
+
+/*!
+ * \brief newUser method
+ * \param Communication message (message received)
+ *
+ * this method permit the client to add new connected users to the UI from a received message.
+*/
 
 void CustomMainWindow::newUser(const Communication &msg)
 {
     newUser(new User(_userPage, msg.login_, msg.ip_, msg.port_, msg.id_));
 }
+
+/*!
+ * \brief newUser method
+ * \param User user
+ *
+ * this method permit the client to add new connected users to the UI.
+*/
 
 void CustomMainWindow::newUser(User *user)
 {
