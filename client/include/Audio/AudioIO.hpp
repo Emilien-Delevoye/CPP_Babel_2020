@@ -25,8 +25,6 @@ class AudioIO: public IAudio {
 public:
     AudioIO();
     void init() final;
-    [[nodiscard]] int getInputChannelNb() const override;
-    [[nodiscard]] int getOutputChannelNb() const override;
     void startStream(int, int) final;
     void readStream() override;
     void writeStream() override;

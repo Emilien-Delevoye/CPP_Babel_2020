@@ -50,30 +50,6 @@ void AudioIO::init()
 }
 
 /*!
-* \brief AudioIO::getInputChannelNb is a getter for the maxInputChannels
-*/
-
-int AudioIO::getInputChannelNb() const
-{
-    if (this->_init && !this->_fatalError)
-        return this->_deviceInfo[INPUT]->maxInputChannels;
-    else
-        return 0;
-}
-
-/*!
-* \brief AudioIO::getOutputChannelNb is a getter for the maxOutputChannels
-*/
-
-int AudioIO::getOutputChannelNb() const
-{
-    if (this->_init && !this->_fatalError)
-        return this->_deviceInfo[OUTPUT]->maxOutputChannels;
-    else
-        return 0;
-}
-
-/*!
 * \brief AudioIO::startStream opens the streams and starts it, the microphone and the speakers are active after it
 * \param channelInputClient is the number of input channel(s) from the destination client
 * \param channelOutputClient is the number of output channel(s) from the destination client
