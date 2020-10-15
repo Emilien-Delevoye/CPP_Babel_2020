@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Emilien
+/*!
+ * @file INetworkUDP.hpp
+ * @brief INetworkUDP class prototype
+ * @authors Emilien.D
+ * @version 1.0
+ * @date 15/10/2020
+ * ISenderUDP -> Interface for SenderUDP class<br>
+ * IReceiverUDP -> Interface for ReceiverUDP class
 */
 
 #ifndef BABEL_INETWORKUDP_HPP

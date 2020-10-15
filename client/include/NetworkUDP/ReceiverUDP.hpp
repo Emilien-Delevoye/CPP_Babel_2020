@@ -1,8 +1,10 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Emilien
+/*!
+ * @file Call.hpp
+ * @brief Call class prototype
+ * @authors Emilien.D
+ * @version 1.0
+ * @date 15/10/2020
+ * ReceiverUDP is the implementation of IReceiverUDP
 */
 
 #ifndef BABEL_RECEIVERUDP_HPP
