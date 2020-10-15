@@ -82,15 +82,7 @@ void CustomMainWindow::call()
 void CustomMainWindow::pickUpPressed()
 {
     _serverTCP->async_write(Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
-    try {
-        _call = new(std::nothrow) Call(_otherIP, 4241, 4242);
-    } catch (EncodeError &e) {
-        std::cerr << e.getComponent() << e.what() << std::endl;
-    } catch (AudioIOError &e) {
-        std::cerr << e.getComponent() << e.what() << std::endl;
-    } catch (FatalError &e) {
-        std::cerr << e.getComponent() << e.what() << std::endl;
-    }
+    startCall(_otherIP, 4241, 4242);
     if (_call)
         _q = new(std::nothrow) std::thread([&] { _call->run(); });
     _callInProgress = true;
@@ -308,15 +300,7 @@ void CustomMainWindow::hangUpMsgReceived(const Communication &msg)
 void CustomMainWindow::pickUpMsgReceived()
 {
     _userPage->showTimer();
-    try {
-        _call = new(std::nothrow) Call(_otherIP, 4242, 4241);
-    } catch (EncodeError &e) {
-        std::cerr << e.getComponent() << e.what() << std::endl;
-    } catch (AudioIOError &e) {
-        std::cerr << e.getComponent() << e.what() << std::endl;
-    } catch (FatalError &e) {
-        std::cerr << e.getComponent() << e.what() << std::endl;
-    }
+    startCall(_otherIP, 4242, 4241);
     if (_call)
         _q = new(std::nothrow) std::thread([&] { _call->run(); });
     _callInProgress = true;
@@ -425,4 +409,21 @@ bool CustomMainWindow::checkField() const
         return false;
     }
     return true;
+}
+
+void CustomMainWindow::startCall(const std::string &in, int portReceiver, int portSender)
+{
+    try {
+        _call = new(std::nothrow) Call(in, portReceiver, portSender);
+    } catch (EncodeError &e) {
+        std::cerr << e.getComponent() << e.what() << std::endl;
+    } catch (AudioIOError &e) {
+        std::cerr << e.getComponent() << e.what() << std::endl;
+    } catch (FatalError &e) {
+        std::cerr << e.getComponent() << e.what() << std::endl;
+    } catch (boost::system::system_error &e) {
+        std::cerr << "Boost system error : " << e.what() << std::endl;
+    } catch (std::exception &e) {
+        std::cerr << "Call init error : " << e.what() << std::endl;
+    }
 }

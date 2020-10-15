@@ -54,6 +54,7 @@ private:
     void hangUpMsgReceived(const Communication &msg);
     void CallMessageReceived(const Communication &msg);
     void setupCallBacks(const Communication &msg);
+    void startCall(const std::string &, int portReceiver, int portSender);
 
     ConnectionPage *_connectionPage;
     UserPage *_userPage;
