@@ -12,6 +12,9 @@ mkdir build && cd build && conan install .. && cmake .. -G "Unix Makefiles" && c
 mkdir build ; cd build ; conan install .. ; cmake .. ; cmake –build .
 ```
 
+## Execute
+Go to the build/bin directory and execute the wanted binary.
+
 ## Required
 
 **Windows**
@@ -52,6 +55,12 @@ Please do not run the program in an application integrated terminal. Audio devic
 
 **Warning** : if use the client on the same pc as the server, you should use the real pc ip instead of '127.0.0.1'
               otherwise you'll get issue with your sound transmission. 
+              
+## Custom the graphic
+
+Our graphic UI work with QSS, the a CSS solution to design QT windows. <br>
+You can edit the styles/styles.qss to customise the UI. (color, width, height ...)
+
 
 ## OS
 
