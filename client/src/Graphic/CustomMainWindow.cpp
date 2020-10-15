@@ -411,6 +411,15 @@ bool CustomMainWindow::checkField() const
     return true;
 }
 
+/*!
+ * \brief startCall method
+ * \param std::string in
+ * \param int portReceiver
+ * \param int portSender
+ *
+ * This method start the UDP call.<br>
+*/
+
 void CustomMainWindow::startCall(const std::string &in, int portReceiver, int portSender)
 {
     try {
