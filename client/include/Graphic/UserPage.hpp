@@ -44,11 +44,11 @@ class UserPage : public CustomWidget {
         void addUser(User *user);
         void deleteUser(int id, int otherUserId);
         void deleteAllUser();
-        bool userExists(int id);
-        std::vector<User *> getUsers() {return _users;}
+        bool userExists(int id) const;
+        std::vector<User *> getUsers() const {return _users;}
         void incomingCall(int id);
-        User *findUser(int id);
-        void endcomingCall(const int id);
+        User *findUser(int id) const;
+        void endcomingCall(int id);
 
     private:
         std::vector<User *> _users;
