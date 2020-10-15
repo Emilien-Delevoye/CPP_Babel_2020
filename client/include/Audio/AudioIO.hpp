@@ -29,8 +29,8 @@ public:
     void readStream() override;
     void writeStream() override;
     void stopStream() final;
-    std::vector<unsigned short> getCaptured();
-    void setDecoded(std::vector<unsigned short>);
+    [[nodiscard]] std::vector<unsigned short> getCaptured() const;
+    void setDecoded(const std::vector<unsigned short> &);
     ~AudioIO();
 private:
     void stop() final;

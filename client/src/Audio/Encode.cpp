@@ -82,7 +82,7 @@ void Encode::decodeData()
 * \brief Encode::getEncoded return the encoded vector
 */
 
-std::vector<unsigned char> Encode::getEncoded()
+std::vector<unsigned char> Encode::getEncoded() const
 {
     return this->encoded;
 }
@@ -93,9 +93,9 @@ std::vector<unsigned char> Encode::getEncoded()
 * \param encBytesFromUDP is the number of bytes to decode 
 */
 
-void Encode::setToDecode(std::vector<unsigned char> inToDecode, size_t encBytesFromUDP)
+void Encode::setToDecode(const std::vector<unsigned char> &inToDecode, const size_t &encBytesFromUDP)
 {
-    this->toDecode = std::move(inToDecode);
+    this->toDecode = inToDecode;
     this->toDecBytes = encBytesFromUDP;
 }
 
@@ -104,16 +104,16 @@ void Encode::setToDecode(std::vector<unsigned char> inToDecode, size_t encBytesF
 * \param inCaptured is the vector to encode
 */
 
-void Encode::setCaptured(std::vector<unsigned short> inCaptured)
+void Encode::setCaptured(const std::vector<unsigned short> &inCaptured)
 {
-    this->captured = std::move(inCaptured);
+    this->captured = inCaptured;
 }
 
 /*!
 * \brief Encode::getDecoded returns the vector decoded
 */
 
-std::vector<unsigned short> Encode::getDecoded()
+std::vector<unsigned short> Encode::getDecoded() const
 {
     return this->decoded;
 }

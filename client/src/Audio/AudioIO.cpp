@@ -133,7 +133,7 @@ void AudioIO::stopStream()
 * \brief AudioIO::getCaptured returns the captured data from AudioIO::readStream
 */
 
-std::vector<unsigned short> AudioIO::getCaptured()
+std::vector<unsigned short> AudioIO::getCaptured() const
 {
     return this->_captured;
 }
@@ -143,9 +143,9 @@ std::vector<unsigned short> AudioIO::getCaptured()
 * \param newDecoded is the decoded vector from the Encode class
 */
 
-void AudioIO::setDecoded(std::vector<unsigned short> newDecoded)
+void AudioIO::setDecoded(const std::vector<unsigned short> &newDecoded)
 {
-    this->_decoded = std::move(newDecoded);
+    this->_decoded = newDecoded;
 }
 
 void AudioIO::stop()

@@ -28,10 +28,10 @@ class Encode : public IEncode
         void createDecoder() final;
         void encodeData() final;
         void decodeData() final;
-        void setCaptured(std::vector<unsigned short>);
-        void setToDecode(std::vector<unsigned char>, size_t);
-        std::vector<unsigned char> getEncoded();
-        std::vector<unsigned short> getDecoded();
+        void setCaptured(const std::vector<unsigned short> &);
+        void setToDecode(const std::vector<unsigned char> &, const size_t &);
+        [[nodiscard]] std::vector<unsigned char> getEncoded() const;
+        [[nodiscard]] std::vector<unsigned short> getDecoded() const;
         [[nodiscard]] size_t getEncBytes() const;
     private:
         std::vector<unsigned char> encoded;
