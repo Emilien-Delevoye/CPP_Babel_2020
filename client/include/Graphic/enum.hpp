@@ -1,8 +1,11 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Paul
+/*!
+ * @file enum.hpp
+ * @brief Graphic enum file
+ * @author Paul.S
+ * @version 1.0
+ * @date 05/10/2020
+ * This file contain all the enum which be used for the graphic view.
+ *
 */
 
 #ifndef BABEL_ENUM_HPP
