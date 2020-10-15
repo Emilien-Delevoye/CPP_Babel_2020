@@ -44,30 +44,25 @@ public:
         HANG_UP,
         PICK_UP,
         SETUP,
-        CONFIRMATION,
         INIT,
         NEW_USER,
         DISCONNECTED_USER
     };
     explicit Communication(Communication::type t=INIT) : t_(t) {}
     Communication(const Communication::type t, const int id) : t_(t), id_(id) {}
-    Communication(const Communication::type t, const int myId, const int id) : t_(t), myId_(myId), id_(id) {}
     Communication(const Communication::type t, const int myId, const int id, int port) : t_(t), myId_(myId), id_(id), port_(port) {}
     Communication(const Communication::type t, std::string  login, std::string password, const int port) : t_(t), login_(std::move(login)), password_(std::move(password)), port_(port) {}
 
     type t_;
-
     int myId_ = -1;
     bool connectionAccepted = false;
 
-    // Call / Presentation / New / Disconnected
     int id_ = -1;
     std::string login_;
     std::string password_;
     std::string ip_;
     int port_ = 4242;
 
-    // Update clients
     std::vector<int> ids_;
     std::vector<std::string> logins_;
     std::vector<std::string> ips_;
@@ -87,7 +82,6 @@ public:
 
         return ss.str();
     }
-
     static Communication unSerializeObj(const std::string obj) {
         Communication c(Communication::PRESENTATION);
         std::istringstream ss(obj);
