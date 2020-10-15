@@ -1,10 +1,12 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file IClientTCP.hpp
+ * @brief IClientTCP class prototype
+ * @author Cyprien.R
+ * @version 1.0
+ * @date 10/10/2020
+ *
+ * This class is the abstraction of ClientTCP
 */
-
 
 #ifndef BABEL_ICLIENTTCP_HPP
 #define BABEL_ICLIENTTCP_HPP
