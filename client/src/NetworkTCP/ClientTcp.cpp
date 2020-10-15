@@ -18,7 +18,7 @@ using namespace std;
  * Construct the class
 */
 
-ClientTCP::ClientTCP(const std::string &ip, const std::string &port) : resolver(io_context_), deadline_(io_context_)
+ClientTCP::ClientTCP(const std::string &ip, const std::string &port) : IClientTCP(), resolver(io_context_), deadline_(io_context_)
 {}
 
 /*!
@@ -178,14 +178,7 @@ void ClientTCP::disconnectThread()
     cout << "join thread" << endl;
     thread_->join();
     cout << "thread joined" << endl;
-
-    try {
-        socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
-        socket_.close();
-    } catch (boost::system::system_error &e) {
-        std::cerr << e.what() << std::endl;
-    }
-    std::cout << "disconnect socket 2" << std::endl;
+    disconnect();
 }
 
 /*!
@@ -196,8 +189,12 @@ void ClientTCP::disconnectThread()
 
 void ClientTCP::disconnect()
 {
-    std::cout << "close & shutdown socket" << std::endl;
-    socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
-    socket_.close();
-    std::cout << "disconnect socket OK" << std::endl;
+    try {
+        std::cout << "close & shutdown socket" << std::endl;
+        socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+        socket_.close();
+        std::cout << "disconnect socket OK" << std::endl;
+    } catch (boost::system::system_error &e) {
+        std::cerr << e.what() << std::endl;
+    }
 }

@@ -105,7 +105,7 @@ void CustomMainWindow::hangUp()
 
 void CustomMainWindow::logout()
 {
-    _serverTCP->isNotJustDisconnected();
+    _serverTCP->resetIsDisconnected();
     _serverTCP->disconnectThread();
     _connectionPage->emptyPassword();
     if (_callInProgress) {
@@ -135,7 +135,7 @@ void CustomMainWindow::ConnectLogToServer()
         Communication msg;
         try {
             msg = Communication::unSerializeObj(std::string(_serverTCP->read()));
-        } catch (boost::wrapexcept<boost::system::system_error> &e) {
+        } catch (boost::system::system_error &e) {
             std::cerr << "Get answer Error " << e.what() << std::endl;
             msg.connectionAccepted = false;
         }

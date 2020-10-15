@@ -93,7 +93,8 @@ set(CLIENT_INCLUDES
         client/include/Audio/Call.hpp
         client/include/NetworkTCP/ClientTcp.hpp
         shared/include/Communication.hpp
-        shared/include/BabelException.hpp)
+        shared/include/BabelException.hpp
+        client/include/NetworkTCP/IClientTcp.hpp)
 
 
 set(SERVER_SOURCES

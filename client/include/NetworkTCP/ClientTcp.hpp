@@ -33,6 +33,7 @@
 #include <iostream>
 #include <regex>
 #include "Communication.hpp"
+#include "IClientTcp.hpp"
 
 using boost::asio::ip::tcp;
 using boost::asio::deadline_timer;
@@ -42,36 +43,39 @@ using boost::lambda::var;
 using boost::lambda::_1;
 
 // TODO abstract
-class ClientTCP {
+class ClientTCP : IClientTCP {
 public:
     ClientTCP(const std::string& ip, const std::string& port);
     ClientTCP() : resolver(io_context_), deadline_(io_context_) {}
     ~ClientTCP() = default;
 
-    bool connect(const std::string& ip, const std::string& port);
-    std::string read();
-    void async_read();
-    void write(std::string msg);
-    void async_write(std::string);
-    void startAsyncRead();
-    void disconnectThread();
-    void disconnect();
+    bool connect(const std::string& ip, const std::string& port) override;
+    void startAsyncRead() override;
 
-    void connectTimeOut(const std::string& ip, const std::string& port, const boost::posix_time::time_duration& timeout);
-    void check_deadline();
-    std::string getData() const {return std::string(buffer_, dataLength_);}
-    std::string getDataClear() {
+    std::string read() override;
+    void async_read() override;
+    void write(std::string msg) override;
+    void async_write(std::string) override;
+
+    void disconnectThread() override;
+    void disconnect() override;
+
+    std::string getData() const override {return std::string(buffer_, dataLength_);}
+    std::string getDataClear() override {
         std::string tmp = getData();
         clearReceivedData();
         return tmp;
     }
-    void clearReceivedData() {
+    void clearReceivedData() override {
         memset(buffer_, 0, max_length);
         dataLength_ = 0;
     }
-    bool isDisconnected() const {return justDisconnected_;}
-    void isNotJustDisconnected() {justDisconnected_ = false;}
+    bool isDisconnected() const override {return justDisconnected_;}
+    void resetIsDisconnected() override { justDisconnected_ = false;}
 private:
+    void connectTimeOut(const std::string& ip, const std::string& port, const boost::posix_time::time_duration& timeout);
+    void check_deadline();
+
     bool justDisconnected_ = false;
     enum {
         max_length = 2048
