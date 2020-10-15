@@ -40,6 +40,20 @@ public:
 private:
     void newUser(const Communication &msg);
     void newUser(User *user);
+    void startServerBackCall();
+    void ConnectNLogToServer();
+    void setupClients(const Communication &msg);
+    void logout();
+    void hangUp();
+    void pickUpPressed();
+    void call();
+    void connectButtons();
+    void connectionAccepted(const Communication &msg);
+    void connectionRefused();
+    void pickUpMsgReceived();
+    void hangUpMsgReceived(const Communication &msg);
+    void CallMessageReceived(const Communication &msg);
+    void setupCallBacks(const Communication &msg);
 
     ConnectionPage *_connectionPage;
     UserPage *_userPage;
@@ -62,37 +76,8 @@ private:
     Communication _com;
 
     QTimer *_timer;
-
-    void startServerBackCall();
-
-    void ConnectNLogToServer();
-
-    void setupClients(const Communication &msg);
-
     Call *_call = nullptr;
     std::thread *_q = nullptr;
-
-    void logout();
-
-    void hangUp();
-
-    void pickUpPressed();
-
-    void call();
-
-    void connectButtons();
-
-    void connectionAccepted(const Communication &msg);
-
-    void connectionRefused();
-
-    void pickUpMsgReceived();
-
-    void hangUpMsgReceived(const Communication &msg);
-
-    void CallMessageReceived(const Communication &msg);
-
-    void setupCallBacks(const Communication &msg);
 };
 
 #endif //B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H
