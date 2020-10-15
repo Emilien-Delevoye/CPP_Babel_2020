@@ -1,7 +1,7 @@
 /*!
  * @file CustomMainWindow.cpp
  * @brief CustomMainWindow class implementation
- * @authors Paul.S Cyprien.R
+ * @authors Paul.S Cyprien.R Emilien.D
  * @version 1.0
  * @date 05/10/2020
  *
