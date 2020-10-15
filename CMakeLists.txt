@@ -102,7 +102,7 @@ set(SERVER_SOURCES
         server/src/NetworkTCP/InstanceClientTCP.cpp
         server/src/NetworkTCP/ServerTCP.cpp
         server/src/Server.cpp
-        shared/src/Database.cpp
+        server/src/Database.cpp
         client/include/Graphic/AUser.hpp)
 
 set(SERVER_INCLUDES
@@ -111,7 +111,7 @@ set(SERVER_INCLUDES
         server/include/Server.hpp
         shared/include/Communication.hpp
         shared/include/BabelException.hpp
-        shared/include/Database.hpp
+        server/include/Database.hpp
         server/include/NetworkTCP/IServerTcp.hpp
         server/include/NetworkTCP/IInstanceClientTCP.hpp)
 
