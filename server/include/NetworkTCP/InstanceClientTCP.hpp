@@ -2,7 +2,7 @@
  * @file InstanceClientTCP.hpp
  * @brief InstanceClientTCP class prototype
  * @author Cyprien.R
-* @version 1.0
+ * @version 1.0
  * @date 10/10/2020
  *
  * Each instance of this class is one client connected to server.
@@ -33,30 +33,29 @@ using boost::asio::ip::address;
 #include <memory>
 #include <utility>
 #include <boost/asio.hpp>
+#include "IInstanceClientTCP.hpp"
 
 using boost::asio::ip::tcp;
 
-class InstanceClientTCP : public std::enable_shared_from_this<InstanceClientTCP> {
+class InstanceClientTCP : public std::enable_shared_from_this<InstanceClientTCP>, IInstanceClientTCP {
 public:
     InstanceClientTCP(tcp::socket socket, int id);
     ~InstanceClientTCP() = default;
 
-    void start();
-    void write(std::string);
-    std::string getData() const {return std::string(data_, dataLength_);}
-    std::string getDataClear() {
+    void startAsyncRead() override;
+    void write(std::string&) override;
+    std::string getData() const override {return std::string(data_, dataLength_);}
+    std::string getDataClear() override {
         std::string tmp = getData();
-        clear();
+        clearReceivedData();
         return tmp;
     }
-    void clear() {memset(data_, 0, max_length); dataLength_ = 0;}
-    int getId() {return id_;}
-    bool isDisconnected() {return disconnected_;}
-    bool isNew = true;
-    std::string getIp() const {return ip_;}
-private:
-    void read();
+    void clearReceivedData() override {memset(data_, 0, max_length); dataLength_ = 0;}
+    int getId() const override {return id_;}
+    bool isDisconnected() const override {return disconnected_;}
+    std::string getIp() const override {return ip_;}
 
+private:
     int id_;
     tcp::socket socket_;
     enum {

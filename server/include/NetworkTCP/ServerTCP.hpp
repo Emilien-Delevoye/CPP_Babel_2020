@@ -20,14 +20,14 @@
 
 class ServerTCP : IServerTCP {
 public:
-    ServerTCP(std::string ip, int port);
+    ServerTCP(std::string& ip, int port);
 
     bool newMessageReceived() const override;
     std::string getNewMessageReceived() override;
     int getIdClientLastMsg() const override {return clientIdLastMessage_;}
 
-    void sendMessageToClient(int id, std::string msg) override;
-    void sendMessageToAllClientsConnected(std::string msg) override;
+    void sendMessageToClient(int id, std::string msg) const override;
+    void sendMessageToAllClientsConnected(std::string msg) const override;
 
     bool isDisconnectedClients() override;
     std::vector<int> getDisconnectedClientsIds() override;

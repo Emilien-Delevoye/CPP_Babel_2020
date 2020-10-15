@@ -20,29 +20,18 @@ using namespace std;
 
 InstanceClientTCP::InstanceClientTCP(tcp::socket socket, int id) : socket_(std::move(socket)), id_(id)
 {
-    clear();
+    clearReceivedData();
     ip_ = socket_.remote_endpoint().address().to_string();
 }
 
 /*!
- * \brief start method
- *
- * This method start the asynchronous socket reading.
-*/
-
-void InstanceClientTCP::start()
-{
-    std::cout << socket_.remote_endpoint().address().to_string() << std::endl;
-    read();
-}
-
-/*!
- * \brief read method
+ * \brief startAsyncRead method
  *
  * This method setup the function that will be used to read newly received messages.
+ * This method start async read
 */
 
-void InstanceClientTCP::read()
+void InstanceClientTCP::startAsyncRead()
 {
     auto self(shared_from_this());
     auto Hrd =
@@ -52,7 +41,7 @@ void InstanceClientTCP::read()
             disconnected_ = true;
         } else {
             dataLength_ = length;
-            read();
+            startAsyncRead();
         }
     };
     socket_.async_read_some(boost::asio::buffer(data_, max_length), Hrd);
@@ -64,7 +53,7 @@ void InstanceClientTCP::read()
  * This method allow the server to send message to connected clients.
 */
 
-void InstanceClientTCP::write(std::string msg)
+void InstanceClientTCP::write(std::string& msg)
 {
     boost::asio::write(socket_, boost::asio::buffer(msg, msg.length()));
 }

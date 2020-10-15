@@ -16,7 +16,7 @@
  * Construct the class that encapsulate TCP communications (server side).
 */
 
-ServerTCP::ServerTCP(std::string ip, int port) : IServerTCP(ip, port),
+ServerTCP::ServerTCP(std::string& ip, int port) : IServerTCP(ip, port),
         acceptor_(io_service_, tcp::endpoint(address::from_string(ip), port)), socket_(io_service_)
 {
     if ((port < 1024) || (port > 60000))
@@ -42,7 +42,7 @@ void ServerTCP::handleConnections()
             std::cout << "\033[32;1mNew Connection\033[0m (ID: " + std::to_string(idCounter_) + ")" << std::endl;
             std::shared_ptr<InstanceClientTCP> newClient = std::make_shared<InstanceClientTCP>(
                     std::move(socket_), idCounter_);
-            newClient->start();
+            newClient->startAsyncRead();
             ServerTCP::clients_.push_back(newClient);
         }
         handleConnections();
@@ -93,7 +93,7 @@ std::vector<int> ServerTCP::getDisconnectedClientsIds()
  * This method send the message contained in msg to all connected clients
 */
 
-void ServerTCP::sendMessageToAllClientsConnected(std::string msg)
+void ServerTCP::sendMessageToAllClientsConnected(std::string msg) const
 {
     for (auto &c : clients_) {
         std::cout << "\033[30;2mSend message to\033[0m " << c->getId() << std::endl;
@@ -137,7 +137,7 @@ std::string ServerTCP::getNewMessageReceived()
  * This method send the message contained in "msg" to the client having the instance id "id"
 */
 
-void ServerTCP::sendMessageToClient(int id, std::string msg)
+void ServerTCP::sendMessageToClient(int id, std::string msg) const
 {
     for (auto &c : clients_)
         if (c->getId() == id)

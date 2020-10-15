@@ -53,15 +53,15 @@ public:
     void disconnectThread();
     void disconnect();
 
-    void connectTimeOut(const std::string& ip, const std::string& port, boost::posix_time::time_duration timeout);
+    void connectTimeOut(const std::string& ip, const std::string& port, const boost::posix_time::time_duration& timeout);
     void check_deadline();
-    std::string getData() {return std::string(buffer_, dataLength_);}
+    std::string getData() const {return std::string(buffer_, dataLength_);}
     std::string getDataClear() {
         std::string tmp = getData();
-        clear();
+        clearReceivedData();
         return tmp;
     }
-    void clear() {
+    void clearReceivedData() {
         memset(buffer_, 0, max_length);
         dataLength_ = 0;
     }

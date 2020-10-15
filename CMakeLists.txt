@@ -93,8 +93,7 @@ set(CLIENT_INCLUDES
         client/include/Audio/Call.hpp
         client/include/NetworkTCP/ClientTcp.hpp
         shared/include/Communication.hpp
-        shared/include/BabelException.hpp
-        )
+        shared/include/BabelException.hpp)
 
 
 set(SERVER_SOURCES
@@ -112,7 +111,8 @@ set(SERVER_INCLUDES
         shared/include/Communication.hpp
         shared/include/BabelException.hpp
         shared/include/Database.hpp
-        server/include/NetworkTCP/IServerTcp.hpp)
+        server/include/NetworkTCP/IServerTcp.hpp
+        server/include/NetworkTCP/IInstanceClientTCP.hpp)
 
 add_executable(babel_client ${MOC_Files} ${CLIENT_SOURCES} ${CLIENT_INCLUDES})
 

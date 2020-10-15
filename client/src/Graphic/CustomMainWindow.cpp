@@ -171,7 +171,7 @@ void CustomMainWindow::ConnectLogToServer()
 
 void CustomMainWindow::startServerBackCall()
 {
-    _serverTCP->clear();
+    _serverTCP->clearReceivedData();
     _serverTCP->startAsyncRead();
     _timer = new QTimer(this);
     _timer->setInterval(300);

@@ -26,13 +26,13 @@ class IServerTCP {
 public:
     IServerTCP(std::string& ip, int port) : ip_(ip), port_(port) {};
     virtual bool isDisconnectedClients() = 0;
-    virtual void sendMessageToAllClientsConnected(std::string msg) = 0;
+    virtual void sendMessageToAllClientsConnected(std::string msg) const = 0;
     virtual bool newMessageReceived() const = 0;
     virtual std::string getNewMessageReceived() = 0;
     virtual int getIdClientLastMsg() const = 0;
     virtual std::vector<int> getDisconnectedClientsIds() = 0;
 
-    virtual void sendMessageToClient(int id, std::string msg) = 0;
+    virtual void sendMessageToClient(int id, std::string msg) const = 0;
     virtual std::string getIpId(int id) const = 0;
 
 protected:

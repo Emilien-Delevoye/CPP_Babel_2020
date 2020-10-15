@@ -2,7 +2,7 @@
  * @file ADatabase.hpp
  * @brief ADatabase abstract
  * @author Cyprien.R
-* @version 1.0
+ * @version 1.0
  * @date 10/10/2020
  *
  * This class is an abstraction of the usage of the database.

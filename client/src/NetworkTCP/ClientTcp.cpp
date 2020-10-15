@@ -49,7 +49,7 @@ void ClientTCP::check_deadline()
  * This method connect the client with connection time out which equals "time max"
 */
 
-void ClientTCP::connectTimeOut(const std::string &ip, const std::string &port, boost::posix_time::time_duration timeout)
+void ClientTCP::connectTimeOut(const std::string &ip, const std::string &port, const boost::posix_time::time_duration& timeout)
 {
     tcp::resolver::query query(ip, port);
     tcp::resolver::iterator iter = tcp::resolver(io_context_).resolve(query);
@@ -78,7 +78,7 @@ void ClientTCP::connectTimeOut(const std::string &ip, const std::string &port, b
 
 bool ClientTCP::connect(std::string &ip, std::string &port)
 {
-    if (!std::regex_match(ip, std::regex("\\d+.\\d+.\\d+.\\d+")))
+    if (!std::regex_match(ip, std::regex(R"(\d+.\d+.\d+.\d+)")))
         return false;
     try {
         connectTimeOut(ip, port, boost::posix_time::seconds(1));
