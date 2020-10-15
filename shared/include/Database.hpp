@@ -48,23 +48,23 @@ public:
     DataBase();
 
     template<typename V>
-    V addRow(T *user) {
+    V addRow(const T *user) {
         return storage.insert(*user);
     }
-    void removeRow(int id) {
+    void removeRow(const int id) {
         storage.remove<T>(id);
     }
     template<typename P, typename U, typename N, typename J>
-    P getVarFromId(U varType, N id, J idType, P errorValue) {
+    P getVarFromId(const U varType, const N id, const J idType, const P errorValue) {
         auto v = storage.select(varType, where(c(idType) == id));
         return v.begin() == v.end() ? errorValue : *(v.begin());
     }
     template<typename U, typename V>
-    T getDataFromId(V id, U idType) {
+    T getDataFromId(const V id, const U idType) {
         return storage.get_all<T>(where(c(idType) == id));
     }
     template<typename B, typename V>
-    std::vector<B> getColumn(V varType) {
+    std::vector<B> getColumn(const V varType) {
         return storage.select(varType);
     }
 

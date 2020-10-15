@@ -14,7 +14,7 @@ protected:
     IInstanceClientTCP() = default;
 
     virtual void startAsyncRead() = 0;
-    virtual void write(std::string &) = 0;
+    virtual void write(const std::string &) = 0;
     virtual std::string getData() const = 0;
     virtual std::string getDataClear() = 0;
     virtual void clearReceivedData() = 0;

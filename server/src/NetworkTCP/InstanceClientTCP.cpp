@@ -53,7 +53,7 @@ void InstanceClientTCP::startAsyncRead()
  * This method allow the server to send message to connected clients.
 */
 
-void InstanceClientTCP::write(std::string& msg)
+void InstanceClientTCP::write(const std::string& msg)
 {
     boost::asio::write(socket_, boost::asio::buffer(msg, msg.length()));
 }

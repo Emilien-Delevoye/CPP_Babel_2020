@@ -16,7 +16,7 @@
  * Construct the class that manage connections between clients.
 */
 
-Server::Server(std::string ip, int port) : serverTCP_(ip, port), db_()
+Server::Server(const std::string ip, const int port) : serverTCP_(ip, port), db_()
 {}
 
 /*!

@@ -24,7 +24,7 @@ using boost::asio::ip::address;
 
 class IServerTCP {
 public:
-    IServerTCP(std::string& ip, int port) : ip_(ip), port_(port) {};
+    IServerTCP() = default;
     virtual bool isDisconnectedClients() = 0;
     virtual void sendMessageToAllClientsConnected(std::string msg) const = 0;
     virtual bool newMessageReceived() const = 0;
@@ -34,11 +34,6 @@ public:
 
     virtual void sendMessageToClient(int id, std::string msg) const = 0;
     virtual std::string getIpId(int id) const = 0;
-
-protected:
-    std::string &ip_;
-    int port_;
-
 };
 
 

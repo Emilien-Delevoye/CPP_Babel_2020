@@ -26,9 +26,9 @@ DataBase<T>::DataBase() : ADatabase<T>(), storage(QUERY)
 {
     storage.sync_schema();
 
-    std::cout << "DUMP DB" << std::endl;
+    std::cout << "===== [DUMP DB] =====" << std::endl;
     vector<tuple<int, std::string, std::string, int>> all_users = storage.select(columns(&User::id, &User::login, &User::ip, &User::port));
     for (auto &tpl: all_users)
         std::cout << "id = " << std::get<0>(tpl) << ", name = " << std::get<1>(tpl) << ", ip = " << std::get<2>(tpl) << endl;
-    std::cout << "=======" << std::endl;
+    std::cout << "=====================" << std::endl;
 }

@@ -43,7 +43,7 @@ public:
     ~InstanceClientTCP() = default;
 
     void startAsyncRead() override;
-    void write(std::string&) override;
+    void write(const std::string&) override;
     std::string getData() const override {return std::string(data_, dataLength_);}
     std::string getDataClear() override {
         std::string tmp = getData();

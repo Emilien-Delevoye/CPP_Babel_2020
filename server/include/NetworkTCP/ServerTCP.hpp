@@ -20,7 +20,7 @@
 
 class ServerTCP : IServerTCP {
 public:
-    ServerTCP(std::string& ip, int port);
+    ServerTCP(const std::string& ip, const int port);
 
     bool newMessageReceived() const override;
     std::string getNewMessageReceived() override;
@@ -32,7 +32,7 @@ public:
     bool isDisconnectedClients() override;
     std::vector<int> getDisconnectedClientsIds() override;
 
-    std::string getIpId(int id) const override {
+    std::string getIpId(const int id) const override {
         for (auto & c : clients_)
             if (c->getId() == id)
                 return c->getIp();

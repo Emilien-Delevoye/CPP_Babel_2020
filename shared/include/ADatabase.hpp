@@ -23,14 +23,14 @@ public:
     ADatabase() = default;
 private:
     template<typename V>
-    V addRow(T *user) {};
-    void removeRow(int id) {};
+    V addRow(const T *user) {};
+    void removeRow(const int id) {};
     template<typename P, typename U, typename N, typename J>
-    P getVarFromId(U varType, N id, J idType, P errorValue) {};
+    P getVarFromId(const U varType, const N id, const J idType, const P errorValue) {};
     template<typename U, typename V>
-    T getDataFromId(V id, U idType) {};
+    T getDataFromId(const V id, const U idType) {};
     template<typename B, typename V>
-    std::vector<B> getColumn(V varType) {};
+    std::vector<B> getColumn(const V varType) {};
 };
 
 

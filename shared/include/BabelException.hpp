@@ -18,6 +18,7 @@
 
 #include <exception>
 #include <string>
+#include <utility>
 
 class BabelException : public std::exception
 {

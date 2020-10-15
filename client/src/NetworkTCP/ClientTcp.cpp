@@ -7,9 +7,6 @@
 */
 
 #include "ClientTcp.hpp"
-#include <memory>
-#include <iostream>
-#include <regex>
 
 using namespace std;
 
@@ -21,7 +18,7 @@ using namespace std;
  * Construct the class
 */
 
-ClientTCP::ClientTCP(std::string &ip, std::string &port) : resolver(io_context_), deadline_(io_context_)
+ClientTCP::ClientTCP(const std::string &ip, const std::string &port) : resolver(io_context_), deadline_(io_context_)
 {}
 
 /*!
@@ -76,7 +73,7 @@ void ClientTCP::connectTimeOut(const std::string &ip, const std::string &port, c
  * This method connect the client to the server.
 */
 
-bool ClientTCP::connect(std::string &ip, std::string &port)
+bool ClientTCP::connect(const std::string &ip, const std::string &port)
 {
     if (!std::regex_match(ip, std::regex(R"(\d+.\d+.\d+.\d+)")))
         return false;
@@ -145,7 +142,7 @@ std::string ClientTCP::read()
  * This method send a message to the server.
 */
 
-void ClientTCP::write(std::string msg)
+void ClientTCP::write(const std::string msg)
 {
     socket_.write_some(boost::asio::buffer(msg, msg.length()));
 }
@@ -156,7 +153,7 @@ void ClientTCP::write(std::string msg)
  * This method send an asynchrone message to the server.
 */
 
-void ClientTCP::async_write(std::string msg)
+void ClientTCP::async_write(const std::string msg)
 {
     auto Hwt =
     [this](boost::system::error_code ec, std::size_t /*length*/) {

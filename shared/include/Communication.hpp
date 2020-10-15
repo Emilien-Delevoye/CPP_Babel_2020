@@ -50,10 +50,10 @@ public:
         DISCONNECTED_USER
     };
     explicit Communication(Communication::type t=INIT) : t_(t) {}
-    Communication(Communication::type t, int id) : t_(t), id_(id) {}
-    Communication(Communication::type t, int myId, int id) : t_(t), myId_(myId), id_(id) {}
-    Communication(Communication::type t, int myId, int id, int port) : t_(t), myId_(myId), id_(id), port_(port) {}
-    Communication(Communication::type t, std::string& login, std::string& password, int port) : t_(t), login_(login), password_(password), port_(port) {}
+    Communication(const Communication::type t, const int id) : t_(t), id_(id) {}
+    Communication(const Communication::type t, const int myId, const int id) : t_(t), myId_(myId), id_(id) {}
+    Communication(const Communication::type t, const int myId, const int id, int port) : t_(t), myId_(myId), id_(id), port_(port) {}
+    Communication(const Communication::type t, std::string  login, std::string password, const int port) : t_(t), login_(std::move(login)), password_(std::move(password)), port_(port) {}
 
     type t_;
 
@@ -73,7 +73,7 @@ public:
     std::vector<std::string> ips_;
     std::vector<int> ports_;
 
-    static std::string serializeObj(Communication obj) {
+    static std::string serializeObj(const Communication obj) {
         std::ostringstream ss;
         boost::archive::text_oarchive oa(ss);
         oa & obj;
@@ -88,7 +88,7 @@ public:
         return ss.str();
     }
 
-    static Communication unSerializeObj(std::string obj) {
+    static Communication unSerializeObj(const std::string obj) {
         Communication c(Communication::PRESENTATION);
         std::istringstream ss(obj);
         boost::archive::text_iarchive ia(ss);

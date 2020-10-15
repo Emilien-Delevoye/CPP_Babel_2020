@@ -29,6 +29,9 @@
 #include <string>
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>
+#include <memory>
+#include <iostream>
+#include <regex>
 #include "Communication.hpp"
 
 using boost::asio::ip::tcp;
@@ -38,13 +41,14 @@ using boost::lambda::bind;
 using boost::lambda::var;
 using boost::lambda::_1;
 
+// TODO abstract
 class ClientTCP {
 public:
-    ClientTCP(std::string& ip, std::string& port);
+    ClientTCP(const std::string& ip, const std::string& port);
     ClientTCP() : resolver(io_context_), deadline_(io_context_) {}
     ~ClientTCP() = default;
 
-    bool connect(std::string& ip, std::string& port);
+    bool connect(const std::string& ip, const std::string& port);
     std::string read();
     void async_read();
     void write(std::string msg);
