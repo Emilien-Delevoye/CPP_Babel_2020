@@ -12,9 +12,6 @@ mkdir build && cd build && conan install .. && cmake .. -G "Unix Makefiles" && c
 mkdir build ; cd build ; conan install .. ; cmake .. ; cmake –build .
 ```
 
-## Execute
-Go to the build/bin directory and execute the wanted binary.
-
 ## Required
 
 **Windows**
@@ -56,6 +53,9 @@ Please do not run the program in an application integrated terminal. Audio devic
 **Warning** : if use the client on the same pc as the server, you should use the real pc ip instead of '127.0.0.1'
               otherwise you'll get issue with your sound transmission. 
               
+## Execution
+Go to the build/bin directory and execute the wanted binary.
+
 ## Custom the graphic
 
 Our graphic UI work with QSS, the a CSS solution to design QT windows. <br>
@@ -79,3 +79,9 @@ The Babel project aims to create an SIP-like Voice Over IP (VOIP) protocol. It M
 To test your protocol you MUST write a server and a client implementation.
 The protocol MUST be a client/server protocol but voice transport MUST be client to client (the server can have a proxy mode for conference calls or NAT-ed clients).
 
+## Documentation
+
+This project is documented with doxygen
+to get the documentation use the command :<br>
+```doxygen doc/Doxyfile && your-browser doc/html/index.html``` <br>
+at the root of the project. Change "you-browser" with you browser binary.
