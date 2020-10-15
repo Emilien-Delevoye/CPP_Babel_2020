@@ -256,7 +256,7 @@ void UserPage::deleteUser(int id, int otherUserId)
  * \param id id of the user to be corresponded
 */
 
-bool UserPage::userExists(int id)
+bool UserPage::userExists(int id) const
 {
     for (auto & u : _users) {
         if (u->getID() == id)
@@ -291,7 +291,7 @@ CustomButton *UserPage::getPickUpButton() const
  * \param id id of the user to be found
 */
 
-User *UserPage::findUser(const int id)
+User *UserPage::findUser(const int id) const
 {
     User *user;
 
