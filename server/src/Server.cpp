@@ -50,7 +50,7 @@ bool Server::receiveMsg(Communication &msg)
 
 [[noreturn]] void Server::run()
 {
-    Communication msg;
+    Communication msg(Communication::SETUP);
 
     while (true) {
         if (serverTCP_.isDisconnectedClients())

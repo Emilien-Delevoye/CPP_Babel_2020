@@ -141,7 +141,7 @@ void CustomMainWindow::logout()
 void CustomMainWindow::ConnectNLogToServer()
 {
     _serverTCP = new ClientTCP;
-    Communication msg;
+    Communication msg(Communication::HANG_UP);
 
     if (_serverTCP->connect(_serverIP, _serverPort)) {
         _serverTCP->write(Communication(Communication::PRESENTATION, _userLogin, _userPassword, 4242).serialize());
@@ -226,10 +226,7 @@ void CustomMainWindow::startServerBackCall()
 
 void CustomMainWindow::setupCallBacks(const Communication &msg)
 {
-    if (msg.t_ == Communication::NEW_USER) {
-        qDebug() << "NEW USER RCV" << endl;
-        newUser(msg);
-    } else if (msg.t_ == Communication::DISCONNECTED_USER) {
+    if (msg.t_ == Communication::DISCONNECTED_USER) {
         qDebug() << "DISCONNECTED USER RCV" << endl;
         _userPage->deleteUser(msg.id_, _otherId);
     } else if (msg.t_ == Communication::PICK_UP) {

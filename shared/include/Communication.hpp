@@ -44,11 +44,9 @@ public:
         HANG_UP,
         PICK_UP,
         SETUP,
-        INIT,
-        NEW_USER,
         DISCONNECTED_USER
     };
-    explicit Communication(Communication::type t=INIT) : t_(t) {}
+    explicit Communication(Communication::type t) : t_(t) {}
     Communication(const Communication::type t, const int id) : t_(t), id_(id) {}
     Communication(const Communication::type t, const int myId, const int id, int port) : t_(t), myId_(myId), id_(id), port_(port) {}
     Communication(const Communication::type t, std::string  login, std::string password, const int port) : t_(t), login_(std::move(login)), password_(std::move(password)), port_(port) {}

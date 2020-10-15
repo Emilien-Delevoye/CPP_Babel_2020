@@ -74,7 +74,6 @@ private:
     bool _callInProgress;
 
     ClientTCP *_serverTCP = nullptr;
-    Communication _com;
 
     QTimer *_timer;
     Call *_call = nullptr;

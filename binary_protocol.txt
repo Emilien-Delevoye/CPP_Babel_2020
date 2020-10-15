@@ -1,0 +1,53 @@
+Babel (cyprien.ricque@epitech.eu, emilien.delevoye@epitech.eu, paul.surrans@epitech.eu):
+
+
+Binary Protocol Audio (UDP):
+
+    The audio transmission over UDP is very basic.
+    The vector of unsigned short reads by the class Audio and compressed by the class Encode (transformed in vector of unsigned char) is sent over UDP and truncated at the size given by the number of bytes encoded.
+    This vector is read in the Receiver, and the size to decode is the size read from UDP.
+
+Binary Protocol Server (TCP):
+
+    The server/client communication over TCP works with boost serialization.
+    The class Communication compiled in the Server and Client is filled and sent with boost serialization and boost ASIO TCP.
+    In the class serialized, the following values are set up depending on the type enum value.
+
+    The type enum can take these values :
+    - PRESENTATION
+    - CALL
+    - HANG_UP
+    - PICK_UP
+    - SETUP
+    - DISCONNECTED_USER
+
+    For each message type, different variables are used. Here they are listed :
+
+    ° PRESENTATION                      (when a client want to log to the server)
+        std::string login
+        std::string password
+
+    ° CALL                              (When a client call an other one)
+        int myId                    (id of the client who call)
+        int id                      (id of the called client)
+
+    ° HANG_UP                           (when a client hang up)
+        int myId                    (id of the client who hang up)
+        int id                      (id of the hanged up client)
+
+    ° PICK_UP                           (when a client pick up)
+        int myId                    (id of the client who pick up)
+        int id                      (id of the picked up client)
+
+    ° SETUP                             (when a client is connected and the server inform others that the client is logged)
+        bool connectionAccepted     (true if the connection is accepted)
+        int id                      (id of the newly connected client)
+        vector ids                  (ids of all the connected client)
+        vector logins               (logins of all the connected client)
+        vector port                 (ports of all the connected client)
+        vector ips                  (ips of all the connected client)
+
+    ° DISCONNECTED_USER                 (when a client is disconnected)
+        int id                      (id of the disconnected user)
+
+
