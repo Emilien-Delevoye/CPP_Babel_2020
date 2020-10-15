@@ -1,8 +1,10 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Emilien
+/*!
+ * @file Call.hpp
+ * @brief Call class prototype
+ * @authors Emilien.D
+ * @version 1.0
+ * @date 15/10/2020
+ * This class make the Call between 2 apps<br>
 */
 
 #ifndef BABEL_CALL_HPP

@@ -1,8 +1,10 @@
-/*
-** EPITECH PROJECT, 2020
-** Babel
-** File description:
-** Created by Cyprien
+/*!
+ * @file Call.hpp
+ * @brief Call class prototype
+ * @authors Emilien.D
+ * @version 1.0
+ * @date 15/10/2020
+ * NetworkUDP inherits from ReceiverUDP and SenderUDP
 */
 
 #ifndef BABEL_NETWORKUDP_HPP
