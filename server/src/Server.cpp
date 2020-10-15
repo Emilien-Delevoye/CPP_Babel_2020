@@ -21,6 +21,28 @@ Server::Server(const std::string ip, const int port) : serverTCP_(ip, port), db_
 
 /*!
  * \brief run method
+ * \param Communication msg
+ * \return true if the msg is valid, false otherwise
+ *
+ * This method get new messages and check if they are valid
+*/
+
+bool Server::receiveMsg(Communication &msg)
+{
+    try {
+        msg = Communication::unSerializeObj(serverTCP_.getNewMessageReceived());
+    } catch (boost::archive::archive_exception &e) {
+        EP "Invalid message " << e.what() EL;
+        return false;
+    } catch (std::length_error &e) {
+        EP "Invalid message " << e.what() EL;
+        return false;
+    }
+    return true;
+}
+
+/*!
+ * \brief run method
  *
  * This method start and keep the server alive.
  * it constantly check is client send a message to answer him and prevent the others about what's happening.
@@ -33,26 +55,16 @@ Server::Server(const std::string ip, const int port) : serverTCP_(ip, port), db_
     while (true) {
         if (serverTCP_.isDisconnectedClients())
             handleDisconnections();
-
-        if (serverTCP_.newMessageReceived()) {
-            try {
-                msg = Communication::unSerializeObj(serverTCP_.getNewMessageReceived());
-            } catch (boost::archive::archive_exception &e) {
-                EP "Invalid message " << e.what() EL;
-                continue;
-            } catch (std::length_error &e) {
-                EP "Invalid message " << e.what() EL;
-                continue;
-            }
-            if (msg.t_ == Communication::PRESENTATION)
-                manageNewClients(msg);
-            else if (msg.t_ == Communication::CALL)
-                handleCall(msg);
-            else if (msg.t_ == Communication::PICK_UP)
-                handlePickUp(msg);
-            else if (msg.t_ == Communication::HANG_UP)
-                handleHangUp(msg);
-        }
+        if (!serverTCP_.newMessageReceived() || !receiveMsg(msg))
+            continue;
+        if (msg.t_ == Communication::PRESENTATION)
+            manageNewClients(msg);
+        else if (msg.t_ == Communication::CALL)
+            handleCall(msg);
+        else if (msg.t_ == Communication::PICK_UP)
+            handlePickUp(msg);
+        else if (msg.t_ == Communication::HANG_UP)
+            handleHangUp(msg);
     }
 }
 
@@ -115,6 +127,7 @@ void Server::handleCall(const Communication &msg)
 void Server::handleDisconnections()
 {
     auto disconnectedClients = serverTCP_.getDisconnectedClientsIds();
+
     for (int c : disconnectedClients) {
         if (idLInkInstanceDb_.find(c) == idLInkInstanceDb_.end())
             continue;

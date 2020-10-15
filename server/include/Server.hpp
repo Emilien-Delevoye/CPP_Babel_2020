@@ -38,6 +38,8 @@ private:
     bool canConnect(const Communication &msg);
     void connectionAccepted(const Communication &msg);
     void connectionRefused();
+
+    bool receiveMsg(Communication &msg);
 };
 
 
