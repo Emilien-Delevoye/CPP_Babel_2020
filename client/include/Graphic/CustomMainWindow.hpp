@@ -65,7 +65,7 @@ private:
 
     void startServerBackCall();
 
-    void ConnectLogToServer();
+    void ConnectNLogToServer();
 
     void setupClients(const Communication &msg);
 
@@ -75,6 +75,24 @@ private:
     void logout();
 
     void hangUp();
+
+    void pickUpPressed();
+
+    void call();
+
+    void connectButtons();
+
+    void connectionAccepted(const Communication &msg);
+
+    void connectionRefused();
+
+    void pickUpMsgReceived();
+
+    void hangUpMsgReceived(const Communication &msg);
+
+    void CallMessageReceived(const Communication &msg);
+
+    void setupCallBacks(const Communication &msg);
 };
 
 #endif //B_CPP_500_LIL_5_1_BABEL_CYPRIEN_RICQUE_QTMAINWINDOW_H

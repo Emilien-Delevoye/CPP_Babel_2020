@@ -19,62 +19,84 @@
 CustomMainWindow::CustomMainWindow(QWidget *parent, const QString &title) : QMainWindow(parent)
 {
     setWindowTitle(title);
-
     _connectionPage = new ConnectionPage(this);
     _userPage = new UserPage(this);
     _pages = new QStackedWidget(this);
-
     _callInProgress = false;
 
+    connectButtons();
+
+    _pages->addWidget(_userPage);
+    _pages->addWidget(_connectionPage);
+    setCentralWidget(_pages);
+    navToConnectionPage();
+}
+
+/*!
+ * \brief CustomMainWindow constructor
+
+ * This method connects the buttons to their actions.
+*/
+
+void CustomMainWindow::connectButtons()
+{
     connect(_connectionPage->getConnectButton(), &QPushButton::clicked, [=]() {
         _connectionPage->fillUserInfo(_serverIP, _serverPort, _userLogin, _userPassword);
         if (checkField())
-            ConnectLogToServer();
+            ConnectNLogToServer();
     });
     connect(_userPage->getLogOutButton(), &QPushButton::clicked, [=]() {
-        if (!_callInProgress) {
+        if (!_callInProgress)
             logout();
-        }
     });
-    connect(_userPage->getCallButton(), &QPushButton::clicked, [=]() {
-        std::cout << "CALL PASSED " << _otherId << std::endl;
-        _serverTCP->async_write(Communication(Communication::CALL, _userId, _otherId, 4242).serialize());
-        _callInProgress = true;
-        _userPage->getCallButton()->hide();
-        _userPage->getHangUpButton()->show();
-    });
+    connect(_userPage->getCallButton(), &QPushButton::clicked, [=]() { call();});
     connect(_userPage->getHangUpButton(), &QPushButton::clicked, [=]() {
         _serverTCP->async_write(Communication::serializeObj(Communication(Communication::HANG_UP, _userId, _otherId, 4241)));
         if (_callInProgress)
             hangUp();
     });
-    connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() {
-        _serverTCP->async_write(
-                Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
-        try {
-            this->_call = new(std::nothrow) Call(_otherIP, 4241, 4242);
-        } catch (EncodeError &e) {
-            std::cerr << e.getComponent() << e.what() << std::endl;
-        } catch (AudioIOError &e) {
-            std::cerr << e.getComponent() << e.what() << std::endl;
-        } catch (FatalError &e) {
-            std::cerr << e.getComponent() << e.what() << std::endl;
-        }
-        std::cout << "start Call" << std::endl;
-        if (this->_call) {
-            _q = new(std::nothrow) std::thread([&] { this->_call->run(); });
-            std::cout << "start Call Ok" << std::endl;
-        }
-        _callInProgress = true;
-        _userPage->showTimer();
-        _userPage->getPickUpButton()->hide();
-        _userPage->getHangUpButton()->show();
-    });
-    _pages->addWidget(_userPage);
-    _pages->addWidget(_connectionPage);
+    connect(_userPage->getPickUpButton(), &QPushButton::clicked, [=]() { pickUpPressed();});
+}
 
-    setCentralWidget(_pages);
-    navToConnectionPage();
+/*!
+ * \brief call method
+ *
+ * Actions when call button is pressed
+*/
+
+void CustomMainWindow::call()
+{
+    std::cout << "CALL PASSED " << _otherId << std::endl;
+    _serverTCP->async_write(Communication(Communication::CALL, _userId, _otherId, 4242).serialize());
+    _callInProgress = true;
+    _userPage->getCallButton()->hide();
+    _userPage->getHangUpButton()->show();
+}
+
+/*!
+ * \brief pickUpPressed method
+ *
+ * Actions when pickUp button is pressed
+*/
+
+void CustomMainWindow::pickUpPressed()
+{
+    _serverTCP->async_write(Communication::serializeObj(Communication(Communication::PICK_UP, _userId, _otherId, 4241)));
+    try {
+        _call = new(std::nothrow) Call(_otherIP, 4241, 4242);
+    } catch (EncodeError &e) {
+        std::cerr << e.getComponent() << e.what() << std::endl;
+    } catch (AudioIOError &e) {
+        std::cerr << e.getComponent() << e.what() << std::endl;
+    } catch (FatalError &e) {
+        std::cerr << e.getComponent() << e.what() << std::endl;
+    }
+    if (_call)
+        _q = new(std::nothrow) std::thread([&] { _call->run(); });
+    _callInProgress = true;
+    _userPage->showTimer();
+    _userPage->getPickUpButton()->hide();
+    _userPage->getHangUpButton()->show();
 }
 
 /*!
@@ -124,43 +146,57 @@ void CustomMainWindow::logout()
  * The client is logged with the password and login entered in the window.
 */
 
-void CustomMainWindow::ConnectLogToServer()
+void CustomMainWindow::ConnectNLogToServer()
 {
     _serverTCP = new ClientTCP;
-    std::cout << "Connect" << std::endl;
+    Communication msg;
+
     if (_serverTCP->connect(_serverIP, _serverPort)) {
-        std::cout << "Send message" << std::endl;
         _serverTCP->write(Communication(Communication::PRESENTATION, _userLogin, _userPassword, 4242).serialize());
-        printf("connect : wait for answer\n");
-        Communication msg;
         try {
             msg = Communication::unSerializeObj(std::string(_serverTCP->read()));
         } catch (boost::system::system_error &e) {
             std::cerr << "Get answer Error " << e.what() << std::endl;
             msg.connectionAccepted = false;
         }
-        printf("connect : answer received\n");
-        if (msg.connectionAccepted) {
-            printf("go to page\n");
-            _userId = msg.id_;
-            setupClients(msg);
-            startServerBackCall();
-            navToUserPage();
-            qDebug() << "Connected as" << qPrintable(_userLogin.c_str()) << "with Password"
-                     << qPrintable(_userPassword.c_str()) << endl;
-        } else {
-            std::cout << "Connection refused by server" << std::endl;
-            _connectionPage->setError("Invalid password or User already connected");
-            _serverTCP->disconnect();
-            delete _serverTCP;
-            _serverTCP = nullptr;
-        }
+        if (msg.connectionAccepted)
+            connectionAccepted(msg);
+        else
+            connectionRefused();
     } else {
-        std::cout << "unable to connect" << std::endl;
         _connectionPage->setError("Error while connecting to the server.");
         delete _serverTCP;
         _serverTCP = nullptr;
     }
+}
+
+/*!
+ * \brief connectionRefused method
+ *
+ * Actions when the connection to the server is refused
+*/
+
+void CustomMainWindow::connectionRefused()
+{
+    _connectionPage->setError("Invalid password or User already connected");
+    _serverTCP->disconnect();
+    delete _serverTCP;
+    _serverTCP = nullptr;
+}
+
+/*!
+ * \brief connectionAccepted method
+ *
+ * Actions when the connection to the server is accepted
+*/
+
+void CustomMainWindow::connectionAccepted(const Communication &msg)
+{
+    _userId = msg.id_;
+    setupClients(msg);
+    startServerBackCall();
+    navToUserPage();
+    qDebug() << "Connected as" << qPrintable(_userLogin.c_str()) << "with Password" << qPrintable(_userPassword.c_str()) << endl;
 }
 
 /*!
@@ -175,6 +211,7 @@ void CustomMainWindow::startServerBackCall()
     _serverTCP->startAsyncRead();
     _timer = new QTimer(this);
     _timer->setInterval(300);
+
     connect(_timer, &QTimer::timeout, [&]() {
         if (_serverTCP && _serverTCP->isDisconnected())
             logout();
@@ -183,67 +220,106 @@ void CustomMainWindow::startServerBackCall()
         std::cout << "Message received !" << std::endl; // DEBUG
         auto msg = Communication::unSerializeObj(_serverTCP->getDataClear());
 
-        if (msg.t_ == Communication::NEW_USER) {
-            qDebug() << "NEW USER RCV" << endl;
-            newUser(msg);
-        } else if (msg.t_ == Communication::DISCONNECTED_USER) {
-            qDebug() << "DISCONNECTED USER RCV" << endl;
-            _userPage->deleteUser(msg.id_, _otherId);
-        } else if (msg.t_ == Communication::PICK_UP) {
-            qDebug() << "PICK UP RCV" << endl;
-            std::cout << "CALL ACCEPTED" << msg.id_ << std::endl;
-            _userPage->showTimer();
-            try {
-                this->_call = new(std::nothrow) Call(_otherIP, 4242, 4241);
-            } catch (EncodeError &e) {
-                std::cerr << e.getComponent() << e.what() << std::endl;
-            } catch (AudioIOError &e) {
-                std::cerr << e.getComponent() << e.what() << std::endl;
-            } catch (FatalError &e) {
-                std::cerr << e.getComponent() << e.what() << std::endl;
-            }
-            std::cout << "start Call" << std::endl;
-            if (this->_call) {
-                _q = new(std::nothrow) std::thread([&] { this->_call->run(); });
-                std::cout << "start Call ok" << std::endl;
-            }
-            _callInProgress = true;
-        } else if (msg.t_ == Communication::CALL) {
-            qDebug() << "CALL RCV" << endl;
-            std::cout << "CALL RECEIVED " << msg.id_ << std::endl;
-            if (_callInProgress) {
-                _serverTCP->async_write(Communication::serializeObj(
-                        Communication(Communication::HANG_UP, _userId, msg.id_, 4241)));
-            } else {
-                _callInProgress = true;
-                _otherId = _userPage->findUser(msg.id_)->getID();
-                _otherLogin = _userPage->findUser(msg.id_)->getLogin();
-                _otherIP = _userPage->findUser(msg.id_)->getIP();
-                _otherPort = msg.port_;
-                _userPage->incomingCall(msg.id_);
-            }
-        } else if (msg.t_ == Communication::HANG_UP) {
-            qDebug() << "HANG UP RCV" << endl;
-            if (msg.id_ == _otherId) {
-                _callInProgress = false;
-                _userPage->endcomingCall(msg.id_);
-                if (_call && _q) {
-                    std::cout << "stop Call (button)" << std::endl;
-                    _call->stopCall();
-                    delete _call;
-                    _call = nullptr;
-                    _q->join();
-                    std::cout << "stop Call (button) ok" << std::endl;
-                }
-            }
-        } else if (msg.t_ == Communication::SETUP) {
-            qDebug() << "SETUP RCV" << endl;
-            setupClients(msg);
-        } else {
-            qDebug() << "UNKNOWN MESSAGE TYPE" << endl;
-        }
+        setupCallBacks(msg);
     });
     _timer->start();
+}
+
+/*!
+ * \brief setupCallBacks method
+ * \param Communication msg
+ *
+ * setup call back when a message is received from server
+*/
+
+void CustomMainWindow::setupCallBacks(const Communication &msg)
+{
+    if (msg.t_ == Communication::NEW_USER) {
+        qDebug() << "NEW USER RCV" << endl;
+        newUser(msg);
+    } else if (msg.t_ == Communication::DISCONNECTED_USER) {
+        qDebug() << "DISCONNECTED USER RCV" << endl;
+        _userPage->deleteUser(msg.id_, _otherId);
+    } else if (msg.t_ == Communication::PICK_UP) {
+        pickUpMsgReceived();
+    } else if (msg.t_ == Communication::CALL) {
+        CallMessageReceived(msg);
+    } else if (msg.t_ == Communication::HANG_UP) {
+        hangUpMsgReceived(msg);
+    } else if (msg.t_ == Communication::SETUP) {
+        setupClients(msg);
+    } else {
+        qDebug() << "UNKNOWN MESSAGE TYPE" << endl;
+    }
+}
+
+/*!
+ * \brief CallMessageReceived method
+ *
+ * Actions when call msg received
+*/
+
+void CustomMainWindow::CallMessageReceived(const Communication &msg)
+{
+    qDebug() << "CALL RCV" << endl;
+    std::cout << "CALL RECEIVED " << msg.id_ << std::endl;
+    if (_callInProgress) {
+        _serverTCP->async_write(Communication::serializeObj(
+                Communication(Communication::HANG_UP, _userId, msg.id_, 4241)));
+    } else {
+        _callInProgress = true;
+        _otherId = _userPage->findUser(msg.id_)->getID();
+        _otherLogin = _userPage->findUser(msg.id_)->getLogin();
+        _otherIP = _userPage->findUser(msg.id_)->getIP();
+        _otherPort = msg.port_;
+        _userPage->incomingCall(msg.id_);
+    }
+}
+
+/*!
+ * \brief hangUpMsgReceived method
+ *
+ * Actions when the "hang up" Msg is received
+*/
+
+void CustomMainWindow::hangUpMsgReceived(const Communication &msg)
+{
+    qDebug() << "HANG UP RCV" << endl;
+    if (msg.id_ == _otherId) {
+        _callInProgress = false;
+        _userPage->endcomingCall(msg.id_);
+        if (_call && _q) {
+            std::cout << "stop Call (button)" << std::endl;
+            _call->stopCall();
+            delete _call;
+            _call = nullptr;
+            _q->join();
+            std::cout << "stop Call (button) ok" << std::endl;
+        }
+    }
+}
+
+/*!
+ * \brief pickUpMsgReceived method
+ *
+ * Actions when the "pick up" Msg is received
+*/
+
+void CustomMainWindow::pickUpMsgReceived()
+{
+    _userPage->showTimer();
+    try {
+        _call = new(std::nothrow) Call(_otherIP, 4242, 4241);
+    } catch (EncodeError &e) {
+        std::cerr << e.getComponent() << e.what() << std::endl;
+    } catch (AudioIOError &e) {
+        std::cerr << e.getComponent() << e.what() << std::endl;
+    } catch (FatalError &e) {
+        std::cerr << e.getComponent() << e.what() << std::endl;
+    }
+    if (_call)
+        _q = new(std::nothrow) std::thread([&] { _call->run(); });
+    _callInProgress = true;
 }
 
 /*!
